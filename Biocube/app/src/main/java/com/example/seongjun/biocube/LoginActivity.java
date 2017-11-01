@@ -22,10 +22,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
+    /* login 버튼 클릭했을 때 */
     public void loginProcess(View view) {
-
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
+    /* 회원가입 클릭했을 때 */
     public void goJoin(View view) {
         Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
         startActivity(intent);

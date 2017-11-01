@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WriteDiaryFragment.OnFragmentInteractionListener} interface
+ * {@link UserCubeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link WriteDiaryFragment#newInstance} factory method to
+ * Use the {@link UserCubeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WriteDiaryFragment extends Fragment {
+public class UserCubeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,7 +29,7 @@ public class WriteDiaryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public WriteDiaryFragment() {
+    public UserCubeFragment() {
         // Required empty public constructor
     }
 
@@ -37,16 +37,12 @@ public class WriteDiaryFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WriteDiaryFragment.
+     * @return A new instance of fragment UserCubeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WriteDiaryFragment newInstance(String param1, String param2) {
-        WriteDiaryFragment fragment = new WriteDiaryFragment();
+    public static UserCubeFragment newInstance() {
+        UserCubeFragment fragment = new UserCubeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +60,7 @@ public class WriteDiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_write_diary, container, false);
+        return inflater.inflate(R.layout.fragment_user_cube, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -93,13 +89,5 @@ public class WriteDiaryFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public static WriteDiaryFragment newInstance() {
-        Bundle args = new Bundle();
-
-        WriteDiaryFragment fragment = new WriteDiaryFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 }

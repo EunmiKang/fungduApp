@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.seongjun.biocube.WriteDiaryFragment">
+    tools:context="com.example.seongjun.biocube.UserCubeFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="여기는 일지작성~" />
+        android:text="여기는 큐브 제어/등록~" />
 
 </FrameLayout>
