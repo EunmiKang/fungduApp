@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.seongjun.biocube.JoinActivity">
@@ -13,8 +14,8 @@
         android:ems="10"
         android:hint="아이디"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"/>
 
     <EditText
         android:id="@+id/pwText"
@@ -23,8 +24,7 @@
         android:ems="10"
         android:hint="비밀번호"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="157dp" />
+        android:layout_gravity="center"/>
 
     <EditText
         android:id="@+id/nicknameText"
@@ -33,15 +33,14 @@
         android:ems="10"
         android:hint="닉네임"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="209dp" />
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/joinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="회원가입"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="271dp"
-        android:onClick="joinProcess"/>
-</android.support.constraint.ConstraintLayout>
+        android:onClick="joinProcess"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>
