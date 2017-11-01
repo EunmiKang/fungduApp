@@ -30,6 +30,4 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
         startActivity(intent);
     }
-
-    }
 }
