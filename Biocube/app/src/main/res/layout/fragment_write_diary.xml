@@ -70,32 +70,32 @@
                 android:id="@+id/button7"
                 android:layout_width="75dp"
                 android:layout_height="64dp"
-                android:text="1" />
+                android:text="home" />
 
             <Button
                 android:id="@+id/button8"
                 android:layout_width="75dp"
                 android:layout_height="64dp"
-                android:text="2" />
+                android:text="news" />
 
             <Button
                 android:id="@+id/button9"
                 android:layout_width="75dp"
                 android:layout_height="64dp"
-                android:text="3" />
+                android:text="diary" />
 
             <Button
                 android:id="@+id/button10"
                 android:layout_width="75dp"
                 android:layout_height="64dp"
-                android:text="4" />
+                android:text="cont" />
 
             <Button
                 android:id="@+id/button12"
                 android:layout_width="75dp"
                 android:layout_height="64dp"
                 android:layout_weight="1"
-                android:text="5" />
+                android:text="mypage" />
 
         </LinearLayout>
 
