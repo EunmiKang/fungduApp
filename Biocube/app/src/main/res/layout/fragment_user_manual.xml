@@ -1,12 +1,73 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.seongjun.biocube.UserManualFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="여기는 매뉴얼~" />
+        android:layout_height="283dp"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="221dp"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="211dp">
+
+            <ViewFlipper
+                android:layout_width="match_parent"
+                android:layout_height="178dp">
+
+            </ViewFlipper>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="75dp"
+                android:layout_height="64dp"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="75dp"
+                android:layout_height="64dp"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="75dp"
+                android:layout_height="64dp"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/button10"
+                android:layout_width="75dp"
+                android:layout_height="64dp"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/button12"
+                android:layout_width="75dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:text="5" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </FrameLayout>
