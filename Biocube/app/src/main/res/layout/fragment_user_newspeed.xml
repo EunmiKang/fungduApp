@@ -5,6 +5,7 @@
     tools:context="com.example.seongjun.biocube.UserNewspeedFragment">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="여기는 뉴스피드~" />
