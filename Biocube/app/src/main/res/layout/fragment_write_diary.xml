@@ -21,7 +21,7 @@
             android:id="@+id/btn_addImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.32"
+            android:layout_weight="0.40"
             app:srcCompat="@android:drawable/ic_input_add" />
 
         <LinearLayout
@@ -54,50 +54,11 @@
             android:id="@+id/edit_writeContents"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.61"
-            android:background=""
+            android:layout_weight="0.62"
+            android:background="@null"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="contents" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:orientation="horizontal"
-            android:layout_weight="0.07">
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="home" />
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="news" />
-
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="diary" />
-
-            <Button
-                android:id="@+id/button10"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="cont" />
-
-            <Button
-                android:id="@+id/button12"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:text="mypage" />
-
-        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

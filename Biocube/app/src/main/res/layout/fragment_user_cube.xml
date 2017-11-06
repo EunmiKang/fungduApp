@@ -59,45 +59,6 @@
                 android:text="Button" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_weight="0.07"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="home" />
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="news" />
-
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="diary" />
-
-            <Button
-                android:id="@+id/button10"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:text="cont" />
-
-            <Button
-                android:id="@+id/button12"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:text="mypage" />
-
-        </LinearLayout>
-
 
     </LinearLayout>
 </FrameLayout>
