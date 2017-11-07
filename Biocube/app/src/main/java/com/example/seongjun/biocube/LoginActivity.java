@@ -2,12 +2,8 @@ package com.example.seongjun.biocube;
 
 
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
@@ -24,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /* login 버튼 클릭했을 때 */
     public void loginProcess(View view) {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, UserMainActivity.class);
         startActivity(intent);
     }
 
