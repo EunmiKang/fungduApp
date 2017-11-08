@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /* login 버튼 클릭했을 때 */
     public void loginProcess(View view) {
-        Intent intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
         startActivity(intent);
     }
 
