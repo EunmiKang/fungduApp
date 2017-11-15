@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -58,10 +60,14 @@ public class LoginActivity extends AppCompatActivity {
         helper = new TokenDBHelper(this);
         Intent intent;
 
+        findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
+        findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
+
         // 내부DB 접근 - 토큰 있나 없나 확인
         switch (checkDB(helper)) {
             case -1:
                 setContentView(R.layout.activity_login);
+                Toast.makeText(getApplication(), "로그인하세욤.", Toast.LENGTH_SHORT);
                 break;
             case -2:
                 setContentView(R.layout.activity_login);
@@ -146,64 +152,64 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /* login 버튼 클릭했을 때 */
-    public void loginProcess(View view) {
-        try {
+    Button.OnClickListener loginClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            try {
              /* URL 설정하고 접속 */
-            URL url = new URL("http://fungdu0624.phps.kr/biocube/login.php");
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/login.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
             /* 전송모드 설정 */
-            http.setDefaultUseCaches(false);
-            http.setDoInput(true);  //서버에서 읽기 모드로 지정
-            http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-            http.setRequestMethod("POST");
-            http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
             /* 서버로 값 전송 */
-            EditText idText = (EditText) findViewById(R.id.idText);
-            EditText pwText = (EditText) findViewById(R.id.pwText);
-            String id = idText.toString();
-            String pw = pwText.toString();
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("userID").append("=").append(id).append("&");
-            buffer.append("userPW").append("=").append(pw);
-            OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-            PrintWriter writer = new PrintWriter(outStream);
-            writer.write(buffer.toString());
-            writer.flush();
+                EditText idText = (EditText) findViewById(R.id.idText);
+                EditText pwText = (EditText) findViewById(R.id.pwText);
+                String id = idText.toString();
+                String pw = pwText.toString();
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("userID").append("=").append(id).append("&");
+                buffer.append("userPW").append("=").append(pw);
+                OutputStream outStream = http.getOutputStream();
+                outStream.write(buffer.toString().getBytes("UTF-8"));
+                outStream.flush();
+                outStream.close();
 
             /* 서버에서 전송 받기 */
-            InputStreamReader tmp = new InputStreamReader(http.getInputStream(), "EUC-KR");
-            BufferedReader reader = new BufferedReader(tmp);
-            String str = reader.readLine();
-            Intent intent;
-            //결과 0:관리자, 1:일반사용자, 2:전문가 -> 로그인 진행
-            if(str.equals("0")) {   //관리자
-                intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                startActivity(intent);
-            } else if(str.equals("1")) {    //일반 사용자
-                intent = new Intent(LoginActivity.this, UserMainActivity.class);
-                startActivity(intent);
-            } else if(str.equals("2")) {    //전문가
-                intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
-                startActivity(intent);
-            } else {    //결과 -1:아이디, 비번 잘못 입력
-                Toast.makeText(getApplication(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT);
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String str = reader.readLine();
+                Intent intent;
+                //결과 0:관리자, 1:일반사용자, 2:전문가 -> 로그인 진행
+                if(str.equals("0")) {   //관리자
+                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                    startActivity(intent);
+                } else if(str.equals("1")) {    //일반 사용자
+                    intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                    startActivity(intent);
+                } else if(str.equals("2")) {    //전문가
+                    intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+                    startActivity(intent);
+                } else {    //결과 -1:아이디, 비번 잘못 입력
+                    Toast.makeText(getApplication(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT);
+                }
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
             }
-        } catch(MalformedURLException e) {
-            e.printStackTrace();
-        } catch(IOException e) {
-            e.printStackTrace();
         }
-        Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-        startActivity(intent);
-    }
+    };
 
     /* 회원가입 클릭했을 때 */
-    private void goJoin(View view) {
-        Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
-        startActivity(intent);
-    }
-
-
+    Button.OnClickListener joinClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
+            startActivity(intent);
+        }
+    };
 }
