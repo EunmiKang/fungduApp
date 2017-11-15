@@ -174,15 +174,20 @@ public class LoginActivity extends AppCompatActivity {
             /* 서버로 값 전송 */
                 EditText idText = (EditText) findViewById(R.id.idText);
                 EditText pwText = (EditText) findViewById(R.id.pwText);
-                String id = idText.toString();
-                String pw = pwText.toString();
+                String id = idText.getText().toString();
+                String pw = pwText.getText().toString();
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("userID").append("=").append(id).append("&");
                 buffer.append("userPW").append("=").append(pw);
-                OutputStream outStream = http.getOutputStream();
-                outStream.write(buffer.toString().getBytes("UTF-8"));
-                outStream.flush();
-                outStream.close();
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+//                OutputStream outStream = http.getOutputStream();
+//                outStream.write(buffer.toString().getBytes("UTF-8"));
+//                outStream.flush();
+//                outStream.close();
 
             /* 서버에서 전송 받기 */
                 InputStream inStream = http.getInputStream();
