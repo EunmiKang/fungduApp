@@ -60,10 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         helper = new TokenDBHelper(this);
         Intent intent;
 
-        setContentView(R.layout.activity_login);
-        findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
-        findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
-
         // 내부DB 접근 - 토큰 있나 없나 확인
         switch (checkDB(helper)) {
             case -1:
