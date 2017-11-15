@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         helper = new TokenDBHelper(this);
         Intent intent;
 
+        setContentView(R.layout.activity_login);
         findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
         findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
 
@@ -67,10 +68,14 @@ public class LoginActivity extends AppCompatActivity {
         switch (checkDB(helper)) {
             case -1:
                 setContentView(R.layout.activity_login);
+                findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
+                findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
                 Toast.makeText(getApplication(), "로그인하세욤.", Toast.LENGTH_SHORT);
                 break;
             case -2:
                 setContentView(R.layout.activity_login);
+                findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
+                findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
                 Toast.makeText(getApplication(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT);
                 break;
             case 0:
