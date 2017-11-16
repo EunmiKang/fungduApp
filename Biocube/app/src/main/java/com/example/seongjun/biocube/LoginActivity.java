@@ -33,32 +33,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private int status = -1;
 
-    //sqlite를 사용하기 위한 클래스
-    class TokenDBHelper extends SQLiteOpenHelper {
-        public TokenDBHelper(Context context) {
-            super(context, "tokenDB.db", null, 1);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            //테이블 생성
-            db.execSQL("CREATE TABLE TOKEN(token varchar(50) primary key);");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            //테이블을 지우는 구문을 수행
-            db.execSQL("DROP TABLE if exists TOKEN;");
-            //테이블 다시 생성
-            onCreate(db);
-        }
-    }
-
     private TokenDBHelper helper = new TokenDBHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_login);
+        findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
+        findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
 
         new checkDBTask().execute(helper);
     }
@@ -129,16 +112,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         Intent intent;
+
         // 내부DB 접근 - 토큰 있나 없나 확인
         if(status < 0) {
-            setContentView(R.layout.activity_login);
-            findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
-            findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
-            if(status == -1) {
-                Toast.makeText(getApplication(), "로그인하세욤.", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Toast.makeText(getApplication(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+
+            if(status == -2) {
+                Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
             }
         }
         else {
@@ -157,75 +136,21 @@ public class LoginActivity extends AppCompatActivity {
     /* login 버튼 클릭했을 때 */
     Button.OnClickListener loginClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
-            new loginTask().execute(helper);
-        }
-    };
-
-    private void loginProgress(TokenDBHelper helper) {
-        try {
-             /* URL 설정하고 접속 */
-            URL url = new URL("http://fungdu0624.phps.kr/biocube/login.php");
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-
-            /* 전송모드 설정 */
-            http.setDefaultUseCaches(false);
-            http.setDoInput(true);  //서버에서 읽기 모드로 지정
-            http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-            http.setRequestMethod("POST");
-            http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-
-            /* 서버로 값 전송 */
             EditText idText = (EditText) findViewById(R.id.idText);
             EditText pwText = (EditText) findViewById(R.id.pwText);
             String id = idText.getText().toString();
             String pw = pwText.getText().toString();
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("userID").append("=").append(id).append("&");
-            buffer.append("userPW").append("=").append(pw);
-            OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-            PrintWriter writer = new PrintWriter(outStream);
-            writer.write(buffer.toString());
-            writer.flush();
-            writer.close();
-
-            /* 서버에서 전송 받기 */
-            InputStream inStream = http.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-            String str = reader.readLine();
-            String[] token = str.split(" ");
-            String[] jwt = token[1].split("\"");
-            Intent intent;
-            SQLiteDatabase db = helper.getWritableDatabase();
-            //결과 0:관리자, 1:일반사용자, 2:전문가 -> 로그인 진행
-            if(token[0].equals("0")) {   //관리자
-                ContentValues row = new ContentValues();
-                row.put("token", jwt[1]);
-                db.insert("TOKEN", null, row);
-
-                intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                startActivity(intent);
-            } else if(token[0].equals("1")) {    //일반 사용자
-                ContentValues row = new ContentValues();
-                row.put("token", jwt[0]);
-                db.insert("TOKEN", null, row);
-
-                intent = new Intent(LoginActivity.this, UserMainActivity.class);
-                startActivity(intent);
-            } else if(token[0].equals("2")) {    //전문가
-                ContentValues row = new ContentValues();
-                row.put("token", jwt[0]);
-                db.insert("TOKEN", null, row);
-
-                intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
-                startActivity(intent);
-            } else {    //결과 -1:아이디, 비번 잘못 입력
-                Toast.makeText(getApplication(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
+            if(!id.equals("") && !pw.equals("")) {
+                new loginTask().execute(helper);
             }
-        } catch(MalformedURLException e) {
-            e.printStackTrace();
-        } catch(IOException e) {
-            e.printStackTrace();
+            else {
+
+            }
         }
+    };
+
+    private void loginProgress(TokenDBHelper helper) {
+
     }
 
     /* 회원가입 클릭했을 때 */
@@ -236,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    public class checkDBTask extends AsyncTask<Object, Object, Void> {
+    public class checkDBTask extends AsyncTask {
         @Override
         public Void doInBackground(Object... params) {
             checkDB((TokenDBHelper)params[0]);
@@ -244,11 +169,92 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public class loginTask extends AsyncTask<Object, Void, Void> {
+    public class loginTask extends AsyncTask<Object,Object,Integer> {
+        // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
         @Override
-        public Void doInBackground(Object... params) {
-            loginProgress((TokenDBHelper)params[0]);
+        public Integer doInBackground(Object... params) {
+            try {
+             /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/login.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+            /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버로 값 전송 */
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("userID").append("=").append(id).append("&");
+                buffer.append("userPW").append("=").append(pw);
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+            /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String str = reader.readLine();
+                String[] token = str.split(" ");
+
+                Intent intent;
+                SQLiteDatabase db = helper.getWritableDatabase();
+
+                //결과 0:관리자, 1:일반사용자, 2:전문가 -> 로그인 진행
+                if (token[0].equals("0")) {   //관리자
+                    String[] jwt = token[1].split("\"");
+                    ContentValues row = new ContentValues();
+                    row.put("token", jwt[1]);
+                    db.insert("TOKEN", null, row);
+
+                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                    startActivity(intent);
+                } else if (token[0].equals("1")) {    //일반 사용자
+                    String[] jwt = token[1].split("\"");
+                    ContentValues row = new ContentValues();
+                    row.put("token", jwt[0]);
+                    db.insert("TOKEN", null, row);
+
+                    intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                    startActivity(intent);
+                } else if (token[0].equals("2")) {    //전문가
+                    String[] jwt = token[1].split("\"");
+                    ContentValues row = new ContentValues();
+                    row.put("token", jwt[0]);
+                    db.insert("TOKEN", null, row);
+
+                    intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+                    startActivity(intent);
+                } else {    //결과 -1:아이디, 비번 잘못 입력
+                    //
+                }
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            //publishProgress(params);    // 중간 중간에 진행 상태 UI 를 업데이트 하기 위해 사용..
             return null;
+        }
+
+        @Override
+        public void onPostExecute(Integer o) {
+            super.onPostExecute(o);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            if() {
+                Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Object[] values) {
+            super.onProgressUpdate(values);
+            // Todo: publishProgress() 메소드 호출시 처리할 작업..
         }
     }
 }

@@ -1,12 +1,15 @@
 package com.example.seongjun.biocube;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -26,6 +29,8 @@ public class AdminPageFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TokenDBHelper helper;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,6 +59,8 @@ public class AdminPageFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        helper = new TokenDBHelper(getActivity());
     }
 
     @Override
@@ -61,6 +68,9 @@ public class AdminPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_admin_page, container, false);
+
+        Button logoutBtn = (Button) view.findViewById(R.id.btn_admin_logout);
+        logoutBtn.setOnClickListener(logoutClickListener);
 
         return view;
     }
@@ -92,4 +102,14 @@ public class AdminPageFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    Button.OnClickListener logoutClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.delete("TOKEN", "token is not null", null);
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
+    };
 }

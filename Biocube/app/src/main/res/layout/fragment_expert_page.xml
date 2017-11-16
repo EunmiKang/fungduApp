@@ -92,7 +92,7 @@
                 android:text="question" />
 
             <Button
-                android:id="@+id/btn_logout"
+                android:id="@+id/btn_expert_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.07"

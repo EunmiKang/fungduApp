@@ -119,7 +119,7 @@ public class WriteDiaryFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void selectImage(View view) {
+    private void selectImage(View view) {
         DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
