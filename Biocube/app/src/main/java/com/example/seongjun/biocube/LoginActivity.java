@@ -141,10 +141,10 @@ public class LoginActivity extends AppCompatActivity {
             String id = idText.getText().toString();
             String pw = pwText.getText().toString();
             if(!id.equals("") && !pw.equals("")) {
-                new loginTask().execute(helper);
+                new loginTask().execute(helper, id, pw);
             }
             else {
-
+                Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -187,8 +187,8 @@ public class LoginActivity extends AppCompatActivity {
 
             /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("userID").append("=").append(id).append("&");
-                buffer.append("userPW").append("=").append(pw);
+                buffer.append("userID").append("=").append(params[1].toString()).append("&");
+                buffer.append("userPW").append("=").append(params[2].toString());
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
                 writer.write(buffer.toString());
@@ -211,26 +211,23 @@ public class LoginActivity extends AppCompatActivity {
                     row.put("token", jwt[1]);
                     db.insert("TOKEN", null, row);
 
-                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                    startActivity(intent);
+                    return 0;
                 } else if (token[0].equals("1")) {    //일반 사용자
                     String[] jwt = token[1].split("\"");
                     ContentValues row = new ContentValues();
                     row.put("token", jwt[0]);
                     db.insert("TOKEN", null, row);
 
-                    intent = new Intent(LoginActivity.this, UserMainActivity.class);
-                    startActivity(intent);
+                    return 1;
                 } else if (token[0].equals("2")) {    //전문가
                     String[] jwt = token[1].split("\"");
                     ContentValues row = new ContentValues();
                     row.put("token", jwt[0]);
                     db.insert("TOKEN", null, row);
 
-                    intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
-                    startActivity(intent);
+                    return 2;
                 } else {    //결과 -1:아이디, 비번 잘못 입력
-                    //
+                    return -1;
                 }
             } catch(MalformedURLException e) {
                 e.printStackTrace();
@@ -238,17 +235,27 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //publishProgress(params);    // 중간 중간에 진행 상태 UI 를 업데이트 하기 위해 사용..
-            return null;
+            return -1;
         }
 
         @Override
-        public void onPostExecute(Integer o) {
-            super.onPostExecute(o);
+        public void onPostExecute(Integer result) {
+            super.onPostExecute(result);
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-            if() {
-                Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent;
 
+            if(result == -1) {
+                Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
+            } else if(result == 0) {    //관리자
+                intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                startActivity(intent);
+            } else if(result == 1) {    //일반사용자
+                intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                startActivity(intent);
+            } else if(result == 2) {    //전문가
+                intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+                startActivity(intent);
+            }
         }
 
         @Override
