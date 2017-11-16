@@ -5,7 +5,30 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.seongjun.biocube.JoinActivity">
+    tools:context="com.example.seongjun.biocube.JoinActivity"
+    android:weightSum="1">
+
+    <RadioGroup
+        android:id="@+id/group_authority"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RadioButton
+            android:id="@+id/radio_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="일반사용자" />
+
+        <RadioButton
+            android:id="@+id/radio_expert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="전문가" />
+    </RadioGroup>
 
     <EditText
         android:id="@+id/idText"
