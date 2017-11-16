@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -144,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                 findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
                 findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
                 if(status == -2) {
-                    Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "로그인 유효 기간 만료로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if(status == 0) {
@@ -235,18 +236,19 @@ public class LoginActivity extends AppCompatActivity {
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-            Intent intent;
-
+            Intent intent = new Intent();
             if(result == -1) {
                 Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
-            } else if(result == 0) {    //관리자
-                intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                startActivity(intent);
-            } else if(result == 1) {    //일반사용자
-                intent = new Intent(LoginActivity.this, UserMainActivity.class);
-                startActivity(intent);
-            } else if(result == 2) {    //전문가
-                intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+            } else {
+                if(result == 0) {    //관리자
+                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                } else if(result == 1) {    //일반사용자
+                    intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                } else if(result == 2) {    //전문가
+                    intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         }
