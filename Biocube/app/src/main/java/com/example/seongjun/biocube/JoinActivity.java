@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.view.ViewGroup.LayoutParams;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,46 +28,82 @@ import java.net.URL;
 
 public class JoinActivity extends AppCompatActivity {
 
-    final RadioGroup rg = (RadioGroup)findViewById(R.id.group_authority);
-    int id = rg.getCheckedRadioButtonId();
-    //getCheckedRadioButtonId() 의 리턴값은 선택된 RadioButton 의 id 값.
-    RadioButton rb = (RadioButton) findViewById(id);
-    LinearLayout layout_join = (LinearLayout)findViewById(R.id.layout_join);
+    RadioGroup rg;
+    RadioButton rb;
+    LinearLayout layout_join;
+    EditText editId;
+    EditText editPw;
+    EditText editNickname;
+    EditText editPhone;
+    EditText editJob;
 
     Button.OnClickListener joinClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
-//            new JoinActivity.joinTask().execute(id);
+            String id = editId.getText().toString();
+            String pw = editPw.getText().toString();
+            String nickname = editNickname.getText().toString();
+            String phone = editPhone.getText().toString();
+            String job = editJob.getText().toString();
+            String authority;
+            if(rb.getText().toString().equals("일반사용자")){
+                authority = "1";
+            }
+            else{
+                authority = "2";
+            }
+            new JoinActivity.joinTask().execute(id,pw,nickname,authority,phone,job);
             //thread 실행
         }
     };
 
+    RadioButton.OnClickListener radioExpertClickListener = new RadioButton.OnClickListener() {
+        public void onClick(View v) {
+            checkExpertRadio();
+        }
+    };
+
+    RadioButton.OnClickListener radioUserClickListener = new RadioButton.OnClickListener() {
+        public void onClick(View v) {
+            checkUserRadio();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
-
+        rg = (RadioGroup)findViewById(R.id.group_authority);
+        int authority = rg.getCheckedRadioButtonId();
+        //getCheckedRadioButtonId() 의 리턴값은 선택된 RadioButton 의 id 값.
+        rb = (RadioButton) findViewById(authority);
+        layout_join = (LinearLayout)findViewById(R.id.layout_join);
+        editId = (EditText)findViewById(R.id.idText);
+        editPw = (EditText)findViewById(R.id.pwText);
+        editNickname = (EditText)findViewById(R.id.nicknameText);
+        editPhone = (EditText)findViewById(R.id.editPhone);
+        editJob = (EditText)findViewById(R.id.editJob);
         findViewById(R.id.btn_join).setOnClickListener(joinClickListener);
+        findViewById(R.id.radio_expert).setOnClickListener(radioExpertClickListener);
+        findViewById(R.id.radio_user).setOnClickListener(radioUserClickListener);
 
         }
 
     public void joinProcess(View view) {
 
     }
-    public void checkExpertRadio(){
-        EditText editPhone = new EditText(this);
-        EditText editJob = new EditText(this);
-        editPhone.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        editJob.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
+    public void checkExpertRadio(){
+        editPhone.setVisibility(View.VISIBLE);
+        editJob.setVisibility(View.VISIBLE);
     }
     public void checkUserRadio(){
-
+        editPhone.setVisibility(View.GONE);
+        editJob.setVisibility(View.GONE);
     }
 
-    public class joinTask extends AsyncTask<Object,Object,Integer>{
+    public class joinTask extends AsyncTask<String,Object,Integer>{
 
         @Override
-        protected Integer doInBackground(Object... params) {
+        protected Integer doInBackground(String... params) {
             try {
              /* URL 설정하고 접속 */
                 URL url = new URL("http://fungdu0624.phps.kr/biocube/join.php");

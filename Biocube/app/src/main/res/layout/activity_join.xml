@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="전문가"
-            android:onClick="checkExpertRadio"/>
+            />
     </RadioGroup>
 
     <EditText
@@ -59,6 +59,27 @@
         android:ems="10"
         android:hint="닉네임"
         android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/editJob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="직업"
+        android:inputType="textPersonName"
+        android:visibility="gone"/>
+
+
+    <EditText
+        android:id="@+id/editPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:hint="전화번호"
+        android:inputType="phone"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btn_join"
