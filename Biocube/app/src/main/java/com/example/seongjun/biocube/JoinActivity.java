@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -118,8 +120,13 @@ public class JoinActivity extends AppCompatActivity {
 
             /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("userID").append("=").append(params[1].toString()).append("&");
-                buffer.append("userPW").append("=").append(params[2].toString());
+                buffer.append("userID").append("=").append(params[0].toString()).append("&");
+                buffer.append("userPW").append("=").append(params[1].toString()).append("&");
+                buffer.append("nickname").append("=").append(params[2].toString()).append("&");
+                buffer.append("authority").append("=").append(params[3].toString()).append("&");
+                buffer.append("job").append("=").append(params[4].toString()).append("&");
+                buffer.append("phone").append("=").append(params[5].toString());
+
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
                 writer.write(buffer.toString());
@@ -130,7 +137,12 @@ public class JoinActivity extends AppCompatActivity {
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
-                String[] token = str.split(" ");
+                if(str.equals("1")){//회원가입 성공시
+                    Toast.makeText(getApplicationContext(), "회원가입을 성공적으로 마쳤습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else{//가입 실패시
+                    Toast.makeText(getApplicationContext(),"회원가입에 실패하였습니다.",Toast.LENGTH_SHORT).show();
+                }
             } catch(MalformedURLException e) {
                 e.printStackTrace();
             } catch(IOException e) {
