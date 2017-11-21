@@ -31,8 +31,8 @@ import java.net.URL;
 public class JoinActivity extends AppCompatActivity {
 
     RadioGroup rg;
-    RadioButton rb;
-    LinearLayout layout_join;
+    RadioButton rb_user;
+    RadioButton rb_expert;
     EditText editId;
     EditText editPw;
     EditText editNickname;
@@ -47,12 +47,14 @@ public class JoinActivity extends AppCompatActivity {
             String phone = editPhone.getText().toString();
             String job = editJob.getText().toString();
             String authority;
-            if(rb.getText().toString().equals("일반사용자")){
+
+            if(rb_user.isChecked()){
                 authority = "1";
             }
             else{
                 authority = "2";
             }
+//            Toast.makeText(getApplicationContext(),id+","+pw+" "+nickname+" "+phone+" "+job+" "+authority,Toast.LENGTH_SHORT).show();
             new JoinActivity.joinTask().execute(id,pw,nickname,authority,phone,job);
             //thread 실행
         }
@@ -74,10 +76,8 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         rg = (RadioGroup)findViewById(R.id.group_authority);
-        int authority = rg.getCheckedRadioButtonId();
-        //getCheckedRadioButtonId() 의 리턴값은 선택된 RadioButton 의 id 값.
-        rb = (RadioButton) findViewById(authority);
-        layout_join = (LinearLayout)findViewById(R.id.layout_join);
+        rb_expert = (RadioButton)findViewById(R.id.radio_expert);
+        rb_user = (RadioButton)findViewById(R.id.radio_user);
         editId = (EditText)findViewById(R.id.idText);
         editPw = (EditText)findViewById(R.id.pwText);
         editNickname = (EditText)findViewById(R.id.nicknameText);
@@ -88,10 +88,6 @@ public class JoinActivity extends AppCompatActivity {
         findViewById(R.id.radio_user).setOnClickListener(radioUserClickListener);
 
         }
-
-    public void joinProcess(View view) {
-
-    }
 
     public void checkExpertRadio(){
         editPhone.setVisibility(View.VISIBLE);
@@ -137,11 +133,16 @@ public class JoinActivity extends AppCompatActivity {
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
+                Intent intent;
                 if(str.equals("1")){//회원가입 성공시
-                    Toast.makeText(getApplicationContext(), "회원가입을 성공적으로 마쳤습니다.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "회원가입을 성공적으로 마쳤습니다.", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(JoinActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
                 else{//가입 실패시
-                    Toast.makeText(getApplicationContext(),"회원가입에 실패하였습니다.",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),"회원가입에 실패하였습니다.",Toast.LENGTH_SHORT).show();
                 }
             } catch(MalformedURLException e) {
                 e.printStackTrace();
@@ -151,5 +152,7 @@ public class JoinActivity extends AppCompatActivity {
 
             return null;
         }
+
+
     }
 }
