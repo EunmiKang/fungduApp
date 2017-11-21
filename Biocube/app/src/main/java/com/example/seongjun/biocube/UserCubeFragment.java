@@ -1,12 +1,14 @@
 package com.example.seongjun.biocube;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -29,6 +31,25 @@ public class UserCubeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+//    Button.OnClickListener registCubeBtn = new Button.OnClickListener(){
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent;
+//            intent = new Intent(v.getContext(), CubeRegister.class);
+//            startActivity(intent);
+//        }
+//    };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        getView().findViewById(R.id.btn_registCube).setOnClickListener(registCubeBtn);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
     public UserCubeFragment() {
         // Required empty public constructor
     }
@@ -45,15 +66,6 @@ public class UserCubeFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
