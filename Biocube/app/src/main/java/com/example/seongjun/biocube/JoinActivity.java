@@ -133,16 +133,12 @@ public class JoinActivity extends AppCompatActivity {
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
-                Intent intent;
+
                 if(str.equals("1")){//회원가입 성공시
-//                    Toast.makeText(getApplicationContext(), "회원가입을 성공적으로 마쳤습니다.", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(JoinActivity.this, LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    return 0;
                 }
                 else{//가입 실패시
-//                    Toast.makeText(getApplicationContext(),"회원가입에 실패하였습니다.",Toast.LENGTH_SHORT).show();
+                    return -1;
                 }
             } catch(MalformedURLException e) {
                 e.printStackTrace();
@@ -150,9 +146,22 @@ public class JoinActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return null;
+            return -1;
         }
 
-
+        @Override
+        public void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            Intent intent;
+            if(result == 0) {   //회원가입 성공
+                intent = new Intent(JoinActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {    //실패
+                Toast.makeText(getApplicationContext(), "실패하셨어요", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
