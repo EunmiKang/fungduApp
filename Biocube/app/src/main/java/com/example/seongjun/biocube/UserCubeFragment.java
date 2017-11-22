@@ -72,7 +72,16 @@ public class UserCubeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_cube, container, false);
-        // Inflate the layout for this fragment
+        Button registCube = (Button) view.findViewById(R.id.btn_registCube);
+
+        registCube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent;
+                intent = new Intent(v.getContext(), CubeRegister.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
