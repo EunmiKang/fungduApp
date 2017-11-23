@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -28,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,7 +60,10 @@ public class CubeRegister extends AppCompatActivity {
 
     //list - Device 목록 저장
     List<Map<String,String>> dataDevice;
+    //
+    List<BluetoothDevice> bluetoothDevices;
 
+    int selectDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,8 @@ public class CubeRegister extends AppCompatActivity {
 
         //Adapter
         dataDevice = new ArrayList<>();
+        bluetoothDevices = new ArrayList<>();
+        selectDevice= -1;
         adapterDevice = new SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name","address"}, new int[]{android.R.id.text1, android.R.id.text2});
         listDevice.setAdapter(adapterDevice);
 
@@ -110,7 +117,25 @@ public class CubeRegister extends AppCompatActivity {
             startActivityForResult(intent, BLUETOOTH_REQUEST_CODE);
         }
         mBluetoothAdapter.startDiscovery();
+
+        listDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BluetoothDevice device = bluetoothDevices.get(position);
+
+                try {
+                    //선택한 디바이스 페어링 요청
+                    Method method = device.getClass().getMethod("createBond", (Class[]) null);
+                    method.invoke(device, (Object[]) null);
+                    selectDevice = position;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
+
 
 
     //블루투스 상태변화 BroadcastReceiver
@@ -148,6 +173,7 @@ public class CubeRegister extends AppCompatActivity {
                 //블루투스 디바이스 검색 종료
                 case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                     dataDevice.clear();
+                    bluetoothDevices.clear();
                     Toast.makeText(CubeRegister.this, "블루투스 검색 시작", Toast.LENGTH_SHORT).show();
                     break;
                 //블루투스 디바이스 찾음
@@ -166,6 +192,7 @@ public class CubeRegister extends AppCompatActivity {
                     }
                     if(i==dataDevice.size()){
                         dataDevice.add(map);
+                        bluetoothDevices.add(device);
                         adapterDevice.notifyDataSetChanged();
                     }
                     //리스트 목록갱신
