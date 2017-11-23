@@ -158,9 +158,18 @@ public class CubeRegister extends AppCompatActivity {
                     Map map = new HashMap();
                     map.put("name", device.getName()); //device.getName() : 블루투스 디바이스의 이름
                     map.put("address", device.getAddress()); //device.getAddress() : 블루투스 디바이스의 MAC 주소
-                    dataDevice.add(map);
+                    int i;
+                    for(i=0;i<dataDevice.size();i++){
+                        if(dataDevice.get(i).get("address").equals(map.get("address"))){
+                            break;
+                        }
+                    }
+                    if(i==dataDevice.size()){
+                        dataDevice.add(map);
+                        adapterDevice.notifyDataSetChanged();
+                    }
                     //리스트 목록갱신
-                    adapterDevice.notifyDataSetChanged();
+
                     break;
                 //블루투스 디바이스 검색 종료
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
