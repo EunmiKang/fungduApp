@@ -142,6 +142,7 @@ public class CubeRegister extends AppCompatActivity {
     BroadcastReceiver mBluetoothSearchReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            ArrayList<Map> deviceList = new ArrayList<Map>();
             String action = intent.getAction();
             switch(action){
                 //블루투스 디바이스 검색 종료
@@ -153,13 +154,23 @@ public class CubeRegister extends AppCompatActivity {
                 case BluetoothDevice.ACTION_FOUND:
                     //검색한 블루투스 디바이스의 객체를 구한다
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    //데이터 저장
-                    Map map = new HashMap();
-                    map.put("name", device.getName()); //device.getName() : 블루투스 디바이스의 이름
-                    map.put("address", device.getAddress()); //device.getAddress() : 블루투스 디바이스의 MAC 주소
-                    dataDevice.add(map);
+                    int i;
+                    for(i=0; i<deviceList.size(); i++) {
+                        if(deviceList.get(i).get("address").equals(device.getAddress())) {  //중복
+                            break;
+                        }
+                    }
+                    if(deviceList.size()==0 || i == deviceList.size()) { //중복아님
+                        //데이터 저장
+                        Map map = new HashMap();
+                        map.put("name", device.getName()); //device.getName() : 블루투스 디바이스의 이름
+                        map.put("address", device.getAddress()); //device.getAddress() : 블루투스 디바이스의 MAC 주소
+                        dataDevice.add(map);
+                        deviceList.add(map);
+                    }
                     //리스트 목록갱신
                     adapterDevice.notifyDataSetChanged();
+
                     break;
                 //블루투스 디바이스 검색 종료
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
