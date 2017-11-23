@@ -121,16 +121,16 @@ public class CubeRegister extends AppCompatActivity {
         listDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BluetoothDevice device = bluetoothDevices.get(position);
-
-                try {
-                    //선택한 디바이스 페어링 요청
-                    Method method = device.getClass().getMethod("createBond", (Class[]) null);
-                    method.invoke(device, (Object[]) null);
-                    selectDevice = position;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                mOnPopupClick();
+//                BluetoothDevice device = bluetoothDevices.get(position);
+//                try {
+//                    //선택한 디바이스 페어링 요청
+//                    Method method = device.getClass().getMethod("createBond", (Class[]) null);
+//                    method.invoke(device, (Object[]) null);
+//                    selectDevice = position;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }
@@ -246,146 +246,13 @@ public class CubeRegister extends AppCompatActivity {
         unregisterReceiver(mBluetoothSearchReceiver);
         super.onDestroy();
     }
-//    int mPairedDeviceCount;
-//    Set<BluetoothDevice> mDevices;
-//
-//    void selectDevice() {
-//        mDevices = mBluetoothAdapter.getBondedDevices();
-//        mPairedDeviceCount = mDevices.size();
-//
-//        if(mPairedDeviceCount == 0 ) {
-//            //  페어링 된 장치가 없는 경우
-//            Toast.makeText(getApplicationContext(), "페어링된 장치가 없습니다.", Toast.LENGTH_SHORT).show();
-//        }
-//
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("블루투스 장치 선택");
-//
-//
-//        // 페어링 된 블루투스 장치의 이름 목록 작성
-//        List<String> listItems = new ArrayList<String>();
-//        for(BluetoothDevice device : mDevices) {
-//            listItems.add(device.getName());
-//            }
-//            listItems.add("취소");    // 취소 항목 추가
-//
-//            final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
-//
-//
-//            builder.setItems(items, new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog, int item) {
-//                    if(item == mPairedDeviceCount) {
-//                        // 연결할 장치를 선택하지 않고 '취소'를 누른 경우
-//                        finish();
-//                    }
-//                    else {
-//                        // 연결할 장치를 선택한 경우
-//                        // 선택한 장치와 연결을 시도함
-//                        connectToSelectedDevices(items[item].toString());
-//                    }
-//                }
-//            });
-//
-//
-////            builder.setCancelable(false);    // 뒤로 가기 버튼 사용 금지
-//            AlertDialog alert = builder.create();
-//            alert.show();
-//        }
 
-
-//    BluetoothDevice getDeviceFromBondedList(String name) {
-//        //이름 주어졌을때 해당하는 블루투스 장치 객체를 페어링 된 장치 목록에서 찾아내는 코드의 예이다.
-//        BluetoothDevice selectedDevice = null;
-//
-//        for(BluetoothDevice device : mDevices) {
-//            if(name.equals(device.getName())) {
-//                selectedDevice = device;
-//                break;
-//            }
-//        }
-//        return selectedDevice;
-//    }
-
-
-//    public void connectToSelectedDevices(String selectedDeviceName) {
-//        BluetoothDevice mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);
-//        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-//
-//        try {
-//            // 소켓 생성
-//            BluetoothSocket mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
-//            // RFCOMM 채널을 통한 연결
-//            mSocket.connect();
-//
-//            // 데이터 송수신을 위한 스트림 열기
-//            OutputStream mOutputStream;
-//            InputStream mInputStream;
-//            mOutputStream = mSocket.getOutputStream();
-//            mInputStream = mSocket.getInputStream();
-//
-//            // 데이터 수신 준비
-////            beginListenForData();
-//        }catch(Exception e) {
-//            // 블루투스 연결 중 오류 발생
-//            finish();   // 어플 종료
-//        }
-//    }
-
-//    void sendData(String msg) {
-//        msg += mDelimiter;    // 문자열 종료 표시
-//
-//        try {
-//            mOutputStream.write(msg.getBytes());    // 문자열 전송
-//        } catch(Exception e) {
-//            // 문자열 전송 도중 오류가 발생한 경우.
-//            finish();    //  APP 종료
-//        }
-//    }
-
-//    void beginListenForData() {
-//        final Handler handler = new Handler();
-//
-//        byte[] readBuffer = new byte[1024];  //  수신 버퍼
-//        int readBufferPositon = 0;        //   버퍼 내 수신 문자 저장 위치
-//
-//        // 문자열 수신 쓰레드
-//        Thread mWorkerThread = new Thread(new Runnable() {
-//            public void run() {
-//                while (!Thread.currentThread().isInterrupted()) {
-//                    try {
-//                        int bytesAvailable = mInputStream.available();    // 수신 데이터 확인
-//                        if (bytesAvailable > 0) {                     // 데이터가 수신된 경우
-//                            byte[] packetBytes = new byte[bytesAvailable];
-//                            mInputStream.read(packetBytes);
-//                            for (int i = 0; i < bytesAvailable; i++) {
-//                                byte b = packetBytes[i];
-//                                if (b == mDelimiter) {
-//                                    byte[] encodedBytes = new byte[readBufferPositon];
-//                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-//                                    final String data = new String(encodedBytes, "US-ASCII");
-//                                    readBufferPositon = 0;
-//
-//                                    handler.post(new Runnable() {
-//                                        public void run() {
-//                                            // 수신된 문자열 데이터에 대한 처리 작업
-//                                        }
-//                                    });
-//                                } else {
-//                                    readBuffer[readBufferPosition++] = b;
-//                                }
-//                            }
-//                        }
-//                    } catch (IOException ex) {
-//                        // 데이터 수신 중 오류 발생.
-//                        finish();
-//                    }
-//                }
-//            }
-//        });
-//
-//        mWorkerThread.start();
-//    }
+    public void mOnPopupClick(){
+        //데이터 담아서 팝업(액티비티) 호출
+        Intent intent = new Intent(this, PopCubeRegist.class);
+        intent.putExtra("data", "Test Popup");
+        startActivityForResult(intent, 1);
+    }
 
 //    public class joinTask extends AsyncTask<String,Object,Integer>{
 //

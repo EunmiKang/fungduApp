@@ -27,6 +27,7 @@
         <activity android:name=".AdminMainActivity" />
         <activity android:name=".ExpertMainActivity"></activity>
         <activity android:name=".CubeRegister" />
+        <activity android:name=".PopCubeRegist" />
     </application>
 
 </manifest>
