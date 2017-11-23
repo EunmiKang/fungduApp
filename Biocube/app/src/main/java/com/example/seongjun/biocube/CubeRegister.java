@@ -1,20 +1,40 @@
 package com.example.seongjun.biocube;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,143 +43,377 @@ import java.util.UUID;
  */
 
 public class CubeRegister extends AppCompatActivity {
-
     BluetoothAdapter mBluetoothAdapter;
-    int REQUEST_ENABLE_BT = 1;
+
+    //블루투스 요청 액티비티 코드
+    final static int BLUETOOTH_REQUEST_CODE = 100;
+
+    //UI
+    TextView txtState;
+    Button btnSearch;
+    ListView listDevice;
+
+    //Adapter
+    SimpleAdapter adapterDevice;
+
+    //list - Device 목록 저장
+    List<Map<String,String>> dataDevice;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgist_cube);
-        checkBlueTooth();
+
+        //UI
+        txtState = (TextView)findViewById(R.id.txtState);
+        btnSearch = (Button)findViewById(R.id.btnSearch);
+        listDevice = (ListView)findViewById(R.id.listDevice);
+
+        //Adapter
+        dataDevice = new ArrayList<>();
+        adapterDevice = new SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name","address"}, new int[]{android.R.id.text1, android.R.id.text2});
+        listDevice.setAdapter(adapterDevice);
+
+
+        //블루투스 지원 유무 확인
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        //블루투스를 지원하지 않으면 null을 리턴한다
+        if(mBluetoothAdapter == null){
+            Toast.makeText(this, "블루투스를 지원하지 않는 단말기 입니다.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        //블루투스 브로드캐스트 리시버 등록
+        //리시버1
+        IntentFilter stateFilter = new IntentFilter();
+        stateFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED); //BluetoothAdapter.ACTION_STATE_CHANGED : 블루투스 상태변화 액션
+        registerReceiver(mBluetoothStateReceiver, stateFilter);
+        //리시버2
+        IntentFilter searchFilter = new IntentFilter();
+        searchFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED); //BluetoothAdapter.ACTION_DISCOVERY_STARTED : 블루투스 검색 시작
+        searchFilter.addAction(BluetoothDevice.ACTION_FOUND); //BluetoothDevice.ACTION_FOUND : 블루투스 디바이스 찾음
+        searchFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED); //BluetoothAdapter.ACTION_DISCOVERY_FINISHED : 블루투스 검색 종료
+        registerReceiver(mBluetoothSearchReceiver, searchFilter);
+
+
+        //1. 블루투스가 꺼져있으면 활성화
+//        if(!mBluetoothAdapter.isEnabled()){
+//            mBluetoothAdapter.enable(); //강제 활성화
+//        }
+
+        //2. 블루투스가 꺼져있으면 사용자에게 활성화 요청하기
+        if(!mBluetoothAdapter.isEnabled()){
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, BLUETOOTH_REQUEST_CODE);
+        }
     }
 
 
-    void checkBlueTooth() {
+    //블루투스 상태변화 BroadcastReceiver
+    BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //BluetoothAdapter.EXTRA_STATE : 블루투스의 현재상태 변화
+            int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter == null) {
-            // 장치가 블루투스 지원하지 않는 경우
-            finish();   // 어플리케이션 종료
+            //블루투스 활성화
+            if(state == BluetoothAdapter.STATE_ON){
+                txtState.setText("블루투스 활성화");
+            }
+            //블루투스 활성화 중
+            else if(state == BluetoothAdapter.STATE_TURNING_ON){
+                txtState.setText("블루투스 활성화 중...");
+            }
+            //블루투스 비활성화
+            else if(state == BluetoothAdapter.STATE_OFF){
+                txtState.setText("블루투스 비활성화");
+            }
+            //블루투스 비활성화 중
+            else if(state == BluetoothAdapter.STATE_TURNING_OFF){
+                txtState.setText("블루투스 비활성화 중...");
+            }
         }
+    };
 
-        else {
-            // 장치가 블루투스 지원하는 경우
-            if(!mBluetoothAdapter.isEnabled()) {
-                // 블루투스를 지원하지만 비활성 상태인 경우
-                // 블루투스를 활성 상태로 바꾸기 위해 사용자 동의 요첨
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    //블루투스 검색결과 BroadcastReceiver
+    BroadcastReceiver mBluetoothSearchReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch(action){
+                //블루투스 디바이스 검색 종료
+                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                    dataDevice.clear();
+                    Toast.makeText(CubeRegister.this, "블루투스 검색 시작", Toast.LENGTH_SHORT).show();
+                    break;
+                //블루투스 디바이스 찾음
+                case BluetoothDevice.ACTION_FOUND:
+                    //검색한 블루투스 디바이스의 객체를 구한다
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    //데이터 저장
+                    Map map = new HashMap();
+                    map.put("name", device.getName()); //device.getName() : 블루투스 디바이스의 이름
+                    map.put("address", device.getAddress()); //device.getAddress() : 블루투스 디바이스의 MAC 주소
+                    dataDevice.add(map);
+                    //리스트 목록갱신
+                    adapterDevice.notifyDataSetChanged();
+                    break;
+                //블루투스 디바이스 검색 종료
+                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                    Toast.makeText(CubeRegister.this, "블루투스 검색 종료", Toast.LENGTH_SHORT).show();
+                    btnSearch.setEnabled(true);
+                    break;
             }
+        }
+    };
 
-            else {
-                // 블루투스를 지원하며 활성 상태인 경우
-                // 페어링된 기기 목록을 보여주고 연결할 장치를 선택.
-                    selectDevice();
-            }
+
+    //블루투스 검색 버튼 클릭
+    public void mOnBluetoothSearch(View v){
+        //검색버튼 비활성화
+        btnSearch.setEnabled(false);
+        //mBluetoothAdapter.isDiscovering() : 블루투스 검색중인지 여부 확인
+        //mBluetoothAdapter.cancelDiscovery() : 블루투스 검색 취소
+        if(mBluetoothAdapter.isDiscovering()){
+            mBluetoothAdapter.cancelDiscovery();
+        }
+        //mBluetoothAdapter.startDiscovery() : 블루투스 검색 시작
+        mBluetoothAdapter.startDiscovery();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode){
+            case BLUETOOTH_REQUEST_CODE:
+                //블루투스 활성화 승인
+                if(resultCode == Activity.RESULT_OK){
+
+                }
+                //블루투스 활성화 거절
+                else{
+                    Toast.makeText(this, "블루투스를 활성화해야 합니다.", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+                break;
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode) {
-            case 1:
-                if(resultCode == RESULT_OK) {
-                    selectDevice();
-                    // 블루투스가 활성 상태로 변경됨
-                }
-
-                else if(resultCode == RESULT_CANCELED) {
-                    // 블루투스가 비활성 상태임
-                    finish();  //  어플리케이션 종료
-                }
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onDestroy() {
+        unregisterReceiver(mBluetoothStateReceiver);
+        unregisterReceiver(mBluetoothSearchReceiver);
+        super.onDestroy();
     }
-
-    int mPairedDeviceCount;
-    Set<BluetoothDevice> mDevices;
-    void selectDevice() {
-        mDevices = mBluetoothAdapter.getBondedDevices();
-        mPairedDeviceCount = mDevices.size();
-
-        if(mPairedDeviceCount == 0 ) {
-            //  페어링 된 장치가 없는 경우
-            Toast.makeText(getApplicationContext(), "페어링된 장치가 없습니다.", Toast.LENGTH_SHORT).show();
-        }
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("블루투스 장치 선택");
-
-
-        // 페어링 된 블루투스 장치의 이름 목록 작성
-        List<String> listItems = new ArrayList<String>();
-        for(BluetoothDevice device : mDevices) {
-            listItems.add(device.getName());
-            }
-            listItems.add("취소");    // 취소 항목 추가
-
-            final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
-
-
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    if(item == mPairedDeviceCount) {
-                        // 연결할 장치를 선택하지 않고 '취소'를 누른 경우
-                        finish();
-                    }
-                    else {
-                        // 연결할 장치를 선택한 경우
-                        // 선택한 장치와 연결을 시도함
-                        connectToSelectedDevices(items[item].toString());
-                    }
-                }
-            });
-
-
-//            builder.setCancelable(false);    // 뒤로 가기 버튼 사용 금지
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
-
-    BluetoothDevice getDeviceFromBondedList(String name) {
-        //이름 주어졌을때 해당하는 블루투스 장치 객체를 페어링 된 장치 목록에서 찾아내는 코드의 예이다.
-        BluetoothDevice selectedDevice = null;
-
-        for(BluetoothDevice device : mDevices) {
-            if(name.equals(device.getName())) {
-                selectedDevice = device;
-                break;
-            }
-        }
-        return selectedDevice;
-    }
+//    int mPairedDeviceCount;
+//    Set<BluetoothDevice> mDevices;
+//
+//    void selectDevice() {
+//        mDevices = mBluetoothAdapter.getBondedDevices();
+//        mPairedDeviceCount = mDevices.size();
+//
+//        if(mPairedDeviceCount == 0 ) {
+//            //  페어링 된 장치가 없는 경우
+//            Toast.makeText(getApplicationContext(), "페어링된 장치가 없습니다.", Toast.LENGTH_SHORT).show();
+//        }
+//
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("블루투스 장치 선택");
+//
+//
+//        // 페어링 된 블루투스 장치의 이름 목록 작성
+//        List<String> listItems = new ArrayList<String>();
+//        for(BluetoothDevice device : mDevices) {
+//            listItems.add(device.getName());
+//            }
+//            listItems.add("취소");    // 취소 항목 추가
+//
+//            final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+//
+//
+//            builder.setItems(items, new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int item) {
+//                    if(item == mPairedDeviceCount) {
+//                        // 연결할 장치를 선택하지 않고 '취소'를 누른 경우
+//                        finish();
+//                    }
+//                    else {
+//                        // 연결할 장치를 선택한 경우
+//                        // 선택한 장치와 연결을 시도함
+//                        connectToSelectedDevices(items[item].toString());
+//                    }
+//                }
+//            });
+//
+//
+////            builder.setCancelable(false);    // 뒤로 가기 버튼 사용 금지
+//            AlertDialog alert = builder.create();
+//            alert.show();
+//        }
 
 
-    public void connectToSelectedDevices(String selectedDeviceName) {
-        BluetoothDevice mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);
-        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+//    BluetoothDevice getDeviceFromBondedList(String name) {
+//        //이름 주어졌을때 해당하는 블루투스 장치 객체를 페어링 된 장치 목록에서 찾아내는 코드의 예이다.
+//        BluetoothDevice selectedDevice = null;
+//
+//        for(BluetoothDevice device : mDevices) {
+//            if(name.equals(device.getName())) {
+//                selectedDevice = device;
+//                break;
+//            }
+//        }
+//        return selectedDevice;
+//    }
 
-        try {
-            // 소켓 생성
-            BluetoothSocket mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
-            // RFCOMM 채널을 통한 연결
-            mSocket.connect();
 
-            // 데이터 송수신을 위한 스트림 열기
-            OutputStream mOutputStream;
-            InputStream mInputStream;
-            mOutputStream = mSocket.getOutputStream();
-            mInputStream = mSocket.getInputStream();
+//    public void connectToSelectedDevices(String selectedDeviceName) {
+//        BluetoothDevice mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);
+//        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+//
+//        try {
+//            // 소켓 생성
+//            BluetoothSocket mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
+//            // RFCOMM 채널을 통한 연결
+//            mSocket.connect();
+//
+//            // 데이터 송수신을 위한 스트림 열기
+//            OutputStream mOutputStream;
+//            InputStream mInputStream;
+//            mOutputStream = mSocket.getOutputStream();
+//            mInputStream = mSocket.getInputStream();
+//
+//            // 데이터 수신 준비
+////            beginListenForData();
+//        }catch(Exception e) {
+//            // 블루투스 연결 중 오류 발생
+//            finish();   // 어플 종료
+//        }
+//    }
 
-            // 데이터 수신 준비
-//            beginListenForData();
-        }catch(Exception e) {
-            // 블루투스 연결 중 오류 발생
-            finish();   // 어플 종료
-        }
-    }
+//    void sendData(String msg) {
+//        msg += mDelimiter;    // 문자열 종료 표시
+//
+//        try {
+//            mOutputStream.write(msg.getBytes());    // 문자열 전송
+//        } catch(Exception e) {
+//            // 문자열 전송 도중 오류가 발생한 경우.
+//            finish();    //  APP 종료
+//        }
+//    }
 
+//    void beginListenForData() {
+//        final Handler handler = new Handler();
+//
+//        byte[] readBuffer = new byte[1024];  //  수신 버퍼
+//        int readBufferPositon = 0;        //   버퍼 내 수신 문자 저장 위치
+//
+//        // 문자열 수신 쓰레드
+//        Thread mWorkerThread = new Thread(new Runnable() {
+//            public void run() {
+//                while (!Thread.currentThread().isInterrupted()) {
+//                    try {
+//                        int bytesAvailable = mInputStream.available();    // 수신 데이터 확인
+//                        if (bytesAvailable > 0) {                     // 데이터가 수신된 경우
+//                            byte[] packetBytes = new byte[bytesAvailable];
+//                            mInputStream.read(packetBytes);
+//                            for (int i = 0; i < bytesAvailable; i++) {
+//                                byte b = packetBytes[i];
+//                                if (b == mDelimiter) {
+//                                    byte[] encodedBytes = new byte[readBufferPositon];
+//                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+//                                    final String data = new String(encodedBytes, "US-ASCII");
+//                                    readBufferPositon = 0;
+//
+//                                    handler.post(new Runnable() {
+//                                        public void run() {
+//                                            // 수신된 문자열 데이터에 대한 처리 작업
+//                                        }
+//                                    });
+//                                } else {
+//                                    readBuffer[readBufferPosition++] = b;
+//                                }
+//                            }
+//                        }
+//                    } catch (IOException ex) {
+//                        // 데이터 수신 중 오류 발생.
+//                        finish();
+//                    }
+//                }
+//            }
+//        });
+//
+//        mWorkerThread.start();
+//    }
+
+//    public class joinTask extends AsyncTask<String,Object,Integer>{
+//
+//        @Override
+//        protected Integer doInBackground(String... params) {
+//            try {
+//             /* URL 설정하고 접속 */
+//                URL url = new URL("http://fungdu0624.phps.kr/biocube/join.php");
+//                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+//
+//            /* 전송모드 설정 */
+//                http.setDefaultUseCaches(false);
+//                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+//                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+//                http.setRequestMethod("POST");
+//                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+//
+//            /* 서버로 값 전송 */
+//                StringBuffer buffer = new StringBuffer();
+//                buffer.append("userID").append("=").append(params[0].toString()).append("&");
+//                buffer.append("userPW").append("=").append(params[1].toString()).append("&");
+//                buffer.append("nickname").append("=").append(params[2].toString()).append("&");
+//                buffer.append("authority").append("=").append(params[3].toString()).append("&");
+//                buffer.append("job").append("=").append(params[4].toString()).append("&");
+//                buffer.append("phone").append("=").append(params[5].toString());
+//
+//                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+//                PrintWriter writer = new PrintWriter(outStream);
+//                writer.write(buffer.toString());
+//                writer.flush();
+//                writer.close();
+//
+//            /* 서버에서 전송 받기 */
+//                InputStream inStream = http.getInputStream();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+//                String str = reader.readLine();
+//
+//                if(str.equals("1")){//회원가입 성공시
+//                    return 0;
+//                }
+//                else{//가입 실패시
+//                    return -1;
+//                }
+//            } catch(MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch(IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return -1;
+//        }
+//
+//        @Override
+//        public void onPostExecute(Integer result) {
+//            super.onPostExecute(result);
+//            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+//            Intent intent;
+//            if(result == 0) {   //회원가입 성공
+//                intent = new Intent(JoinActivity.this, LoginActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//            } else {    //실패
+//                Toast.makeText(getApplicationContext(), "실패하셨어요", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
 }
