@@ -4,33 +4,26 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="283dp"
-            android:orientation="vertical"
-            android:weightSum="1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="50dp">
 
             <ImageView
                 android:id="@+id/imageView9"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@mipmap/ic_launcher"
-                android:layout_weight="8.65" />
+                android:layout_gravity="center" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="211dp">
+    </LinearLayout>
 
-                <ViewFlipper
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_admin_manual"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </android.support.v4.view.ViewPager>
 
-
-        </LinearLayout>
-    </FrameLayout>
 </LinearLayout>
