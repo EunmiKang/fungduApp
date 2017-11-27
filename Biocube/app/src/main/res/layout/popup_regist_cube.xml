@@ -3,7 +3,8 @@
     android:background="#eeeeee"
     android:orientation="vertical"
     android:layout_width="300dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <!-- 타이틀바 -->
     <LinearLayout
@@ -39,6 +40,13 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <!-- Notice -->
+
+    <Spinner
+        android:id="@+id/spinner_plantName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp" />
 
     <View
         android:background="#66bdbdbd"

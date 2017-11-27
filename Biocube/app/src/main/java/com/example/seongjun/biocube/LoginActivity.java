@@ -82,8 +82,6 @@ public class LoginActivity extends AppCompatActivity {
             cursor = db.rawQuery("SELECT * FROM TOKEN", null);
             int count = cursor.getCount();
             cursor.moveToFirst();
-            String test = cursor.getColumnName(0);
-            int test2 = cursor.getColumnCount();
 
             if (count >= 1) {   //토큰 있음
                 String jwt = cursor.getString(0);

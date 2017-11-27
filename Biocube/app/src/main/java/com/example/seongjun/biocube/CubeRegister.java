@@ -46,6 +46,7 @@ import java.util.UUID;
 
 public class CubeRegister extends AppCompatActivity {
     BluetoothAdapter mBluetoothAdapter;
+    Intent popUpIntent = new Intent(this, PopCubeRegist.class);
 
     //블루투스 요청 액티비티 코드
     final static int BLUETOOTH_REQUEST_CODE = 100;
@@ -121,16 +122,10 @@ public class CubeRegister extends AppCompatActivity {
         listDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mOnPopupClick();
-//                BluetoothDevice device = bluetoothDevices.get(position);
-//                try {
-//                    //선택한 디바이스 페어링 요청
-//                    Method method = device.getClass().getMethod("createBond", (Class[]) null);
-//                    method.invoke(device, (Object[]) null);
-//                    selectDevice = position;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+
+                BluetoothDevice device = bluetoothDevices.get(position);
+                mOnPopupClick(device);
+
             }
         });
     }
@@ -247,11 +242,11 @@ public class CubeRegister extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void mOnPopupClick(){
+    public void mOnPopupClick(BluetoothDevice device){
         //데이터 담아서 팝업(액티비티) 호출
-        Intent intent = new Intent(this, PopCubeRegist.class);
-        intent.putExtra("data", "Test Popup");
-        startActivityForResult(intent, 1);
+        popUpIntent = new Intent(this, PopCubeRegist.class);
+        popUpIntent.putExtra("bluetoothDevice", device);
+        startActivity(popUpIntent);
     }
 
 //    public class joinTask extends AsyncTask<String,Object,Integer>{
