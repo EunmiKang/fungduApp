@@ -3,8 +3,13 @@
     package="com.example.seongjun.biocube">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -28,6 +33,16 @@
         <activity android:name=".ExpertMainActivity"></activity>
         <activity android:name=".CubeRegister" />
         <activity android:name=".PopCubeRegist" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.seongjun.biocube.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>
