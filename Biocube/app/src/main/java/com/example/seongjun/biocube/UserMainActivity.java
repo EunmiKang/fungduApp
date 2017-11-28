@@ -18,7 +18,7 @@ public class UserMainActivity extends AppCompatActivity {
         UserPagerAdapter mUserPagerAdapter = new UserPagerAdapter(
                 getSupportFragmentManager()
         );
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_user);
         mViewPager.setAdapter(mUserPagerAdapter);
 
         /* 탭 설정 */

@@ -16,7 +16,7 @@ public class ExpertMainActivity extends AppCompatActivity {
         ExpertPagerAdapter mExpertPagerAdapter = new ExpertPagerAdapter(
                 getSupportFragmentManager()
         );
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_expert);
         mViewPager.setAdapter(mExpertPagerAdapter);
 
         /* 탭 설정 */
