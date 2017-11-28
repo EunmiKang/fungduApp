@@ -30,10 +30,10 @@
         <activity android:name=".UserMainActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".AdminMainActivity" />
-        <activity android:name=".ExpertMainActivity"></activity>
+        <activity android:name=".ExpertMainActivity"/>
         <activity android:name=".CubeRegister" />
         <activity android:name=".PopCubeRegist" />
-
+        <activity android:name=".CubeListActivity"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.seongjun.biocube.provider"
