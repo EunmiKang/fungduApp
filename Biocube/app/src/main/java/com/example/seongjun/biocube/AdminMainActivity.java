@@ -17,7 +17,7 @@ public class AdminMainActivity extends AppCompatActivity {
         AdminPagerAdapter mAdminPagerAdapter = new AdminPagerAdapter(
                 getSupportFragmentManager()
         );
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_admin);
         mViewPager.setAdapter(mAdminPagerAdapter);
 
         /* 탭 설정 */
