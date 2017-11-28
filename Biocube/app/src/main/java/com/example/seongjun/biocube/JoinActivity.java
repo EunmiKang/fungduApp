@@ -3,12 +3,16 @@ package com.example.seongjun.biocube;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,6 +42,52 @@ public class JoinActivity extends AppCompatActivity {
     EditText editNickname;
     EditText editPhone;
     EditText editJob;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_join);
+        rg = (RadioGroup)findViewById(R.id.group_authority);
+        rb_expert = (RadioButton)findViewById(R.id.radio_expert);
+        rb_user = (RadioButton)findViewById(R.id.radio_user);
+        editId = (EditText)findViewById(R.id.idText);
+        editPw = (EditText)findViewById(R.id.pwText);
+        editNickname = (EditText)findViewById(R.id.nicknameText);
+        editPhone = (EditText)findViewById(R.id.editPhone);
+        editJob = (EditText)findViewById(R.id.editJob);
+        findViewById(R.id.btn_join).setOnClickListener(joinClickListener);
+        findViewById(R.id.radio_expert).setOnClickListener(radioExpertClickListener);
+        findViewById(R.id.radio_user).setOnClickListener(radioUserClickListener);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_join);
+        toolbar.setTitle("Bio Cube");
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);    //커스터마이징 하기 위해 필요
+        //actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);  //뒤로가기 버튼
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void checkExpertRadio(){
+        editPhone.setVisibility(View.VISIBLE);
+        editJob.setVisibility(View.VISIBLE);
+    }
+    public void checkUserRadio(){
+        editPhone.setVisibility(View.GONE);
+        editJob.setVisibility(View.GONE);
+    }
 
     Button.OnClickListener joinClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
@@ -71,32 +121,6 @@ public class JoinActivity extends AppCompatActivity {
             checkUserRadio();
         }
     };
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join);
-        rg = (RadioGroup)findViewById(R.id.group_authority);
-        rb_expert = (RadioButton)findViewById(R.id.radio_expert);
-        rb_user = (RadioButton)findViewById(R.id.radio_user);
-        editId = (EditText)findViewById(R.id.idText);
-        editPw = (EditText)findViewById(R.id.pwText);
-        editNickname = (EditText)findViewById(R.id.nicknameText);
-        editPhone = (EditText)findViewById(R.id.editPhone);
-        editJob = (EditText)findViewById(R.id.editJob);
-        findViewById(R.id.btn_join).setOnClickListener(joinClickListener);
-        findViewById(R.id.radio_expert).setOnClickListener(radioExpertClickListener);
-        findViewById(R.id.radio_user).setOnClickListener(radioUserClickListener);
-
-        }
-
-    public void checkExpertRadio(){
-        editPhone.setVisibility(View.VISIBLE);
-        editJob.setVisibility(View.VISIBLE);
-    }
-    public void checkUserRadio(){
-        editPhone.setVisibility(View.GONE);
-        editJob.setVisibility(View.GONE);
-    }
 
     public class joinTask extends AsyncTask<String,Object,Integer>{
 
