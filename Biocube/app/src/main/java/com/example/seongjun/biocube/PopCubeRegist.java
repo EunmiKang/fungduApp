@@ -5,15 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -73,6 +70,11 @@ public class PopCubeRegist extends AppCompatActivity {
             cubeName = URLEncoder.encode(cubeName,"UTF-8");
         } catch(Exception e) {
             e.printStackTrace();
+        }
+        try {
+            cubeName = new String(cubeName.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+
         }
         plantName = spinner_plantName.getSelectedItem().toString();
         new PopCubeRegist.cubeUpTask().execute(cubeName,MAC_ADDRESS,plantName);
@@ -203,6 +205,7 @@ public class PopCubeRegist extends AppCompatActivity {
 
             /* 서버로 값 전송 */
                 StringBuffer buffer2 = new StringBuffer();
+
                 buffer2.append("user_id").append("=").append(str).append("&");
                 buffer2.append("cubename").append("=").append(params[0].toString()).append("&");
                 buffer2.append("device").append("=").append(params[1].toString()).append("&");
