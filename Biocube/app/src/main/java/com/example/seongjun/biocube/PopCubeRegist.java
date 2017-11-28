@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class PopCubeRegist extends AppCompatActivity {
 //        setResult(RESULT_OK, intent);
 
         cubeName = edit_cubeName.getText().toString();
+        try{
+            cubeName = URLEncoder.encode(cubeName,"UTF-8");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         plantName = spinner_plantName.getSelectedItem().toString();
         new PopCubeRegist.cubeUpTask().execute(cubeName,MAC_ADDRESS,plantName);
         //액티비티(팝업) 닫기
@@ -147,6 +153,7 @@ public class PopCubeRegist extends AppCompatActivity {
         }
     }
 
+    String dbUpResult;
     private TokenDBHelper helper = new TokenDBHelper(this);
     public class cubeUpTask extends AsyncTask<String,Object,Integer>{
         @Override
@@ -182,21 +189,34 @@ public class PopCubeRegist extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
 
+                inStream.close();
+                http.disconnect();
+
                 url = new URL("http://fungdu0624.phps.kr/biocube/registcube.php");
                 http = (HttpURLConnection) url.openConnection();
 
-            /* 서버로 값 전송 */
-                buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(str).append("&");
-                buffer.append("cubename").append("=").append(params[0].toString()).append("&");
-                buffer.append("device").append("=").append(params[1].toString()).append("&");
-                buffer.append("kindOf").append("=").append(params[2].toString());
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
-//                OutputStreamWriter outStream2 = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-                writer = new PrintWriter(outStream);
-                writer.write(buffer.toString());
-                writer.flush();
-                writer.close();
+            /* 서버로 값 전송 */
+                StringBuffer buffer2 = new StringBuffer();
+                buffer2.append("user_id").append("=").append(str).append("&");
+                buffer2.append("cubename").append("=").append(params[0].toString()).append("&");
+                buffer2.append("device").append("=").append(params[1].toString()).append("&");
+                buffer2.append("kindOf").append("=").append(params[2].toString());
+
+                OutputStreamWriter outStream2 = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer2 = new PrintWriter(outStream2);
+                writer2.write(buffer2.toString());
+                writer2.flush();
+                writer2.close();
+
+                InputStream inStream2 = http.getInputStream();
+                BufferedReader reader2 = new BufferedReader(new InputStreamReader(inStream2, "UTF-8"));
+                dbUpResult = reader2.readLine();
 
                 inStream.close();
                 http.disconnect();
@@ -224,6 +244,14 @@ public class PopCubeRegist extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), "실패하셨어요", Toast.LENGTH_LONG).show();
 //            }
             try {
+                if(dbUpResult.equals("1")){
+                    Toast.makeText(getApplicationContext(), "성공" , Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "실패" , Toast.LENGTH_SHORT).show();
+                }
+
+
                 //선택한 디바이스 페어링 요청
                 Method method = device.getClass().getMethod("createBond", (Class[]) null);
                 method.invoke(device, (Object[]) null);

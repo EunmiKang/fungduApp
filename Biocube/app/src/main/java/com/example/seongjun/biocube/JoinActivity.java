@@ -120,8 +120,9 @@ public class JoinActivity extends AppCompatActivity {
                 buffer.append("userPW").append("=").append(params[1].toString()).append("&");
                 buffer.append("nickname").append("=").append(params[2].toString()).append("&");
                 buffer.append("authority").append("=").append(params[3].toString()).append("&");
-                buffer.append("job").append("=").append(params[4].toString()).append("&");
-                buffer.append("phone").append("=").append(params[5].toString());
+                buffer.append("phone").append("=").append(params[4].toString()).append("&");
+                buffer.append("job").append("=").append(params[5].toString());
+
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
