@@ -178,8 +178,8 @@ public class PopCubeRegist extends AppCompatActivity {
                 writer.close();
 
                 /* 서버에서 전송 받기 */
-                InputStreamReader tmp = new InputStreamReader(http.getInputStream(), "EUC-KR");
-                BufferedReader reader = new BufferedReader(tmp);
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
 
                 url = new URL("http://fungdu0624.phps.kr/biocube/registcube.php");
@@ -187,18 +187,18 @@ public class PopCubeRegist extends AppCompatActivity {
 
             /* 서버로 값 전송 */
                 buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(params[0].toString()).append("&");
-                buffer.append("cubename").append("=").append(params[1].toString()).append("&");
-                buffer.append("device").append("=").append(params[2].toString()).append("&");
-                buffer.append("kindOf").append("=").append(params[3].toString());
+                buffer.append("user_id").append("=").append(str).append("&");
+                buffer.append("cubename").append("=").append(params[0].toString()).append("&");
+                buffer.append("device").append("=").append(params[1].toString()).append("&");
+                buffer.append("kindOf").append("=").append(params[2].toString());
 
-                outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+//                OutputStreamWriter outStream2 = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 writer = new PrintWriter(outStream);
                 writer.write(buffer.toString());
                 writer.flush();
                 writer.close();
 
-                tmp.close();
+                inStream.close();
                 http.disconnect();
 
             } catch(MalformedURLException e) {
@@ -207,7 +207,7 @@ public class PopCubeRegist extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return -1;
+            return null;
         }
 
         @Override
