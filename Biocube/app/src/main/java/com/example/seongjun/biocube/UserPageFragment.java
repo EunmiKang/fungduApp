@@ -144,6 +144,14 @@ public class UserPageFragment extends Fragment {
         @Override
         public void onClick(View v) {
             //데이터 담아서 팝업(액티비티) 호출
+            mOnPopupClick();
         }
     };
+
+    public void mOnPopupClick(){
+        //데이터 담아서 팝업(액티비티) 호출
+        Intent intent = new Intent(getActivity(), PopQuestion.class);
+        intent.putExtra("data", "Test Popup");
+        startActivityForResult(intent, 1);
+    }
 }
