@@ -70,7 +70,7 @@ public class UserCubeFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        Button registCube = (Button) view.findViewById(R.id.btn_cube_register);
+        Button registCube = (Button) view.findViewById(R.id.btn_user_cube_regist);
 
         registCube.setOnClickListener(new View.OnClickListener() {
             @Override
