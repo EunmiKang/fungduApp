@@ -18,12 +18,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -91,7 +97,9 @@ public class WriteDiaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_write_diary, container, false);
+
         iv_UserPhoto = (ImageButton) view.findViewById(R.id.btn_addImage);
         iv_UserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +108,13 @@ public class WriteDiaryFragment extends Fragment {
             }
         });
 
-        // Inflate the layout for this fragment
+        /* Toolbar 설정 */
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_diary);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
         return view;
     }
 

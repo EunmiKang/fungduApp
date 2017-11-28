@@ -1,8 +1,25 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.seongjun.biocube.UserNewspeedFragment">
+    tools:context="com.example.seongjun.biocube.UserNewspeedFragment"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_user_newspeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="Bio Cube"
+            android:textSize="30sp"/>
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/textView"
@@ -10,4 +27,4 @@
         android:layout_height="match_parent"
         android:text="여기는 뉴스피드~" />
 
-</FrameLayout>
+</LinearLayout>

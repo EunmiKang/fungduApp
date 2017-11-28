@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +23,6 @@ import android.widget.Button;
  * create an instance of this fragment.
  */
 public class UserCubeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
 //    Button.OnClickListener registCubeBtn = new Button.OnClickListener(){
@@ -44,10 +38,6 @@ public class UserCubeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getView().findViewById(R.id.btn_registCube).setOnClickListener(registCubeBtn);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     public UserCubeFragment() {
@@ -72,7 +62,15 @@ public class UserCubeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_cube, container, false);
-        Button registCube = (Button) view.findViewById(R.id.btn_registCube);
+
+        /* Toolbar 설정 */
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_user_cube);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        Button registCube = (Button) view.findViewById(R.id.btn_cube_register);
 
         registCube.setOnClickListener(new View.OnClickListener() {
             @Override
