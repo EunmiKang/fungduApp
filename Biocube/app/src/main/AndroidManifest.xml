@@ -34,6 +34,10 @@
         <activity android:name=".CubeRegister" />
         <activity android:name=".PopCubeRegist" />
         <activity android:name=".CubeListActivity"/>
+        <activity android:name=".DiaryAsCubeName"/>
+        <activity android:name=".ChangeInfoActivity"/>
+        <activity android:name=".PopQuestion"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.seongjun.biocube.provider"

@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +72,30 @@ public class UserPageFragment extends Fragment {
         Button logoutBtn = (Button) view.findViewById(R.id.btn_user_logout);
         logoutBtn.setOnClickListener(logoutClickListener);
 
+        Button myCube = (Button) view.findViewById(R.id.btn_user_myCube);
+        myCube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(v.getContext(), CubeListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button changeInfo = (Button) view.findViewById(R.id.btn_user_changeInfo);
+        changeInfo.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(v.getContext(), ChangeInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button question = (Button) view.findViewById(R.id.btn_user_question);
+        question.setOnClickListener(questionClickListener);
+
         return view;
     }
 
@@ -110,6 +136,14 @@ public class UserPageFragment extends Fragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        }
+    };
+
+    Button.OnClickListener questionClickListener = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            //데이터 담아서 팝업(액티비티) 호출
         }
     };
 }
