@@ -89,29 +89,41 @@
                 android:id="@+id/btn_expert_myComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="mycommnet" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="mycommnet"
+                android:background="#ffffff"/>
 
             <Button
                 android:id="@+id/btn_expert_changeInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="changeinfo" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="changeinfo"
+                android:background="#ffffff"/>
 
             <Button
                 android:id="@+id/btn_expert_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="question" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="question"
+                android:background="#ffffff"/>
 
             <Button
                 android:id="@+id/btn_expert_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="logout" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="logout"
+                android:background="#ffffff"/>
 
         </LinearLayout>
 

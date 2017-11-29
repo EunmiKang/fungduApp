@@ -3,13 +3,11 @@
     package="com.example.seongjun.biocube">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -30,13 +28,13 @@
         <activity android:name=".UserMainActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".AdminMainActivity" />
-        <activity android:name=".ExpertMainActivity"/>
+        <activity android:name=".ExpertMainActivity" />
         <activity android:name=".CubeRegister" />
         <activity android:name=".PopCubeRegist" />
-        <activity android:name=".CubeListActivity"/>
-        <activity android:name=".DiaryAsCubeName"/>
-        <activity android:name=".ChangeInfoActivity"/>
-        <activity android:name=".PopQuestion"/>
+        <activity android:name=".CubeListActivity" />
+        <activity android:name=".DiaryAsCubeName" />
+        <activity android:name=".ChangeInfoActivity" />
+        <activity android:name=".PopQuestion" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -45,8 +43,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
+        <activity android:name=".CommentListActivity"></activity>
     </application>
 
 </manifest>

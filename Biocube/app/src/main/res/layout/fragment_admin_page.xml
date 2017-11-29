@@ -133,32 +133,44 @@
             android:layout_weight="0.51">
 
             <Button
-                android:id="@+id/btn_admin_manual"
+                android:id="@+id/btn_admin_manualManage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="manual" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="manual"
+                android:background="#ffffff"/>
 
             <Button
-                android:id="@+id/btn_admin_comment"
+                android:id="@+id/btn_admin_mycomment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="mycomment" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="mycomment"
+                android:background="#ffffff"/>
 
             <Button
-                android:id="@+id/btn_admin_cube"
+                android:id="@+id/btn_admin_mycube"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="mycube" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="mycube"
+                android:background="#ffffff"/>
 
             <Button
                 android:id="@+id/btn_admin_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="logout" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="logout"
+                android:background="#ffffff"/>
 
         </LinearLayout>
 
