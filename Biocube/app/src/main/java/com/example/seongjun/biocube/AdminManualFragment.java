@@ -23,11 +23,11 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class AdminManualFragment extends Fragment {
+    private OnFragmentInteractionListener mListener;
+
     private ViewPager pager;
     private ManualsAdapter adapter;
     private ImageView logo;
-
-    private OnFragmentInteractionListener mListener;
 
     public AdminManualFragment() {
         // Required empty public constructor

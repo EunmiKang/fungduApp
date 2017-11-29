@@ -1,27 +1,12 @@
 package com.example.seongjun.biocube;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,50 +17,33 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
-import static android.R.attr.id;
-
-/**
- * Created by Seongjun on 2017. 11. 28..
- */
-
-public class CubeListActivity extends AppCompatActivity {
-    String id;
-    ListView list_cube;
-    String[] cubelist;
-    ArrayAdapter adapter;
-
+public class CommentListActivity extends AppCompatActivity {
+    private String id;
+    private String[] commentlist;
+    private ArrayAdapter adapter;
+    private ListView list_comment;
     private TokenDBHelper helper = new TokenDBHelper(this);
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cube_list);
+        setContentView(R.layout.activity_comment_list);
 
-        list_cube = (ListView) findViewById(R.id.list_cube);
         id = getIntent().getStringExtra("id");
+        list_comment = (ListView) findViewById(R.id.list_comment);
 
-        new returnCubeList().execute();
-
-        list_cube.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-
-                // get TextView's Text.
-                String strText = (String) parent.getItemAtPosition(position) ;
-
-                // TODO : use strText
-            }
-        }) ;
+        new returnCommentList().execute();
     }
 
-    public class returnCubeList extends AsyncTask<String,Object,Integer> {
+    public class returnCommentList extends AsyncTask<String,Object,Integer> {
 
         @Override
         protected Integer doInBackground(String... params) {
             try {
                 /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/returncube.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/returncomment.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
                 /* 전송모드 설정 */
@@ -96,14 +64,11 @@ public class CubeListActivity extends AppCompatActivity {
                 writer.close();
 
                 /* 서버에서 전송 받기 */
+
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String cube = reader.readLine();
-                if(cube != null) {
-                    cubelist = cube.split(",");
-                } else {
-                    cubelist = new String[0];
-                }
+                commentlist = cube.split(",");
 
                 inStream.close();
                 http.disconnect();
@@ -121,10 +86,11 @@ public class CubeListActivity extends AppCompatActivity {
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-            adapter = new ArrayAdapter(CubeListActivity.this, android.R.layout.simple_list_item_1, cubelist) ;
-            list_cube.setAdapter(adapter);
+            adapter = new ArrayAdapter(CommentListActivity.this, android.R.layout.simple_list_item_1, commentlist) ;
+            list_comment.setAdapter(adapter);
 
         }
     }
+
 
 }

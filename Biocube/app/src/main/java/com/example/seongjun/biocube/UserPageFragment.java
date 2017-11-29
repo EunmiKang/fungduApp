@@ -27,9 +27,11 @@ import static android.app.Activity.RESULT_OK;
  * create an instance of this fragment.
  */
 public class UserPageFragment extends Fragment {
+    private OnFragmentInteractionListener mListener;
+
     private TokenDBHelper helper;
 
-    private OnFragmentInteractionListener mListener;
+    //id:((UserMainActivity)getActivity()).userID
 
     public UserPageFragment() {
         // Required empty public constructor
@@ -76,8 +78,8 @@ public class UserPageFragment extends Fragment {
         myCube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(v.getContext(), CubeListActivity.class);
+                Intent intent = new Intent(getContext(), CubeListActivity.class);
+                intent.putExtra("id", ((UserMainActivity)getActivity()).userID);
                 startActivity(intent);
             }
         });

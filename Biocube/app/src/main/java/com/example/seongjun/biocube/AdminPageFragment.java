@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,9 +25,9 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class AdminPageFragment extends Fragment {
-    private TokenDBHelper helper;
-
     private OnFragmentInteractionListener mListener;
+
+    private TokenDBHelper helper;
 
     public AdminPageFragment() {
         // Required empty public constructor
@@ -66,6 +67,16 @@ public class AdminPageFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        /* 버튼들 리스너 설정 */
+        Button manualManageBtn = (Button) view.findViewById(R.id.btn_admin_manualManage);
+        manualManageBtn.setOnClickListener(manaualManageClickListener);
+
+        Button myCommentBtn = (Button) view.findViewById(R.id.btn_admin_mycomment);
+        myCommentBtn.setOnClickListener(myCommentClickListener);
+
+        Button myCubeBtn = (Button) view.findViewById(R.id.btn_admin_mycube);
+        myCubeBtn.setOnClickListener(myCubeClickListener);
+
         Button logoutBtn = (Button) view.findViewById(R.id.btn_admin_logout);
         logoutBtn.setOnClickListener(logoutClickListener);
 
@@ -100,12 +111,36 @@ public class AdminPageFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
+    /* 버튼 리스너들 */
+    Button.OnClickListener manaualManageClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+
+        }
+    };
+
+    Button.OnClickListener myCommentClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(getContext(), CommentListActivity.class);
+            intent.putExtra("id", ((AdminMainActivity)getActivity()).adminID);
+            startActivity(intent);
+        }
+    };
+
+    Button.OnClickListener myCubeClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(getContext(), CubeListActivity.class);
+            intent.putExtra("id", ((AdminMainActivity)getActivity()).adminID);
+            startActivity(intent);
+        }
+    };
+
     Button.OnClickListener logoutClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
             SQLiteDatabase db = helper.getWritableDatabase();
             db.delete("TOKEN", "token is not null", null);
 
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
         }
     };

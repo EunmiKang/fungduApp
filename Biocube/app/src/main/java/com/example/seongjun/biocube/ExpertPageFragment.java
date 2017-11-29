@@ -24,9 +24,11 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class ExpertPageFragment extends Fragment {
+    private OnFragmentInteractionListener mListener;
+
     private TokenDBHelper helper;
 
-    private OnFragmentInteractionListener mListener;
+    //id :((ExpertMainActivity)getActivity()).expertID
 
     public ExpertPageFragment() {
         // Required empty public constructor
