@@ -24,7 +24,7 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return WriteDiaryFragment.newInstance();
             case 3:
-                return UserCubeFragment.newInstance();
+                return CubeFragment.newInstance();
             case 4:
                 return UserPageFragment.newInstance();
             default:

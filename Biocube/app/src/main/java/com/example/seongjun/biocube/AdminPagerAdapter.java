@@ -21,7 +21,7 @@ public class AdminPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return AdminNewspeedFragment.newInstance();
             case 2:
-                return AdminCubeFragment.newInstance();
+                return CubeFragment.newInstance();
             case 3:
                 return AdminPageFragment.newInstance();
             default:
