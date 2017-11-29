@@ -142,7 +142,6 @@ public class UserPageFragment extends Fragment {
     };
 
     Button.OnClickListener questionClickListener = new Button.OnClickListener(){
-
         @Override
         public void onClick(View v) {
             //데이터 담아서 팝업(액티비티) 호출

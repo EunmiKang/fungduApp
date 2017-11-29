@@ -67,8 +67,12 @@ public class CommentListActivity extends AppCompatActivity {
 
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                String cube = reader.readLine();
-                commentlist = cube.split(",");
+                String comment = reader.readLine();
+                if(comment != null) {
+                    commentlist = comment.split(",");
+                } else {
+                    commentlist = new String[0];
+                }
 
                 inStream.close();
                 http.disconnect();

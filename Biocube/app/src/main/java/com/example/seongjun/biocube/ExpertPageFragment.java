@@ -68,8 +68,12 @@ public class ExpertPageFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        Button changeInfo = (Button) view.findViewById(R.id.btn_expert_changeInfo);
-        changeInfo.setOnClickListener(new View.OnClickListener(){
+        /* 버튼들 리스너 설정 */
+        Button myCommentBtn = (Button) view.findViewById(R.id.btn_expert_myComment);
+        myCommentBtn.setOnClickListener(myCommentClickListener);
+
+        Button changeInfoBtn = (Button) view.findViewById(R.id.btn_expert_changeInfo);
+        changeInfoBtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -79,8 +83,12 @@ public class ExpertPageFragment extends Fragment {
             }
         });
 
+        Button questionBtn = (Button) view.findViewById(R.id.btn_expert_question);
+        questionBtn.setOnClickListener(questionClickListener);
+
         Button logoutBtn = (Button) view.findViewById(R.id.btn_expert_logout);
         logoutBtn.setOnClickListener(logoutClickListener);
+
         return view;
     }
 
@@ -111,6 +119,25 @@ public class ExpertPageFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    /* 버튼 리스너들 */
+    Button.OnClickListener myCommentClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(getContext(), CommentListActivity.class);
+            intent.putExtra("id", ((ExpertMainActivity)getActivity()).expertID);
+            startActivity(intent);
+        }
+    };
+
+    Button.OnClickListener questionClickListener = new Button.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //데이터 담아서 팝업(액티비티) 호출
+            Intent intent = new Intent(getActivity(), PopQuestion.class);
+            intent.putExtra("data", "Test Popup");
+            startActivityForResult(intent, 1);
+        }
+    };
 
     Button.OnClickListener logoutClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
