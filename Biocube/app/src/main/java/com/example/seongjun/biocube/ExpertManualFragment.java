@@ -4,12 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 /**
@@ -21,6 +23,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ExpertManualFragment extends Fragment {
+    private ViewPager pager;
+    private ManualsAdapter adapter;
+    private ImageView logo;
+
     private OnFragmentInteractionListener mListener;
 
     public ExpertManualFragment() {
@@ -58,6 +64,12 @@ public class ExpertManualFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
+
+        logo = view.findViewById(R.id.image_expert_manuallogo);  // 로고 이미지뷰
+        pager = (ViewPager) view.findViewById(R.id.pager_expert_manual);
+        adapter = new ManualsAdapter(inflater); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+
+        new SettingManuals().execute(logo, pager, adapter);
 
         return view;
     }

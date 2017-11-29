@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.seongjun.biocube.UserCubeFragment"
+    tools:context="com.example.seongjun.biocube.CubeFragment"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_user_cube"
+        android:id="@+id/toolbar_cube"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
@@ -22,7 +22,7 @@
             android:textSize="30sp"/>
 
         <Button
-            android:id="@+id/btn_user_cube_regist"
+            android:id="@+id/btn_cube_regist"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="등록"
@@ -84,6 +84,6 @@
                 android:text="Button" />
         </LinearLayout>
 
-
     </LinearLayout>
+
 </LinearLayout>

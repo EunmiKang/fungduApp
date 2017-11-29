@@ -27,7 +27,7 @@
         android:layout_margin="50dp">
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/image_admin_manuallogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@mipmap/ic_launcher"

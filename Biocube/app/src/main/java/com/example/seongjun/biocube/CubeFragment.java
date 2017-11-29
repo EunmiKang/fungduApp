@@ -1,6 +1,7 @@
 package com.example.seongjun.biocube;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,20 +11,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AdminCubeFragment.OnFragmentInteractionListener} interface
+ * {@link CubeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AdminCubeFragment#newInstance} factory method to
+ * Use the {@link CubeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdminCubeFragment extends Fragment {
+public class CubeFragment extends Fragment {
+
     private OnFragmentInteractionListener mListener;
 
-    public AdminCubeFragment() {
+    public CubeFragment() {
         // Required empty public constructor
     }
 
@@ -31,11 +34,11 @@ public class AdminCubeFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment AdminCubeFragment.
+     * @return A new instance of fragment CubeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AdminCubeFragment newInstance() {
-        AdminCubeFragment fragment = new AdminCubeFragment();
+    public static CubeFragment newInstance() {
+        CubeFragment fragment = new CubeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -50,14 +53,25 @@ public class AdminCubeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_admin_cube, container, false);
+        View view = inflater.inflate(R.layout.fragment_cube, container, false);
 
         /* Toolbar 설정 */
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_admin_cube);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_cube);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
+
+        Button registCube = (Button) view.findViewById(R.id.btn_cube_regist);
+
+        registCube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(v.getContext(), CubeRegister.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
