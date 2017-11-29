@@ -169,7 +169,7 @@ public class PopCubeRegist extends AppCompatActivity {
                 cursor.moveToFirst();
                 String jwt = cursor.getString(0);
 
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/decode.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/getuserid.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
                 http.setDefaultUseCaches(false);
