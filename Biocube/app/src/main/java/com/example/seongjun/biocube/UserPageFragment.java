@@ -91,6 +91,7 @@ public class UserPageFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent;
                 intent = new Intent(v.getContext(), ChangeInfoActivity.class);
+                intent.putExtra("id", ((UserMainActivity)getActivity()).userID);
                 startActivity(intent);
             }
         });

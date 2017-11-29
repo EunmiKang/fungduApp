@@ -79,6 +79,7 @@ public class ExpertPageFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent;
                 intent = new Intent(v.getContext(), ChangeInfoActivity.class);
+                intent.putExtra("id", ((ExpertMainActivity)getActivity()).expertID);
                 startActivity(intent);
             }
         });

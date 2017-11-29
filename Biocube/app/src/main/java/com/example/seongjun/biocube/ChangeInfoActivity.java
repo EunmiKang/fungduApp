@@ -41,12 +41,14 @@ public class ChangeInfoActivity extends AppCompatActivity {
     int authority;
     String nickname;
     String setData = "";
-    
+    String id;
+    String changenickname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_info);
 
+        id = getIntent().getStringExtra("id");
         textNick = (TextView) findViewById(R.id.text_nickname);
         changeNick = (EditText) findViewById(R.id.edit_changeNickname);
         changePW = (EditText) findViewById(R.id.edit_changePW);
@@ -71,6 +73,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
     public void settingData(){
         if(!changeNick.getText().toString().equals("")){
             setData = "nickname = '" +changeNick.getText().toString() +"',";
+            changenickname = changeNick.getText().toString();
         }
         if(!changePW.getText().toString().equals("")){
             setData = setData + "pw = '"+changePW.getText().toString() + "',";
@@ -102,6 +105,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
 
                 StringBuffer buffer = new StringBuffer();
+                buffer.append("userID").append("=").append(id).append("&");
+                buffer.append("nickname").append("=").append(changenickname).append("&");
                 buffer.append("setData").append("=").append(setData);
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
@@ -114,7 +119,12 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
 
-                int a = str.length();
+                if(str.equals("1")){
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
             }catch(MalformedURLException e){
                 e.printStackTrace();
             }catch(IOException e){
@@ -122,6 +132,25 @@ public class ChangeInfoActivity extends AppCompatActivity {
             }
 
             return null;
+        }
+
+        @Override
+        public void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+
+            if(result == 1 ){
+                Toast.makeText(getApplicationContext(), "변경에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(ChangeInfoActivity.this, ExpertMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "변경에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
