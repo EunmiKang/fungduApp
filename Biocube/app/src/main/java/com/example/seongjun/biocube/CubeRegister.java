@@ -80,7 +80,8 @@ public class CubeRegister extends AppCompatActivity {
         dataDevice = new ArrayList<>();
         bluetoothDevices = new ArrayList<>();
         selectDevice= -1;
-        adapterDevice = new SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name","address"}, new int[]{android.R.id.text1, android.R.id.text2});
+        adapterDevice = new
+                SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name","address"}, new int[]{android.R.id.text1, android.R.id.text2});
         listDevice.setAdapter(adapterDevice);
 
 
