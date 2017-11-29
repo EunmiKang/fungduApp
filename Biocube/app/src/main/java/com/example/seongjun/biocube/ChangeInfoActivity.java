@@ -23,6 +23,8 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Seongjun on 2017. 11. 28..
@@ -38,6 +40,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
     EditText changePhone;
     int authority;
     String nickname;
+    String setData = "";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +53,9 @@ public class ChangeInfoActivity extends AppCompatActivity {
         addFilter = (EditText) findViewById(R.id.edit_addFilter);
         changeJob = (EditText) findViewById(R.id.edit_changeJob);
         changePhone = (EditText) findViewById(R.id.edit_changePhone);
-        findViewById(R.id.btn_join).setOnClickListener(changeInfoClickListener);
+        findViewById(R.id.btn_change).setOnClickListener(changeInfoClickListener);
 
         new getAuthority().execute();
-
 
     }
 
@@ -60,17 +63,35 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            settingData();
             new changeInfoTask().execute();
         }
     };
 
+    public void settingData(){
+        if(!changeNick.getText().toString().equals("")){
+            setData = "nickname = '" +changeNick.getText().toString() +"',";
+        }
+        if(!changePW.getText().toString().equals("")){
+            setData = setData + "pw = '"+changePW.getText().toString() + "',";
+        }
+        if(!changeJob.getText().toString().equals("")){
+            setData = setData + "job = '" + changeJob.getText().toString() + "',";
+        }
+        if(!changePhone.getText().toString().equals("")){
+            setData = setData + "phone = '" + changePhone.getText().toString() + "',";
+        }
+        if(setData.length()>=1) {
+            setData = setData.substring(0, setData.length() - 1);
+        }
+    }
     public class changeInfoTask extends AsyncTask<Object,Object,Integer>{
 
         @Override
         protected Integer doInBackground(Object... params) {
 
             try{
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/getuserinfo.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/changeinfo.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
                 http.setDefaultUseCaches(false);
@@ -79,14 +100,9 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 http.setRequestMethod("POST");
                 http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
-                StringBuffer buffer = new StringBuffer();
 
-                buffer.append("userID").append("=").append(params[0].toString()).append("&");
-                buffer.append("userPW").append("=").append(params[1].toString()).append("&");
-                buffer.append("nickname").append("=").append(params[2].toString()).append("&");
-                buffer.append("authority").append("=").append(params[3].toString()).append("&");
-                buffer.append("phone").append("=").append(params[4].toString()).append("&");
-                buffer.append("job").append("=").append(params[5].toString());
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("setData").append("=").append(setData);
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
@@ -94,6 +110,11 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 writer.flush();
                 writer.close();
 
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String str = reader.readLine();
+
+                int a = str.length();
             }catch(MalformedURLException e){
                 e.printStackTrace();
             }catch(IOException e){
