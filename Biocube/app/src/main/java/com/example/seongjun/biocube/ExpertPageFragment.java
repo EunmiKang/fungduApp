@@ -66,6 +66,17 @@ public class ExpertPageFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        Button changeInfo = (Button) view.findViewById(R.id.btn_expert_changeInfo);
+        changeInfo.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(v.getContext(), ChangeInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button logoutBtn = (Button) view.findViewById(R.id.btn_expert_logout);
         logoutBtn.setOnClickListener(logoutClickListener);
         return view;
