@@ -19,4 +19,9 @@
             android:textSize="30sp"/>
     </android.support.v7.widget.Toolbar>
 
+    <ListView
+        android:id="@+id/list_admin_newspeed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>
