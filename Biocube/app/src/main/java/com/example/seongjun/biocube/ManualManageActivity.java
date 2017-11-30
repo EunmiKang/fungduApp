@@ -1,17 +1,17 @@
 package com.example.seongjun.biocube;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,8 +20,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,6 +34,11 @@ public class ManualManageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_manage);
 
+        /* 매뉴얼 등록 버튼 */
+        Button registManualBtn = (Button) findViewById(R.id.btn_manual_regist);
+        registManualBtn.setOnClickListener(registManualClickListener);
+
+        /* 매뉴얼 보이게 하기 */
         List<ManualItem> manualList = null;
         try {
             manualList = new GetManualList().execute().get();
@@ -47,6 +50,13 @@ public class ManualManageActivity extends AppCompatActivity {
         GridView gridView = (GridView) findViewById(R.id.grid_manual);
         gridView.setAdapter(new ManualManageAdapter(this, manualList));
     }
+
+    Button.OnClickListener registManualClickListener = new Button.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(ManualManageActivity.this, ManualRegistActivity.class);
+            startActivity(intent);
+        }
+    };
 
     public class ManualItem {
         private Bitmap plantImg;
@@ -60,7 +70,6 @@ public class ManualManageActivity extends AppCompatActivity {
         public Bitmap getPlantImg() {
             return plantImg;
         }
-
         public void setPlantImg(Bitmap plantImg) {
             this.plantImg = plantImg;
         }
@@ -68,7 +77,6 @@ public class ManualManageActivity extends AppCompatActivity {
         public String getPlantName() {
             return plantName;
         }
-
         public void setPlantName(String plantName) {
             this.plantName = plantName;
         }

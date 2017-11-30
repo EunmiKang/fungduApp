@@ -21,6 +21,14 @@
             android:layout_gravity="center"
             android:text="매뉴얼 관리"
             android:textSize="30sp"/>
+
+        <Button
+            android:id="@+id/btn_manual_regist"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="등록"
+            android:background="#ffffff"
+            android:layout_gravity="right"/>
     </android.support.v7.widget.Toolbar>
 
 

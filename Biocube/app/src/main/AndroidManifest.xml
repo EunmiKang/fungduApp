@@ -47,7 +47,8 @@
         </provider>
 
         <activity android:name=".CommentListActivity" />
-        <activity android:name=".ManualManageActivity"></activity>
+        <activity android:name=".ManualManageActivity" />
+        <activity android:name=".ManualRegistActivity"></activity>
     </application>
 
 </manifest>
