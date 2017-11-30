@@ -41,19 +41,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_selectCube"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.49"
-                android:text="selectCube" />
+
+            <Spinner
+                android:id="@+id/spinner_cube_cubeselect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_margin="5dp" />
 
             <Button
                 android:id="@+id/btn_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="connect" />
+                android:text="연결"
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <ImageView
