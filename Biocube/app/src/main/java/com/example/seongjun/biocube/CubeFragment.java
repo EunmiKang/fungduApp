@@ -43,7 +43,6 @@ public class CubeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     String id;
-    Context ctx;
     Spinner spinner_cubeName;
     public CubeFragment() {
         // Required empty public constructor
@@ -79,7 +78,7 @@ public class CubeFragment extends Fragment {
         spinner_cubeName = (Spinner) view.findViewById(R.id.spinner_cube_cubeselect);
 
         try {
-            id = new GetId().execute(getContext()).get();
+            id = new GetId().execute(getActivity()).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -194,7 +193,7 @@ public class CubeFragment extends Fragment {
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_item, plantList);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, plantList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner_cubeName.setAdapter(dataAdapter);
 
