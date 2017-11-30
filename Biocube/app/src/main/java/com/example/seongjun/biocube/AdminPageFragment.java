@@ -115,7 +115,8 @@ public class AdminPageFragment extends Fragment {
     /* 버튼 리스너들 */
     Button.OnClickListener manaualManageClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
-
+            Intent intent = new Intent(getContext(), ManualManageActivity.class);
+            startActivity(intent);
         }
     };
 

@@ -46,7 +46,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".CommentListActivity"></activity>
+        <activity android:name=".CommentListActivity" />
+        <activity android:name=".ManualManageActivity"></activity>
     </application>
 
 </manifest>
