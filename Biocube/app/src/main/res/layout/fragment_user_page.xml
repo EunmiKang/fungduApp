@@ -39,7 +39,6 @@
                 android:id="@+id/text_user_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="nickname"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -66,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.42"
-                        android:text="countCube"
+                        android:text="나의 큐브 수"
                         android:textAlignment="center" />
 
                     <TextView
@@ -89,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.42"
-                        android:text="countDiary"
+                        android:text="나의 일지 수"
                         android:textAlignment="center" />
 
                     <TextView
