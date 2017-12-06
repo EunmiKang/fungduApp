@@ -1,9 +1,9 @@
 package com.example.seongjun.biocube;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -14,7 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +35,8 @@ public class AdminPageFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private TokenDBHelper helper;
+
+    TextView countCubeView, countExpertView, countUserView;
 
     public AdminPageFragment() {
         // Required empty public constructor
@@ -66,6 +75,12 @@ public class AdminPageFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
+
+        /* 정보창 설정 */
+        countCubeView = (TextView) view.findViewById(R.id.text_admin_cubeNum);
+        countExpertView = (TextView) view.findViewById(R.id.text_admin_expertNum);
+        countUserView = (TextView) view.findViewById(R.id.text_admin_userNum);
+        new SettingAdminPage().execute();
 
         /* 버튼들 리스너 설정 */
         Button manualManageBtn = (Button) view.findViewById(R.id.btn_admin_manualManage);
@@ -145,4 +160,50 @@ public class AdminPageFragment extends Fragment {
             startActivity(intent);
         }
     };
+
+
+    /* 쓰레드 */
+    public class SettingAdminPage extends AsyncTask<String,Object,String[]> {
+        @Override
+        protected String[] doInBackground(String... params) {
+            String[] resultList = new String[3];
+            try {
+                /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/settingAdminPage.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+                /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+                /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String result = reader.readLine();
+                resultList = result.split(",");
+
+                inStream.close();
+                http.disconnect();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return resultList;
+        }
+
+        @Override
+        public void onPostExecute(String[] result) {
+            super.onPostExecute(result);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            countCubeView.setText(result[0]);
+            countExpertView.setText(result[2]);
+            countUserView.setText(result[1]);
+        }
+    }
 }

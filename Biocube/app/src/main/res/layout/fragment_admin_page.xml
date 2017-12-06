@@ -34,10 +34,10 @@
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/text_user_nickname"
+                android:id="@+id/text_admin_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="nickname"
+                android:text="관리자"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
