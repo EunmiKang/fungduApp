@@ -19,9 +19,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="ID"
-        android:inputType="textPersonName"
+        android:inputType="text"
+        android:digits="@string/myAlphaNumeric"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        android:privateImeOptions="defaultInputmode=english"/>
 
     <EditText
         android:id="@+id/pwText"

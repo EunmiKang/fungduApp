@@ -55,7 +55,9 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="아이디"
-            android:inputType="textPersonName" />
+            android:inputType=""
+            android:digits="@string/myAlphaNumeric"
+            android:privateImeOptions="defaultInputmode=english" />
 
         <EditText
             android:id="@+id/pwText"
@@ -64,7 +66,9 @@
             android:layout_gravity="center"
             android:ems="10"
             android:hint="비밀번호"
-            android:inputType="textPersonName" />
+            android:inputType=""
+            android:digits="@string/myAlphaNumeric"
+            android:privateImeOptions="defaultInputmode=english"/>
 
         <EditText
             android:id="@+id/nicknameText"

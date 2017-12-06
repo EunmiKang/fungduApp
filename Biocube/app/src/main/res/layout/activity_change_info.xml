@@ -27,8 +27,10 @@
         android:layout_gravity="center"
         android:ems="10"
         android:hint="비밀번호"
-        android:inputType="textPersonName"
-        android:layout_marginTop="20dp"/>
+        android:inputType="textPassword"
+        android:layout_marginTop="20dp"
+        android:digits="@string/myAlphaNumeric"
+        android:privateImeOptions="defaultInputmode=english"/>
 
     <EditText
         android:id="@+id/edit_addFilter"
