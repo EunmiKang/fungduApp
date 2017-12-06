@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -12,8 +13,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,7 +45,9 @@ public class UserPageFragment extends Fragment {
 
     private TokenDBHelper helper;
 
-    //id:((UserMainActivity)getActivity()).userID
+    TextView text_cubeNum;
+    TextView text_diaryNum;
+
 
     public UserPageFragment() {
         // Required empty public constructor
@@ -63,6 +79,9 @@ public class UserPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_page, container, false);
+
+        text_cubeNum = (TextView)view.findViewById(R.id.text_cubeNum);
+        text_diaryNum = (TextView)view.findViewById(R.id.text_diaryNum);
 
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_user_page);
@@ -156,4 +175,6 @@ public class UserPageFragment extends Fragment {
         intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
     }
+
 }
+
