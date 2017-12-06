@@ -38,7 +38,7 @@
         android:weightSum="1">
 
         <Spinner
-            android:id="@+id/spinner_plant"
+            android:id="@+id/spinner_cube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
