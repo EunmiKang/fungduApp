@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,24 +22,29 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -69,6 +75,8 @@ public class WriteDiaryFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     int mChoicedArrayItem;
 
+    private Spinner cubeSpinner, filterSpinner;
+
     public WriteDiaryFragment() {
         // Required empty public constructor
     }
@@ -92,6 +100,7 @@ public class WriteDiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermissions();
+
     }
 
     @Override
@@ -100,6 +109,47 @@ public class WriteDiaryFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_write_diary, container, false);
 
+        /* Toolbar 설정 */
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_diary);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        /* 큐브, 필터 spinner 설정 */
+        String[] cubeList, filterList;
+
+        cubeSpinner = view.findViewById(R.id.spinner_cube);
+        try {
+            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+            cubeList = new String[getList.length-1];
+            for(int i=0; i<getList.length-1; i++) {
+                cubeList[i] = getList[i+1];
+            }
+            ArrayAdapter<String> cubeAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, cubeList);
+            cubeSpinner.setAdapter(cubeAdapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        filterSpinner = view.findViewById(R.id.spinner_filter);
+        try {
+            String[] getList = new ReturnFilterList().execute(((UserMainActivity)getActivity()).userID).get();
+            filterList = new String[getList.length-1];
+            for(int i=0; i<getList.length-1; i++) {
+                filterList[i] = getList[i+1];
+            }
+            ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, filterList);
+            filterSpinner.setAdapter(filterAdapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        /* 이미지 버튼 설정 */
         iv_UserPhoto = (ImageButton) view.findViewById(R.id.btn_addImage);
         iv_UserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,13 +157,6 @@ public class WriteDiaryFragment extends Fragment {
                 selectImage(view);
             }
         });
-
-        /* Toolbar 설정 */
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_diary);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
 
         return view;
     }
@@ -381,4 +424,5 @@ public class WriteDiaryFragment extends Fragment {
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
     }
+
 }

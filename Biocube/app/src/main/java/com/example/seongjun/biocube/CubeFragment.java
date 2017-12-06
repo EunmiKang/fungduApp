@@ -1,6 +1,5 @@
 package com.example.seongjun.biocube;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -103,7 +102,22 @@ public class CubeFragment extends Fragment {
             }
         });
 
-        new settingSpinner().execute();
+        String[] cubeList;
+        try {
+            String[] getList = new ReturnCubeList().execute(id).get();
+            cubeList = new String[getList.length-1];
+            for(int i=0; i<getList.length-1; i++) {
+                cubeList[i] = getList[i+1].toString();
+            }
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, cubeList);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner_cubeName.setAdapter(dataAdapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         return view;
     }
 
@@ -133,72 +147,5 @@ public class CubeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public class settingSpinner extends AsyncTask<Object,Object,Integer> {
-
-        List<String> plantList= new ArrayList<String>();
-        String[] cubelist;
-        // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
-        @Override
-        public Integer doInBackground(Object... params) {
-            try {
-                /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/returncube.php");
-                HttpURLConnection http = (HttpURLConnection) url.openConnection();
-
-                /* 전송모드 설정 */
-                http.setDefaultUseCaches(false);
-                http.setDoInput(true);  //서버에서 읽기 모드로 지정
-                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-                http.setRequestMethod("POST");
-                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-
-                /* 서버로 값 전송 */
-                StringBuffer buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(id);
-
-                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-                PrintWriter writer = new PrintWriter(outStream);
-                writer.write(buffer.toString());
-                writer.flush();
-                writer.close();
-
-                /* 서버에서 전송 받기 */
-                InputStream inStream = http.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                String cube = reader.readLine();
-                if(cube != null) {
-                    cubelist = cube.split(",");
-                } else {
-                    cubelist = new String[0];
-                }
-                for(int i = 0; i <cubelist.length; i++){
-                    plantList.add(cubelist[i]);
-                }
-
-                inStream.close();
-                http.disconnect();
-
-            } catch(MalformedURLException e) {
-                e.printStackTrace();
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-
-            return -1;
-        }
-
-        @Override
-        public void onPostExecute(Integer result) {
-            super.onPostExecute(result);
-
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, plantList);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner_cubeName.setAdapter(dataAdapter);
-
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-
-        }
     }
 }
