@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 /**
  * Created by Seongjun on 2017. 11. 1..
@@ -30,21 +33,21 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
 
     private int status = -1;
-
     private TokenDBHelper helper = new TokenDBHelper(this);
+    EditText idText;
+    EditText pwText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         new checkDBTask().execute(helper);
     }
 
     /* OnClickListener: login 버튼 클릭했을 때 */
     Button.OnClickListener loginClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
-            EditText idText = (EditText) findViewById(R.id.idText);
-            EditText pwText = (EditText) findViewById(R.id.pwText);
+            idText = (EditText) findViewById(R.id.idText);
+            pwText = (EditText) findViewById(R.id.pwText);
             String id = idText.getText().toString();
             String pw = pwText.getText().toString();
             if(!id.equals("") && !pw.equals("")) {
