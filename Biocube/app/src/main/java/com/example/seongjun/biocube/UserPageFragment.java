@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,6 +50,8 @@ public class UserPageFragment extends Fragment {
 
     TextView text_cubeNum;
     TextView text_diaryNum;
+    TextView text_user_nickname;
+    String nickname;
 
 
     public UserPageFragment() {
@@ -80,8 +85,33 @@ public class UserPageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_page, container, false);
 
+        text_user_nickname = (TextView)view.findViewById(R.id.text_user_nickname);
         text_cubeNum = (TextView)view.findViewById(R.id.text_cubeNum);
         text_diaryNum = (TextView)view.findViewById(R.id.text_diaryNum);
+
+        try {
+            String[] userInfo = new GetUserInfo().execute(helper).get();
+            nickname = userInfo[0];
+            text_user_nickname.setText(nickname);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+            text_cubeNum.setText(getList[0]);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        new getDiaryNum().execute();
 
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_user_page);
@@ -176,5 +206,55 @@ public class UserPageFragment extends Fragment {
         startActivityForResult(intent, 1);
     }
 
-}
+    public class getDiaryNum extends AsyncTask<Object,Object,Integer> {
+        // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
+        @Override
+        public Integer doInBackground(Object... params) {
+            try {
+             /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/getuserdiarynum.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
+            /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버로 값 전송 */
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("userID").append("=").append(((UserMainActivity)getActivity()).userID);
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+            /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String result = reader.readLine();
+
+                if(result != null) {
+                    return Integer.parseInt(result);
+                }
+
+
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            //publishProgress(params);    // 중간 중간에 진행 상태 UI 를 업데이트 하기 위해 사용..
+            return -1;
+        }
+
+        @Override
+        public void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            text_diaryNum.setText(result.toString());
+            }
+        }
+    }
