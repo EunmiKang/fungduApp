@@ -76,7 +76,11 @@ public class CubeListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
 
                 // get TextView's Text.
-                String strText = (String) parent.getItemAtPosition(position) ;
+                String cubename = (String) parent.getItemAtPosition(position) ;
+                Intent intent;
+                intent = new Intent(CubeListActivity.this, DiaryAsCubeName.class);
+                intent.putExtra("cubename",cubename);
+                startActivity(intent);
 
                 // TODO : use strText
             }
