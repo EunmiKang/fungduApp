@@ -1,6 +1,7 @@
 package com.example.seongjun.biocube;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,7 +34,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
 
     String myJSON;
 
-    private static final String TAG_RESULTS="result";
+    private static final String TAG_DIARY="diaryinfo";
     private static final String TAG_NICKNAME = "nickname";
     private static final String TAG_IMG = "img";
     private static final String TAG_CONTENT ="content";
@@ -62,7 +63,8 @@ public class DiaryAsCubeName extends AppCompatActivity{
     protected void showList(){
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
-            diary = jsonObj.getJSONArray(TAG_RESULTS);
+            diary = jsonObj.getJSONArray(TAG_DIARY);
+
 
             for(int i=0;i<diary.length();i++){
                 JSONObject c = diary.getJSONObject(i);
@@ -82,7 +84,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
             ListAdapter adapter = new SimpleAdapter(
                     DiaryAsCubeName.this, diaryList, R.layout.custom_newspeed,
                     new String[]{TAG_NICKNAME,TAG_IMG,TAG_CONTENT},
-                    new int[]{R.id.id, R.id.name, R.id.address}
+                    new int[]{R.id.nickname_text, R.id.diaryimg_image, R.id.content_text}
             );
 
             list_diary_cubename.setAdapter(adapter);
@@ -119,9 +121,6 @@ public class DiaryAsCubeName extends AppCompatActivity{
                 }catch(Exception e){
                     return null;
                 }
-
-
-
             }
 
             @Override
@@ -133,4 +132,42 @@ public class DiaryAsCubeName extends AppCompatActivity{
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
+    public class DiaryItem {
+
+        private String nickname;
+        private Bitmap plantImg;
+        private String content;
+
+        public DiaryItem(String nickname, Bitmap plantImg, String content) {
+            this.nickname = nickname;
+            this.plantImg = plantImg;
+            this.content = content;
+
+        }
+        public DiaryItem(String nickname, String content){
+            this.nickname = nickname;
+            this.content = content;
+        }
+        public String getNickname() {
+            return nickname;
+        }
+        public void setNickName(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public Bitmap getPlantImg() {
+            return plantImg;
+        }
+        public void setPlantImg(Bitmap plantImg) {
+            this.plantImg = plantImg;
+        }
+
+        public String getContent() {
+            return content;
+        }
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
+
 }
