@@ -1,11 +1,19 @@
 package com.example.seongjun.biocube;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -17,11 +25,16 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Seongjun on 2017. 11. 28..
@@ -31,7 +44,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
 
     String cubename;
     TextView text_diary_cubename;
-
+    String id;
     String myJSON;
 
     private static final String TAG_DIARY="diaryinfo";
@@ -41,7 +54,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
 
     JSONArray diary = null;
 
-    ArrayList<HashMap<String, String>> diaryList;
+
 
     ListView list_diary_cubename;
 
@@ -55,83 +68,151 @@ public class DiaryAsCubeName extends AppCompatActivity{
         text_diary_cubename = (TextView) findViewById(R.id.text_diary_cubename);
         text_diary_cubename.setText(cubename);
         list_diary_cubename = (ListView) findViewById(R.id.list_diary_cubename);
-        diaryList = new ArrayList<HashMap<String,String>>();
+        try {
+            id = new GetId().execute(getApplicationContext()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         getData("http://fungdu0624.phps.kr/biocube/getdiarycubename.php");
 
     }
 
-    protected void showList(){
-        try {
-            JSONObject jsonObj = new JSONObject(myJSON);
-            diary = jsonObj.getJSONArray(TAG_DIARY);
-
-
-            for(int i=0;i<diary.length();i++){
-                JSONObject c = diary.getJSONObject(i);
-                String nickname = c.getString(TAG_NICKNAME);
-                String img = c.getString(TAG_IMG);
-                String content = c.getString(TAG_CONTENT);
-
-                HashMap<String,String> diarys = new HashMap<String,String>();
-
-                diarys.put(TAG_NICKNAME,nickname);
-                diarys.put(TAG_IMG,img);
-                diarys.put(TAG_CONTENT,content);
-
-                diaryList.add(diarys);
-            }
-
-            ListAdapter adapter = new SimpleAdapter(
-                    DiaryAsCubeName.this, diaryList, R.layout.custom_newspeed,
-                    new String[]{TAG_NICKNAME,TAG_IMG,TAG_CONTENT},
-                    new int[]{R.id.nickname_text, R.id.diaryimg_image, R.id.content_text}
-            );
-
-            list_diary_cubename.setAdapter(adapter);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void getData(String url){
-        class GetDataJSON extends AsyncTask<String, Void, String> {
+        class GetDataJSON extends AsyncTask<String, Void, List<DiaryItem>> {
 
             @Override
-            protected String doInBackground(String... params) {
+            protected List<DiaryItem> doInBackground(String... params) {
 
                 String uri = params[0];
+                List<DiaryItem> diarylist = new ArrayList<DiaryItem>();
 
                 BufferedReader bufferedReader = null;
                 try {
                     URL url = new URL(uri);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    StringBuilder sb = new StringBuilder();
+                    con.setDefaultUseCaches(false);
+                    con.setDoInput(true);  //서버에서 읽기 모드로 지정
+                    con.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버로 값 전송 */
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append("user_id").append("=").append(id).append("&");
+                    buffer.append("cubename").append("=").append(cubename);
+                    OutputStreamWriter outStream = new OutputStreamWriter(con.getOutputStream(), "EUC-KR");
+                    PrintWriter writer = new PrintWriter(outStream);
+                    writer.write(buffer.toString());
+                    writer.flush();
+                    writer.close();
 
                     bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
 
                     String json;
                     while((json = bufferedReader.readLine())!= null){
                         sb.append(json+"\n");
                     }
 
-                    return sb.toString().trim();
+                    try {
+                        JSONObject jsonObj = new JSONObject(sb.toString().trim());
+                        diary = jsonObj.getJSONArray(TAG_DIARY);
+                        Bitmap plantImg;
 
+                        for (int i = 0; i < diary.length(); i++) {
+                            JSONObject c = diary.getJSONObject(i);
+                            String nickname = c.getString(TAG_NICKNAME);
+                            String img = c.getString(TAG_IMG);
+                            String content = c.getString(TAG_CONTENT);
+
+                            String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" +img ;
+                            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                            url = new URL(readURL);
+                            http = (HttpURLConnection) url.openConnection();
+                            http.connect();
+                            //스트림생성
+                            InputStream inStream = http.getInputStream();
+                            //스트림에서 받은 데이터를 비트맵 변환
+                            plantImg = BitmapFactory.decodeStream(inStream);
+                            diarylist.add(new DiaryItem(nickname,plantImg,content));
+                        }
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return diarylist;
                 }catch(Exception e){
                     return null;
                 }
+
             }
 
             @Override
-            protected void onPostExecute(String result){
-                myJSON=result;
-                showList();
+            protected void onPostExecute(List<DiaryItem> result){
+                list_diary_cubename.setAdapter(new MycubeDiaryManageAdapter(DiaryAsCubeName.this, result));
             }
         }
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
+
+
+    public class MycubeDiaryManageAdapter extends BaseAdapter {
+        List<DiaryItem> list;
+        private LayoutInflater layoutInflater;
+
+        public MycubeDiaryManageAdapter(Context context, List<DiaryItem> list) {
+            this.list = list;
+            layoutInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup viewGroup) {
+            ViewHolder holder;
+
+            if (view == null) {
+                view = layoutInflater.inflate(R.layout.custom_newspeed, null);
+                holder = new MycubeDiaryManageAdapter.ViewHolder();
+                holder.nicknameView = (TextView) view.findViewById(R.id.nickname_text);
+                holder.plantImgView = (ImageView) view.findViewById(R.id.diaryimg_image);
+                holder.contentView = (TextView) view.findViewById(R.id.content_text);
+
+                view.setTag(holder);
+            } else {
+                holder = (MycubeDiaryManageAdapter.ViewHolder) view.getTag();
+            }
+
+            DiaryItem diaryItem= this.list.get(position);
+            holder.nicknameView.setText(diaryItem.getNickname());
+            holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
+            holder.contentView.setText(diaryItem.getContent());
+
+            return view;
+        }
+
+        class ViewHolder {
+            TextView nicknameView;
+            ImageView plantImgView;
+            TextView contentView;
+        }
+    }
+
     public class DiaryItem {
 
         private String nickname;
