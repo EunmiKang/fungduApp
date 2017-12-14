@@ -67,6 +67,7 @@ public class WriteDiaryFragment extends Fragment {
     private static final int CROP_FROM_CAMERA = 2;   //이미지를 크롭
 
     private Uri mImageCaptureUri;
+    private File photoFile = null;
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}; //권한 설정 변수
     private static final int MULTIPLE_PERMISSIONS = 101; //권한 동의 여부 문의 후 CallBack 함수에 쓰일 변수
 
@@ -100,7 +101,6 @@ public class WriteDiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermissions();
-
     }
 
     @Override
@@ -203,7 +203,6 @@ public class WriteDiaryFragment extends Fragment {
         }
         if (!permissionList.isEmpty()) {    //권한이 추가되었으면 해당 리스트가 empty가 아니므로 권한을 request(요청)함
             ActivityCompat.requestPermissions(getActivity(), permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
-            //this.requestPermissions(permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
             return false;
         }
         return true;
@@ -235,6 +234,9 @@ public class WriteDiaryFragment extends Fragment {
                     } else if (mChoicedArrayItem == 1) {
                         doTakeAlbumAction();
                     }
+                } else {
+                    Toast.makeText(getContext(), "권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
                 }
             }
         });
@@ -250,7 +252,6 @@ public class WriteDiaryFragment extends Fragment {
     public void doTakePhotoAction() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        File photoFile = null;
         try {
             photoFile = createImageFile();
         } catch (IOException e) {
@@ -270,7 +271,7 @@ public class WriteDiaryFragment extends Fragment {
      * Android M에서는 Uri.fromFile 함수를 사용하였으나, 7.0부터는 이 함수를 사용할 시 FileUriExposedException이 발생하므로 아래와 같이 함수를 작성함.
      */
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
         String imageFileName = "biocube_" + timeStamp + "_";
         File storageDir = new File(Environment.getExternalStorageDirectory() + "/BioCube/");
         if (!storageDir.exists()) {
@@ -298,6 +299,7 @@ public class WriteDiaryFragment extends Fragment {
             Toast.makeText(getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (requestCode == PICK_FROM_ALBUM) {
             if (data == null) {
                 return;
@@ -306,6 +308,8 @@ public class WriteDiaryFragment extends Fragment {
             cropImage();
         } else if (requestCode == PICK_FROM_CAMERA) {
             cropImage();
+
+
             // 갤러리에 나타나게
             MediaScannerConnection.scanFile(getContext(),
                     new String[]{mImageCaptureUri.getPath()}, null,
@@ -313,9 +317,14 @@ public class WriteDiaryFragment extends Fragment {
                         public void onScanCompleted(String path, Uri uri) {
                         }
                     });
+
         } else if (requestCode == CROP_FROM_CAMERA) {
             iv_UserPhoto.setImageURI(null);
             iv_UserPhoto.setImageURI(mImageCaptureUri);
+
+            if(photoFile != null) {
+                photoFile.delete(); // 임시 파일 삭제
+            }
         }
     }
 
@@ -362,7 +371,7 @@ public class WriteDiaryFragment extends Fragment {
 
     //Android N crop image
     public void cropImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {   // 마쉬멜로우 이상 버전일 때
             getActivity().grantUriPermission("com.android.camera", mImageCaptureUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
