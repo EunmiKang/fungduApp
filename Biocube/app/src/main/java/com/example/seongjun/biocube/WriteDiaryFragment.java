@@ -362,7 +362,7 @@ public class WriteDiaryFragment extends Fragment {
 
     //Android N crop image
     public void cropImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getActivity().grantUriPermission("com.android.camera", mImageCaptureUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
@@ -370,7 +370,7 @@ public class WriteDiaryFragment extends Fragment {
         intent.setDataAndType(mImageCaptureUri, "image/*");
 
         List<ResolveInfo> list = getActivity().getPackageManager().queryIntentActivities(intent, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getActivity().grantUriPermission(list.get(0).activityInfo.packageName, mImageCaptureUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
@@ -381,7 +381,7 @@ public class WriteDiaryFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
@@ -402,7 +402,7 @@ public class WriteDiaryFragment extends Fragment {
             mImageCaptureUri = FileProvider.getUriForFile(getContext(),
                     "com.example.seongjun.biocube.provider", tempFile);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
@@ -413,7 +413,7 @@ public class WriteDiaryFragment extends Fragment {
 
             Intent i = new Intent(intent);
             ResolveInfo res = list.get(0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
