@@ -40,27 +40,26 @@
         <Spinner
             android:id="@+id/spinner_cube"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/btn_addImage"
             android:layout_width="230dp"
             android:layout_height="230dp"
-            android:scaleType="fitXY"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/dateText"
+            <Button
+                android:id="@+id/btn_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="date" />
+                android:ems="10" />
 
             <Button
                 android:id="@+id/btn_sensor"
@@ -73,7 +72,7 @@
         <Spinner
             android:id="@+id/spinner_filter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/contentText"

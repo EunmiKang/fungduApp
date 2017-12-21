@@ -2,6 +2,8 @@ package com.example.seongjun.biocube;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -42,6 +46,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -77,6 +82,9 @@ public class WriteDiaryFragment extends Fragment {
     int mChoicedArrayItem;
 
     private Spinner cubeSpinner, filterSpinner;
+
+    Button dateBtn;
+    private int iYear, iMonth, iDay;
 
     public WriteDiaryFragment() {
         // Required empty public constructor
@@ -155,6 +163,31 @@ public class WriteDiaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 selectImage(view);
+            }
+        });
+
+        /* 날짜 버튼 설정 */
+        dateBtn = view.findViewById(R.id.btn_date);
+        dateBtn.setText(getTodayDate());
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pickedDate = dateBtn.getText().toString();
+                pickedDate = pickedDate.replace("년","/").replace("월","/").replace("일","/");
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
+
+                try{
+                    Date pickDate = new Date(pickedDate);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(pickDate);
+                    Dialog dialog = null;
+                    dialog = new DatePickerDialog(getContext(), dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+                    dialog.show();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -433,5 +466,29 @@ public class WriteDiaryFragment extends Fragment {
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
     }
+
+    /* 날짜 설정 관련 메소드들 */
+    private String getTodayDate() {
+        Date todayDate = new Date();
+
+        SimpleDateFormat todayDateFormat = new SimpleDateFormat("yyyy년MM월dd일");
+        return todayDateFormat.format(todayDate);
+    }
+
+    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            iYear = year;
+            iMonth = monthOfYear;
+            iDay = dayOfMonth;
+            updateDate();
+        }
+    };
+
+    private void updateDate() {
+        StringBuffer sb = new StringBuffer();
+        dateBtn.setText(sb.append(iYear+"년").append((iMonth+1) + "월").append(iDay+"일"));
+    }
+
 
 }
