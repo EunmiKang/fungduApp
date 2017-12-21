@@ -1,6 +1,10 @@
 package com.example.seongjun.biocube;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -9,6 +13,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -21,6 +41,17 @@ import android.view.ViewGroup;
  */
 public class UserNewspeedFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+
+    private static final String TAG_DIARY="diaryinfo";
+    private static final String TAG_NICKNAME = "nickname";
+    private static final String TAG_IMG = "img";
+    private static final String TAG_CONTENT ="content";
+
+    JSONArray diary = null;
+    String id;
+    int authority;
+    ListView list_newspeed;
+    private TokenDBHelper helper;
 
     public UserNewspeedFragment() {
         // Required empty public constructor
@@ -43,6 +74,8 @@ public class UserNewspeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        helper = new TokenDBHelper(getActivity());
     }
 
     @Override
@@ -58,6 +91,34 @@ public class UserNewspeedFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        list_newspeed = (ListView) view.findViewById(R.id.list_newspeed);
+
+        try {
+            id = new GetId().execute(getContext()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        try {
+
+            String[] userInfo = new GetUserInfo().execute(helper).get();
+            if (userInfo[1].equals("1")) {
+                authority = 1;
+            } else if (userInfo[1].equals("2")) {
+                authority = 2;
+            } else {
+                authority = 0;
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        getData("http://fungdu0624.phps.kr/biocube/getnewspeed.php");
         return view;
     }
 
@@ -87,5 +148,90 @@ public class UserNewspeedFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void getData(String url){
+        class GetDataJSON extends AsyncTask<String, Void, List<DiaryItem>> {
+
+            @Override
+            protected List<DiaryItem> doInBackground(String... params) {
+
+                String uri = params[0];
+                List<DiaryItem> diarylist = new ArrayList<DiaryItem>();
+
+                BufferedReader bufferedReader = null;
+                try {
+                    URL url = new URL(uri);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setDefaultUseCaches(false);
+                    con.setDoInput(true);  //서버에서 읽기 모드로 지정
+                    con.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버로 값 전송 */
+
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append("user_id").append("=").append(id);
+                    OutputStreamWriter outStream = new OutputStreamWriter(con.getOutputStream(), "EUC-KR");
+                    PrintWriter writer = new PrintWriter(outStream);
+                    writer.write(buffer.toString());
+                    writer.flush();
+                    writer.close();
+
+                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+
+                    String json;
+                    while((json = bufferedReader.readLine())!= null){
+                        sb.append(json+"\n");
+                    }
+
+                    try {
+                        JSONObject jsonObj = new JSONObject(sb.toString().trim());
+                        diary = jsonObj.getJSONArray(TAG_DIARY);
+                        Bitmap plantImg;
+
+                        for (int i = 0; i < diary.length(); i++) {
+                            JSONObject c = diary.getJSONObject(i);
+                            String nickname = c.getString(TAG_NICKNAME);
+                            String img = c.getString(TAG_IMG);
+                            String content = c.getString(TAG_CONTENT);
+
+                            if(!img.equals("null")) {
+                                String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
+                                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                                url = new URL(readURL);
+                                http = (HttpURLConnection) url.openConnection();
+                                http.connect();
+                                //스트림생성
+                                InputStream inStream = http.getInputStream();
+                                //스트림에서 받은 데이터를 비트맵 변환
+                                plantImg = BitmapFactory.decodeStream(inStream);
+                                diarylist.add(new DiaryItem(nickname,plantImg,content));
+                            }
+                            else{
+                                plantImg = null;
+                                diarylist.add(new DiaryItem(nickname,plantImg,content));
+                            }
+
+                        }
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return diarylist;
+                }catch(Exception e){
+                    return null;
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(List<DiaryItem> result){
+                list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), result, authority));
+            }
+        }
+        GetDataJSON g = new GetDataJSON();
+        g.execute(url);
     }
 }

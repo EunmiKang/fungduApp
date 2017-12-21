@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -45,7 +46,8 @@ public class DiaryAsCubeName extends AppCompatActivity{
     String cubename;
     TextView text_diary_cubename;
     String id;
-    String myJSON;
+    private TokenDBHelper helper = new TokenDBHelper(this);
+    int authority;
 
     private static final String TAG_DIARY="diaryinfo";
     private static final String TAG_NICKNAME = "nickname";
@@ -68,6 +70,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
         text_diary_cubename = (TextView) findViewById(R.id.text_diary_cubename);
         text_diary_cubename.setText(cubename);
         list_diary_cubename = (ListView) findViewById(R.id.list_diary_cubename);
+
         try {
             id = new GetId().execute(getApplicationContext()).get();
         } catch (InterruptedException e) {
@@ -75,6 +78,22 @@ public class DiaryAsCubeName extends AppCompatActivity{
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        try {
+            String[] userInfo = new GetUserInfo().execute(helper).get();
+            if (userInfo[1].equals("1")) {
+                authority = 1;
+            } else if (userInfo[1].equals("2")) {
+                authority = 2;
+            } else {
+                authority = 0;
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         getData("http://fungdu0624.phps.kr/biocube/getdiarycubename.php");
 
     }
@@ -150,105 +169,11 @@ public class DiaryAsCubeName extends AppCompatActivity{
 
             @Override
             protected void onPostExecute(List<DiaryItem> result){
-                list_diary_cubename.setAdapter(new MycubeDiaryManageAdapter(DiaryAsCubeName.this, result));
+                list_diary_cubename.setAdapter(new DiaryManageAdapter(DiaryAsCubeName.this, result, authority));
+
             }
         }
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
-
-
-    public class MycubeDiaryManageAdapter extends BaseAdapter {
-        List<DiaryItem> list;
-        private LayoutInflater layoutInflater;
-
-        public MycubeDiaryManageAdapter(Context context, List<DiaryItem> list) {
-            this.list = list;
-            layoutInflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View view, ViewGroup viewGroup) {
-            ViewHolder holder;
-
-            if (view == null) {
-                view = layoutInflater.inflate(R.layout.custom_newspeed, null);
-                holder = new MycubeDiaryManageAdapter.ViewHolder();
-                holder.nicknameView = (TextView) view.findViewById(R.id.nickname_text);
-                holder.plantImgView = (ImageView) view.findViewById(R.id.diaryimg_image);
-                holder.contentView = (TextView) view.findViewById(R.id.content_text);
-
-                view.setTag(holder);
-            } else {
-                holder = (MycubeDiaryManageAdapter.ViewHolder) view.getTag();
-            }
-
-            DiaryItem diaryItem= this.list.get(position);
-            holder.nicknameView.setText(diaryItem.getNickname());
-            holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
-            holder.contentView.setText(diaryItem.getContent());
-
-            return view;
-        }
-
-        class ViewHolder {
-            TextView nicknameView;
-            ImageView plantImgView;
-            TextView contentView;
-        }
-    }
-
-    public class DiaryItem {
-
-        private String nickname;
-        private Bitmap plantImg;
-        private String content;
-
-        public DiaryItem(String nickname, Bitmap plantImg, String content) {
-            this.nickname = nickname;
-            this.plantImg = plantImg;
-            this.content = content;
-
-        }
-        public DiaryItem(String nickname, String content){
-            this.nickname = nickname;
-            this.content = content;
-        }
-        public String getNickname() {
-            return nickname;
-        }
-        public void setNickName(String nickname) {
-            this.nickname = nickname;
-        }
-
-        public Bitmap getPlantImg() {
-            return plantImg;
-        }
-        public void setPlantImg(Bitmap plantImg) {
-            this.plantImg = plantImg;
-        }
-
-        public String getContent() {
-            return content;
-        }
-        public void setContent(String content) {
-            this.content = content;
-        }
-    }
-
 }

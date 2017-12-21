@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,12 +20,20 @@
             android:layout_gravity="center"
             android:text="Bio Cube"
             android:textSize="30sp"/>
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_search"
+            android:layout_gravity="right"/>
+
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/textView"
+    <ListView
+        android:id="@+id/list_newspeed"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="여기는 뉴스피드~" />
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>
