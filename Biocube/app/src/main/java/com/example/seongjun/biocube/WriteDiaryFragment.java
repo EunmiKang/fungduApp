@@ -145,9 +145,10 @@ public class WriteDiaryFragment extends Fragment {
         filterSpinner = view.findViewById(R.id.spinner_filter);
         try {
             String[] getList = new ReturnFilterList().execute(((UserMainActivity)getActivity()).userID).get();
-            filterList = new String[getList.length-1];
-            for(int i=0; i<getList.length-1; i++) {
-                filterList[i] = getList[i+1];
+            filterList = new String[getList.length];
+            filterList[0] = "필터 없음";
+            for(int i=1; i<getList.length; i++) {
+                filterList[i] = getList[i];
             }
             ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, filterList);
             filterSpinner.setAdapter(filterAdapter);
@@ -378,7 +379,6 @@ public class WriteDiaryFragment extends Fragment {
                         } else if (permissions[i].equals(this.permissions[1])) {
                             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
-
                             }
                         } else if (permissions[i].equals(this.permissions[2])) {
                             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
