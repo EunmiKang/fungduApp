@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,9 +10,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -72,27 +77,52 @@ public class CubeRegister extends AppCompatActivity {
         setContentView(R.layout.activity_resgist_cube);
 
         //UI
-        txtState = (TextView)findViewById(R.id.txtState);
-        btnSearch = (Button)findViewById(R.id.btnSearch);
-        listDevice = (ListView)findViewById(R.id.listDevice);
+        txtState = (TextView) findViewById(R.id.txtState);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        listDevice = (ListView) findViewById(R.id.listDevice);
 
         //Adapter
         dataDevice = new ArrayList<>();
         bluetoothDevices = new ArrayList<>();
-        selectDevice= -1;
+        selectDevice = -1;
         adapterDevice = new
-                SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name","address"}, new int[]{android.R.id.text1, android.R.id.text2});
+                SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name", "address"}, new int[]{android.R.id.text1, android.R.id.text2});
         listDevice.setAdapter(adapterDevice);
-
 
         //블루투스 지원 유무 확인
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         //블루투스를 지원하지 않으면 null을 리턴한다
-        if(mBluetoothAdapter == null){
+        if (mBluetoothAdapter == null) {
             Toast.makeText(this, "블루투스를 지원하지 않는 단말기 입니다.", Toast.LENGTH_SHORT).show();
             finish();
             return;
+        }
+
+        // 블루투스 권한 요청(마쉬멜로우 버전 이상)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(CubeRegister.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(CubeRegister.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(CubeRegister.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, BLUETOOTH_REQUEST_CODE);
+
+                    // BLUETOOTH_REQUEST_CODE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            }
+            else {
+                Toast.makeText(CubeRegister.this, "들어옴", Toast.LENGTH_SHORT).show();
+            }
         }
 
         //블루투스 브로드캐스트 리시버 등록
@@ -248,6 +278,30 @@ public class CubeRegister extends AppCompatActivity {
         popUpIntent = new Intent(this, PopCubeRegist.class);
         popUpIntent.putExtra("bluetoothDevice", device);
         startActivity(popUpIntent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case BLUETOOTH_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    Toast.makeText(CubeRegister.this, "권한 요청에 동의 해주셔야 큐브 기능 사용이 가능합니다. :)", Toast.LENGTH_SHORT).show();
+                    finish();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
 //    public class joinTask extends AsyncTask<String,Object,Integer>{
