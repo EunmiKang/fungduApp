@@ -72,13 +72,15 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
                 inStream = http.getInputStream();
                 //스트림에서 받은 데이터를 비트맵 변환
                 //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
-                manualInitArray[(i-1)] = BitmapFactory.decodeStream(inStream);
+                Bitmap readImg = BitmapFactory.decodeStream(inStream);
+                manualInitArray[(i-1)] = readImg;
             }
             inStream.close();
             http.disconnect();
             adapter.setManualInitImg(manualInitArray);
 
                 /* 매뉴얼 화면에 로고 이미지 가져오기 */
+                /*
             String readURL = "http://fungdu0624.phps.kr/biocube/img/testimg.jpg";
             url = new URL(readURL);
             http = (HttpURLConnection) url.openConnection();
@@ -89,7 +91,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
 
             inStream.close();
             http.disconnect();
-
+            */
         } catch(MalformedURLException e) {
             e.printStackTrace();
         } catch(IOException e) {
@@ -104,7 +106,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
         super.onPostExecute(result);
         // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
         pager.setAdapter(adapter);
-        logo.setImageBitmap(logoImg);
+        //logo.setImageBitmap(logoImg);
     }
 
     @Override
