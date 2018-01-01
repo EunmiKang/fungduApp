@@ -30,11 +30,22 @@ public class UserMainActivity extends AppCompatActivity {
         UserPagerAdapter mUserPagerAdapter = new UserPagerAdapter(
                 getSupportFragmentManager()
         );
+        mUserPagerAdapter.addFragment(R.drawable.menu_home,new UserManualFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_newsfeed, new UserNewspeedFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_note, new WriteDiaryFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_my, new UserPageFragment());
+
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_user);
         mViewPager.setAdapter(mUserPagerAdapter);
+
 
         /* 탭 설정 */
         TabLayout mTab = (TabLayout) findViewById(R.id.tabs);
         mTab.setupWithViewPager(mViewPager);
+
+        for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
+            mTab.getTabAt(i).setIcon(mUserPagerAdapter.getFragmentInfo(i).getIconResId());
+        }
     }
 }

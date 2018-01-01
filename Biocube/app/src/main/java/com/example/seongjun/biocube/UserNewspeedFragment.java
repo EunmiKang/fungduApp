@@ -46,9 +46,10 @@ public class UserNewspeedFragment extends Fragment {
     private static final String TAG_NICKNAME = "nickname";
     private static final String TAG_IMG = "img";
     private static final String TAG_CONTENT ="content";
+    private static final String TAG_ID ="id";
+
 
     JSONArray diary = null;
-    String id;
     int authority;
     ListView list_newspeed;
     private TokenDBHelper helper;
@@ -93,13 +94,7 @@ public class UserNewspeedFragment extends Fragment {
 
         list_newspeed = (ListView) view.findViewById(R.id.list_newspeed);
 
-        try {
-            id = new GetId().execute(getContext()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
         try {
 
             String[] userInfo = new GetUserInfo().execute(helper).get();
@@ -166,18 +161,10 @@ public class UserNewspeedFragment extends Fragment {
                     con.setDefaultUseCaches(false);
                     con.setDoInput(true);  //서버에서 읽기 모드로 지정
                     con.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+//                    con.setRequestMethod("POST");
+//                    con.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
             /* 서버로 값 전송 */
-
-                    StringBuffer buffer = new StringBuffer();
-                    buffer.append("user_id").append("=").append(id);
-                    OutputStreamWriter outStream = new OutputStreamWriter(con.getOutputStream(), "EUC-KR");
-                    PrintWriter writer = new PrintWriter(outStream);
-                    writer.write(buffer.toString());
-                    writer.flush();
-                    writer.close();
 
                     bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                     StringBuilder sb = new StringBuilder();
@@ -197,6 +184,7 @@ public class UserNewspeedFragment extends Fragment {
                             String nickname = c.getString(TAG_NICKNAME);
                             String img = c.getString(TAG_IMG);
                             String content = c.getString(TAG_CONTENT);
+                            String id = c.getString(TAG_ID);
 
                             if(!img.equals("null")) {
                                 String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
