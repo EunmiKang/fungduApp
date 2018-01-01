@@ -25,14 +25,23 @@ public class ExpertMainActivity extends AppCompatActivity {
         }
 
         /* 뷰페이저 연결 */
-        ExpertPagerAdapter mExpertPagerAdapter = new ExpertPagerAdapter(
+        PagerAdapter mExpertPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
+
+        mExpertPagerAdapter.addFragment(R.drawable.menu_home,new ExpertManualFragment());
+        mExpertPagerAdapter.addFragment(R.drawable.menu_newsfeed, new ExpertNewspeedFragment());
+        mExpertPagerAdapter.addFragment(R.drawable.menu_my, new ExpertPageFragment());
+
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_expert);
         mViewPager.setAdapter(mExpertPagerAdapter);
 
         /* 탭 설정 */
         TabLayout mTab = (TabLayout) findViewById(R.id.tabs);
         mTab.setupWithViewPager(mViewPager);
+
+        for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
+            mTab.getTabAt(i).setIcon(mExpertPagerAdapter.getFragmentInfo(i).getIconResId());
+        }
     }
 }

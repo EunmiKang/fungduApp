@@ -27,7 +27,7 @@ public class UserMainActivity extends AppCompatActivity {
         }
 
         /* 뷰페이저 연결 */
-        UserPagerAdapter mUserPagerAdapter = new UserPagerAdapter(
+        PagerAdapter mUserPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
         mUserPagerAdapter.addFragment(R.drawable.menu_home,new UserManualFragment());

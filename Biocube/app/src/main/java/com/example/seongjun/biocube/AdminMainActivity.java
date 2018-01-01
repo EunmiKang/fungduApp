@@ -26,14 +26,24 @@ public class AdminMainActivity extends AppCompatActivity {
         }
 
         /* 뷰페이저 연결 */
-        AdminPagerAdapter mAdminPagerAdapter = new AdminPagerAdapter(
+        PagerAdapter mAdminPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
+
+        mAdminPagerAdapter.addFragment(R.drawable.menu_home,new AdminManualFragment());
+        mAdminPagerAdapter.addFragment(R.drawable.menu_newsfeed, new AdminNewspeedFragment());
+        mAdminPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
+        mAdminPagerAdapter.addFragment(R.drawable.menu_my, new AdminPageFragment());
+
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_admin);
         mViewPager.setAdapter(mAdminPagerAdapter);
 
         /* 탭 설정 */
         TabLayout mTab = (TabLayout) findViewById(R.id.tabs);
         mTab.setupWithViewPager(mViewPager);
+
+        for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
+            mTab.getTabAt(i).setIcon(mAdminPagerAdapter.getFragmentInfo(i).getIconResId());
+        }
     }
 }
