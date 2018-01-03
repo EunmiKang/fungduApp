@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ public class DiaryManageAdapter extends BaseAdapter{
             holder.nicknameView = (TextView) view.findViewById(R.id.nickname_text);
             holder.plantImgView = (ImageView) view.findViewById(R.id.diaryimg_image);
             holder.contentView = (TextView) view.findViewById(R.id.content_text);
+            holder.deleteButtonView = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
 
             view.setTag(holder);
         } else {
@@ -74,6 +76,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         TextView nicknameView;
         ImageView plantImgView;
         TextView contentView;
+        ImageButton deleteButtonView;
     }
 
 }

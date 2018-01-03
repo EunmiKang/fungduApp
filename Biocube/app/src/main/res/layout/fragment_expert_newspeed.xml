@@ -16,8 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="Bio Cube"
-            android:textSize="30sp"/>
+            android:text="뉴스피드"
+            android:textSize="30sp" />
 
         <ImageButton
             android:id="@+id/imageButton2"
