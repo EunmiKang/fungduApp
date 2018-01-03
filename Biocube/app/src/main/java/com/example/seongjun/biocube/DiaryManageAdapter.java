@@ -21,7 +21,15 @@ public class DiaryManageAdapter extends BaseAdapter{
     List<DiaryItem> list;
     int authority;
     private LayoutInflater layoutInflater;
+    ImageButton deleteButton;
+    String nickname = "admin";
 
+    public DiaryManageAdapter(Context context, String nickname, List<DiaryItem> list, int authority) {
+        this.list = list;
+        layoutInflater = LayoutInflater.from(context);
+        this.authority = authority;
+        this.nickname = nickname;
+    }
     public DiaryManageAdapter(Context context, List<DiaryItem> list, int authority) {
         this.list = list;
         layoutInflater = LayoutInflater.from(context);
@@ -49,23 +57,27 @@ public class DiaryManageAdapter extends BaseAdapter{
 
         if (view == null) {
             view = layoutInflater.inflate(R.layout.custom_newspeed, null);
-            if(authority == 1) {
-                EditText cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
-                cmt_edit.setVisibility(View.GONE);
-            }
-            holder = new DiaryManageAdapter.ViewHolder();
+            deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
+
+            holder = new ViewHolder();
             holder.nicknameView = (TextView) view.findViewById(R.id.nickname_text);
             holder.plantImgView = (ImageView) view.findViewById(R.id.diaryimg_image);
             holder.contentView = (TextView) view.findViewById(R.id.content_text);
-            holder.deleteButtonView = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
+            holder.deleteButtonView = deleteButton;
 
             view.setTag(holder);
         } else {
-            holder = (DiaryManageAdapter.ViewHolder) view.getTag();
+            holder = (ViewHolder) view.getTag();
         }
-
-        DiaryItem diaryItem= this.list.get(position);
+        if(authority == 1) {
+            EditText cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
+            cmt_edit.setVisibility(View.GONE);
+        }
+        DiaryItem diaryItem = this.list.get(position);
         holder.nicknameView.setText(diaryItem.getNickname());
+        if(authority ==2 || (!nickname.equals("admin")&&!nickname.equals(diaryItem.getNickname()))){
+            deleteButton.setVisibility(View.GONE);
+        }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
         holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
         holder.contentView.setText(diaryItem.getContent());
 

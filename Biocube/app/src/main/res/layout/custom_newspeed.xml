@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/nickname_text"
-            android:layout_width="342dp"
+            android:layout_width="297dp"
             android:layout_height="match_parent"
             android:text="닉네임"
             android:textColor="@color/dark"

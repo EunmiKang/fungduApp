@@ -1,6 +1,5 @@
 package com.example.seongjun.biocube;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -22,8 +21,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,11 +45,11 @@ public class UserNewspeedFragment extends Fragment {
     private static final String TAG_CONTENT ="content";
     private static final String TAG_ID ="id";
 
-
     JSONArray diary = null;
     int authority;
     ListView list_newspeed;
     private TokenDBHelper helper;
+    String nickname;
 
     public UserNewspeedFragment() {
         // Required empty public constructor
@@ -83,10 +80,10 @@ public class UserNewspeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_newspeed, container, false);
+        View view = inflater.inflate(R.layout.fragment_newspeed, container, false);
 
         /* Toolbar 설정 */
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_user_newspeed);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_newspeed);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -96,8 +93,8 @@ public class UserNewspeedFragment extends Fragment {
 
 
         try {
-
             String[] userInfo = new GetUserInfo().execute(helper).get();
+            nickname = userInfo[0];
             if (userInfo[1].equals("1")) {
                 authority = 1;
             } else if (userInfo[1].equals("2")) {
@@ -216,7 +213,7 @@ public class UserNewspeedFragment extends Fragment {
 
             @Override
             protected void onPostExecute(List<DiaryItem> result){
-                list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), result, authority));
+                list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), nickname, result, authority));
             }
         }
         GetDataJSON g = new GetDataJSON();

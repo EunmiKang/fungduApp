@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.seongjun.biocube.UserNewspeedFragment"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_expert_newspeed"
+        android:id="@+id/toolbar_newspeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#52B94B"
@@ -16,20 +18,18 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="BioCube"
+            android:text="뉴스피드"
             android:textSize="30sp"
             android:textColor="#ffffff"/>
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/imageButton4"
             android:layout_width="68dp"
             android:layout_height="wrap_content"
             app:srcCompat="@android:drawable/ic_menu_search"
             android:layout_gravity="right"/>
 
     </android.support.v7.widget.Toolbar>
-
-
 
     <ListView
         android:id="@+id/list_newspeed"

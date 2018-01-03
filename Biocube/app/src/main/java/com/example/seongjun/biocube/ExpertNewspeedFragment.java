@@ -82,10 +82,10 @@ public class ExpertNewspeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_expert_newspeed, container, false);
+        View view = inflater.inflate(R.layout.fragment_newspeed, container, false);
 
         /* Toolbar 설정 */
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_expert_newspeed);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_newspeed);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
