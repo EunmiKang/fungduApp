@@ -10,7 +10,7 @@
         android:id="@+id/toolbar_cube"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
@@ -19,15 +19,17 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:text="큐브 제어"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:textColor="#ffffff"/>
 
         <Button
             android:id="@+id/btn_cube_regist"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="등록"
-            android:background="#ffffff"
-            android:layout_gravity="right"/>
+            android:background="#52B94B"
+            android:layout_gravity="right"
+            android:textColor="#ffffff"/>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout

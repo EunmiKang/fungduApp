@@ -8,7 +8,7 @@
         android:id="@+id/toolbar_expert_newspeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" >
 
@@ -16,8 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="Bio Cube"
-            android:textSize="30sp"/>
+            android:text="BioCube"
+            android:textSize="30sp"
+            android:textColor="#ffffff"/>
 
         <ImageButton
             android:id="@+id/imageButton2"

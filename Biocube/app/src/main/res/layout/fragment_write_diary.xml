@@ -10,7 +10,7 @@
         android:id="@+id/toolbar_diary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
@@ -20,15 +20,17 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:text="일지 작성"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:textColor="#ffffff"/>
 
         <Button
             android:id="@+id/btn_diary_register"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="완료"
-            android:background="#ffffff"
-            android:layout_gravity="right"/>
+            android:background="#52B94B"
+            android:layout_gravity="right"
+            android:textColor="#ffffff"/>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
