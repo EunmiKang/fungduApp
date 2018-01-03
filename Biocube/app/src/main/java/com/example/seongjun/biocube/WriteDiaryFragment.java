@@ -72,7 +72,7 @@ public class WriteDiaryFragment extends Fragment {
     private static final int CROP_FROM_CAMERA = 2;   //이미지를 크롭
 
     private Uri mImageCaptureUri;
-    private File photoFile = null;
+    private File photoFile = null, croppedFile;
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}; //권한 설정 변수
     private static final int MULTIPLE_PERMISSIONS = 101; //권한 동의 여부 문의 후 CallBack 함수에 쓰일 변수
 
@@ -191,6 +191,10 @@ public class WriteDiaryFragment extends Fragment {
                 }
             }
         });
+
+        /* 작성 완료 버튼 리스너 설정 */
+        Button registerBtn = (Button) view.findViewById(R.id.btn_diary_register);
+        registerBtn.setOnClickListener(diaryRegisterListener);
 
         return view;
     }
@@ -431,15 +435,15 @@ public class WriteDiaryFragment extends Fragment {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
-            File croppedFileName = null;
+            croppedFile = null;
             try {
-                croppedFileName = createImageFile();
+                croppedFile = createImageFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/BioCube/");
-            File tempFile = new File(folder.toString(), croppedFileName.getName());
+            File tempFile = new File(folder.toString(), croppedFile.getName());
 
             mImageCaptureUri = FileProvider.getUriForFile(getContext(),
                     "com.example.seongjun.biocube.provider", tempFile);
@@ -467,6 +471,14 @@ public class WriteDiaryFragment extends Fragment {
         }
     }
 
+    /* 다이어리 작성 버튼 클릭리스너 */
+    View.OnClickListener diaryRegisterListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
     /* 날짜 설정 관련 메소드들 */
     private String getTodayDate() {
         Date todayDate = new Date();
@@ -489,6 +501,5 @@ public class WriteDiaryFragment extends Fragment {
         StringBuffer sb = new StringBuffer();
         dateBtn.setText(sb.append(iYear+"년").append((iMonth+1) + "월").append(iDay+"일"));
     }
-
 
 }
