@@ -89,29 +89,30 @@
                     android:orientation="vertical"
                     android:layout_weight="1"
                     android:weightSum="1"
-                    android:layout_margin="5dp">
+                    android:layout_margin="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.1"
+                        android:layout_weight="0.2"
                         android:gravity="center"
-                        android:text="대기 온도"/>
+                        android:text="대기 온도"
+                        android:textSize="20sp"/>
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.5"
                         android:src="@drawable/measure_temp"/>
 
                     <TextView
                         android:id="@+id/text_temp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.3"
                         android:gravity="center"
                         android:text="몇 도"
-                        android:textSize="25sp"/>
+                        android:textSize="20sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,29 +121,30 @@
                     android:orientation="vertical"
                     android:layout_weight="1"
                     android:weightSum="1"
-                    android:layout_margin="5dp">
+                    android:layout_margin="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.1"
+                        android:layout_weight="0.2"
                         android:gravity="center"
-                        android:text="대기 습도"/>
+                        android:text="대기 습도"
+                        android:textSize="20sp"/>
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.5"
                         android:src="@drawable/measure_humi_air"/>
 
                     <TextView
                         android:id="@+id/text_humi_air"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.3"
                         android:gravity="center"
                         android:text="몇 도"
-                        android:textSize="25sp"/>
+                        android:textSize="20sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -151,29 +153,30 @@
                     android:orientation="vertical"
                     android:layout_weight="1"
                     android:weightSum="1"
-                    android:layout_margin="5dp">
+                    android:layout_margin="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.1"
+                        android:layout_weight="0.2"
                         android:gravity="center"
-                        android:text="토양 습도"/>
+                        android:text="토양 습도"
+                        android:textSize="20sp"/>
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.5"
                         android:src="@drawable/measure_humi_soil"/>
 
                     <TextView
                         android:id="@+id/text_humi_soil"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.3"
                         android:gravity="center"
                         android:text="몇 도"
-                        android:textSize="25sp"/>
+                        android:textSize="20sp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
