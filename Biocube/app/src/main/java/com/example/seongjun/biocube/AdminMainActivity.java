@@ -9,12 +9,16 @@ import android.os.Bundle;
 import java.util.concurrent.ExecutionException;
 
 public class AdminMainActivity extends AppCompatActivity {
+    private BackPressCloseHandler backPressCloseHandler;
+
     String adminID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         /* Id 가져오기 */
         try {
@@ -45,5 +49,11 @@ public class AdminMainActivity extends AppCompatActivity {
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             mTab.getTabAt(i).setIcon(mAdminPagerAdapter.getFragmentInfo(i).getIconResId());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 }
