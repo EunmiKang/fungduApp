@@ -25,59 +25,68 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#efefef"
         android:weightSum="1">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="116dp"
-            android:layout_weight="0.07"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
             android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="#ffffff"
             android:weightSum="1">
 
             <TextView
                 android:id="@+id/text_admin_nickname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
                 android:text="관리자"
-                android:textAlignment="center"
                 android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.16"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="4">
 
                 <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="106dp"
-                    android:layout_height="98dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp"
                     android:src="@drawable/logo_fungdu" />
 
                 <LinearLayout
-                    android:layout_width="91dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:layout_weight="1"
                     android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_admin_countCube"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.42"
-                        android:text="countCube"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.5"
+                        android:text="총 큐브 수"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/text_admin_cubeNum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.57"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.5"
+                        android:gravity="center" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
@@ -87,21 +96,21 @@
                         android:id="@+id/text_countExpert"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.42"
-                        android:text="countExpert"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.5"
+                        android:text="총 전문가 수"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/text_admin_expertNum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.58"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.5"
+                        android:gravity="center" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
@@ -111,16 +120,16 @@
                         android:id="@+id/text_countUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.42"
-                        android:text="countUser"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.5"
+                        android:text="총 일반 사용자 수"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/text_admin_userNum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.58"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.5"
+                        android:gravity="center" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -128,10 +137,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="274dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_marginTop="20dip"
-            android:layout_weight="0.51">
+            android:layout_margin="10dp"
+            android:layout_weight="0.6">
 
             <Button
                 android:id="@+id/btn_admin_manualManage"
