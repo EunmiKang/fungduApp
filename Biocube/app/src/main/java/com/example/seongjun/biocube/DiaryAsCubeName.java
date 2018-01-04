@@ -32,6 +32,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,11 @@ public class DiaryAsCubeName extends AppCompatActivity{
         cubename = intent.getExtras().getString("cubename");
         text_diary_cubename = (TextView) findViewById(R.id.text_diary_cubename);
         text_diary_cubename.setText(cubename);
+        try{
+            cubename = URLEncoder.encode(cubename,"UTF-8");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         list_diary_cubename = (ListView) findViewById(R.id.list_diary_cubename);
 
         try {

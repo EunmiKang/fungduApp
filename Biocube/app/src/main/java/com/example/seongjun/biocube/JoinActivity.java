@@ -31,6 +31,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -97,7 +98,12 @@ public class JoinActivity extends AppCompatActivity {
             String phone = editPhone.getText().toString();
             String job = editJob.getText().toString();
             String authority;
-
+            try{
+                nickname = URLEncoder.encode(nickname,"UTF-8");
+                job = URLEncoder.encode(job,"UTF-8");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
             if(rb_user.isChecked()){
                 authority = "1";
             }
