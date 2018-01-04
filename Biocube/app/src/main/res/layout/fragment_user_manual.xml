@@ -9,40 +9,38 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_user_manual"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="BioCube"
-            android:textSize="30sp"
-            android:textColor="#ffffff"/>
+            android:src="@drawable/biocube_logo_white_450x240"
+            android:layout_gravity="center"/>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="0.3">
+        android:layout_weight="0.4">
 
         <ImageView
             android:id="@+id/image_user_manuallogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/logo_fungdu"
-            android:layout_margin="20dp"/>
+            android:src="@drawable/mainpage_app_briefing"
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7">
+        android:layout_weight="0.6">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager_user_manual"

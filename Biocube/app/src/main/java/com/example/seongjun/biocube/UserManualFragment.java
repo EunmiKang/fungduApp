@@ -61,7 +61,7 @@ public class UserManualFragment extends Fragment  {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
+        //actionBar.setDisplayShowTitleEnabled(false);
 
         logo = view.findViewById(R.id.image_user_manuallogo);   // 로고 이미지 뷰
         pager = (ViewPager) view.findViewById(R.id.pager_user_manual);
