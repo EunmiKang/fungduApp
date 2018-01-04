@@ -47,6 +47,7 @@ public class ExpertNewspeedFragment extends Fragment {
     private static final String TAG_IMG = "img";
     private static final String TAG_CONTENT ="content";
     private static final String TAG_ID ="id";
+    private static final String TAG_DIARYNO = "diaryNo";
 
     JSONArray diary = null;
     int authority;
@@ -181,6 +182,7 @@ public class ExpertNewspeedFragment extends Fragment {
                             String img = c.getString(TAG_IMG);
                             String content = c.getString(TAG_CONTENT);
                             String id = c.getString(TAG_ID);
+                            int diaryNo = c.getInt(TAG_DIARYNO);
 
                             if(!img.equals("null")) {
                                 String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
@@ -192,11 +194,11 @@ public class ExpertNewspeedFragment extends Fragment {
                                 InputStream inStream = http.getInputStream();
                                 //스트림에서 받은 데이터를 비트맵 변환
                                 plantImg = BitmapFactory.decodeStream(inStream);
-                                diarylist.add(new DiaryItem(nickname,plantImg,content));
+                                diarylist.add(new DiaryItem(diaryNo,nickname,plantImg,content));
                             }
                             else{
                                 plantImg = null;
-                                diarylist.add(new DiaryItem(nickname,plantImg,content));
+                                diarylist.add(new DiaryItem(diaryNo,nickname,plantImg,content));
                             }
 
                         }

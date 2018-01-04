@@ -237,15 +237,6 @@ public class PopCubeRegist extends AppCompatActivity {
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-//            Intent intent;
-//            if(result == 0) {   //회원가입 성공
-//                intent = new Intent(JoinActivity.this, LoginActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//            } else {    //실패
-//                Toast.makeText(getApplicationContext(), "실패하셨어요", Toast.LENGTH_LONG).show();
-//            }
             try {
                 if(dbUpResult.equals("1")){
                     Toast.makeText(getApplicationContext(), "성공" , Toast.LENGTH_SHORT).show();

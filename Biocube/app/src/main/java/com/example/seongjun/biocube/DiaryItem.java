@@ -9,25 +9,21 @@ import android.widget.ImageButton;
 
 public class DiaryItem {
 
+    private int diaryNo;
     private String nickname;
     private Bitmap plantImg;
     private String content;
-    private ImageButton deleteButton;
 
-    public DiaryItem(String nickname, Bitmap plantImg, String content) {
+
+    public DiaryItem(int diaryNo, String nickname, Bitmap plantImg, String content) {
+        this.diaryNo = diaryNo;
         this.nickname = nickname;
         this.plantImg = plantImg;
         this.content = content;
 
     }
-    public DiaryItem(String nickname, ImageButton deleteButton, Bitmap plantImg, String content) {
-        this.nickname = nickname;
-        this.deleteButton = deleteButton;
-        this.plantImg = plantImg;
-        this.content = content;
-
-    }
-    public DiaryItem(String nickname, String content){
+    public DiaryItem(int diaryNo, String nickname, String content){
+        this.diaryNo = diaryNo;
         this.nickname = nickname;
         this.content = content;
     }
@@ -52,10 +48,10 @@ public class DiaryItem {
     public void setContent(String content) {
         this.content = content;
     }
-//    public ImageButton getDeleteButton() {
-//        return deleteButton;
-//    }
-//    public void setDeleteButton(ImageButton deleteButton) {
-//        this.deleteButton = deleteButton;
-//    }
+    public int getDiaryNo() {
+        return diaryNo;
+    }
+    public void setDiaryNo(int diaryNo) {
+        this.diaryNo = diaryNo;
+    }
 }

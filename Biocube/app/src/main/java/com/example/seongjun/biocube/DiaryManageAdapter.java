@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -57,13 +58,14 @@ public class DiaryManageAdapter extends BaseAdapter{
 
         if (view == null) {
             view = layoutInflater.inflate(R.layout.custom_newspeed, null);
-            deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
 
             holder = new ViewHolder();
             holder.nicknameView = (TextView) view.findViewById(R.id.nickname_text);
             holder.plantImgView = (ImageView) view.findViewById(R.id.diaryimg_image);
             holder.contentView = (TextView) view.findViewById(R.id.content_text);
-            holder.deleteButtonView = deleteButton;
+            holder.deleteButtonView = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
+            holder.idTestView = (TextView) view.findViewById(R.id.idTest);
+            deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
 
             view.setTag(holder);
         } else {
@@ -78,9 +80,17 @@ public class DiaryManageAdapter extends BaseAdapter{
         if(authority ==2 || (!nickname.equals("admin")&&!nickname.equals(diaryItem.getNickname()))){
             deleteButton.setVisibility(View.GONE);
         }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
+//        holder.deleteButtonView.setId(diaryItem.getDiaryNo());
         holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
         holder.contentView.setText(diaryItem.getContent());
 
+
+//        deleteButton.setOnClickListener(new ImageButton.OnClickListener(){//삭제버튼 클릭시
+//
+//            @Override
+//            public void onClick(View v) {
+//            }
+//        });
         return view;
     }
 
@@ -89,6 +99,8 @@ public class DiaryManageAdapter extends BaseAdapter{
         ImageView plantImgView;
         TextView contentView;
         ImageButton deleteButtonView;
+
+        TextView idTestView;
     }
 
 }

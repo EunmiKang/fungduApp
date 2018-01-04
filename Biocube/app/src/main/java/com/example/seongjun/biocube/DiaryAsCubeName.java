@@ -53,6 +53,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
     private static final String TAG_NICKNAME = "nickname";
     private static final String TAG_IMG = "img";
     private static final String TAG_CONTENT ="content";
+    private static final String TAG_DIARYNO = "diaryNo";
 
     JSONArray diary = null;
 
@@ -145,17 +146,24 @@ public class DiaryAsCubeName extends AppCompatActivity{
                             String nickname = c.getString(TAG_NICKNAME);
                             String img = c.getString(TAG_IMG);
                             String content = c.getString(TAG_CONTENT);
+                            int diaryNo = c.getInt(TAG_DIARYNO);
 
-                            String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" +img ;
-                            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-                            url = new URL(readURL);
-                            http = (HttpURLConnection) url.openConnection();
-                            http.connect();
-                            //스트림생성
-                            InputStream inStream = http.getInputStream();
-                            //스트림에서 받은 데이터를 비트맵 변환
-                            plantImg = BitmapFactory.decodeStream(inStream);
-                            diarylist.add(new DiaryItem(nickname,plantImg,content));
+                            if(!img.equals("null")) {
+                                String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
+                                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                                url = new URL(readURL);
+                                http = (HttpURLConnection) url.openConnection();
+                                http.connect();
+                                //스트림생성
+                                InputStream inStream = http.getInputStream();
+                                //스트림에서 받은 데이터를 비트맵 변환
+                                plantImg = BitmapFactory.decodeStream(inStream);
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content));
+                            }
+                            else{
+                                plantImg = null;
+                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content));
+                            }
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();

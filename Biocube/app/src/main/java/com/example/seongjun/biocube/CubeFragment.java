@@ -43,6 +43,9 @@ public class CubeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     String id;
     Spinner spinner_cubeName;
+    Button connect;
+    Button btn_test;
+
     public CubeFragment() {
         // Required empty public constructor
     }
@@ -75,6 +78,9 @@ public class CubeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cube, container, false);
         spinner_cubeName = (Spinner) view.findViewById(R.id.spinner_cube_cubeselect);
+        view.findViewById(R.id.btn_connect).setOnClickListener(connectClickListener);
+        //test
+        view.findViewById(R.id.btn_test).setOnClickListener(sendTestClickListener);
 
         try {
             id = new GetId().execute(getActivity()).get();
@@ -121,6 +127,20 @@ public class CubeFragment extends Fragment {
         return view;
     }
 
+    Button.OnClickListener connectClickListener= new Button.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    //test
+    Button.OnClickListener sendTestClickListener = new Button.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
