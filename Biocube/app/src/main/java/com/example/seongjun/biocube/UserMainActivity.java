@@ -10,12 +10,16 @@ import android.support.v7.widget.Toolbar;
 import java.util.concurrent.ExecutionException;
 
 public class UserMainActivity extends AppCompatActivity {
+    private BackPressCloseHandler backPressCloseHandler;
+
     String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         /* Id 가져오기 */
         try {
@@ -47,5 +51,11 @@ public class UserMainActivity extends AppCompatActivity {
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             mTab.getTabAt(i).setIcon(mUserPagerAdapter.getFragmentInfo(i).getIconResId());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 }

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/biocube_logo_white_450x240"
-            android:layout_margin="50dp"/>
+            android:layout_margin="55dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -50,7 +50,7 @@
         <ImageButton
             android:id="@+id/loginBtn"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@drawable/login"
             android:layout_marginTop="10dp"/>
@@ -58,7 +58,7 @@
         <ImageButton
             android:id="@+id/joinBtn"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@drawable/regist"
             android:layout_marginTop="20dp"/>

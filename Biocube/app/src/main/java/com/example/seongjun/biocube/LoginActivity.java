@@ -247,8 +247,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if(result == 2) {    //전문가
                     intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         }
