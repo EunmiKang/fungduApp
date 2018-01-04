@@ -18,7 +18,7 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/logo_fungdu"
+            android:src="@drawable/biocube_logo_white_450x240"
             android:layout_margin="30dp"/>
     </LinearLayout>
 
