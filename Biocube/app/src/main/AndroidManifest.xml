@@ -35,7 +35,8 @@
         <activity android:name=".CubeListActivity" />
         <activity android:name=".DiaryAsCubeName" />
         <activity android:name=".ChangeInfoActivity" />
-        <activity android:name=".PopQuestion" />
+        <activity android:name=".PopQuestion" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".PopCheckCube" android:theme="@android:style/Theme.Dialog"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
