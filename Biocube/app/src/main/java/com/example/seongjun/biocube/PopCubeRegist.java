@@ -59,12 +59,15 @@ public class PopCubeRegist extends AppCompatActivity {
 
 
     }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+//        switch (requestCode){
+//            case 1:
+//                finish();
+//                break;
+//        }
+//    }
     public void mOnClose(View v){
-        //데이터 전달하기
-//        Intent intent = new Intent();
-//        intent.putExtra("result", "Close Popup");
-//        setResult(RESULT_OK, intent);
-
         cubeName = edit_cubeName.getText().toString();
         try{
             cubeName = URLEncoder.encode(cubeName,"UTF-8");
@@ -81,21 +84,6 @@ public class PopCubeRegist extends AppCompatActivity {
         //액티비티(팝업) 닫기
         finish();
     }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        //바깥레이어 클릭시 안닫히게
-//        if(event.getAction()==MotionEvent.ACTION_OUTSIDE){
-//            return false;
-//        }
-//        return true;
-//    }
-
-//    @Override
-//    public void onBackPressed() {
-//        //안드로이드 백버튼 막기
-//        return;
-//    }
 
     public class settingSpinner extends AsyncTask<Object,Object,Integer> {
 
@@ -240,6 +228,7 @@ public class PopCubeRegist extends AppCompatActivity {
             try {
                 if(dbUpResult.equals("1")){
                     Toast.makeText(getApplicationContext(), "성공" , Toast.LENGTH_SHORT).show();
+
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "실패" , Toast.LENGTH_SHORT).show();

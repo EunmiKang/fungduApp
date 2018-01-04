@@ -18,7 +18,7 @@
             android:layout_height="53dp"
             android:background="#52b94b"
             android:gravity="center"
-            android:text="문의"
+            android:text="BioCube"
             android:textColor="#fff"
             android:textSize="20sp" />
     </LinearLayout>
@@ -37,24 +37,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="#ffffff"
         android:gravity="center"
-        android:text="궁금한 사항은 아래 전화 번호로 연락 부탁 드립니다
-010-****-****"
-        android:textSize="25sp"
-        android:background="#ffffff"/>
+        android:padding="10dp"
+        android:text="선택하신 디바이스가 원하시는 디바이스가 맞습니까?"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:weightSum="1">
 
         <Button
+            android:id="@+id/btn_checkNo"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:background="@android:color/holo_green_light"
             android:gravity="center"
-            android:onClick="mOnClose"
+            android:onClick="mCheckNo"
+            android:padding="16dp"
+            android:text="취소"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_checkYes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@android:color/holo_green_light"
+            android:gravity="center"
+            android:onClick="mCheckYes"
             android:padding="16dp"
             android:text="확인"
             android:textColor="#FFFFFF"

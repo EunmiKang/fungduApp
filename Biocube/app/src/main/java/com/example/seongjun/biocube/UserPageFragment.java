@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -202,8 +203,7 @@ public class UserPageFragment extends Fragment {
     public void mOnPopupClick(){
         //데이터 담아서 팝업(액티비티) 호출
         Intent intent = new Intent(getActivity(), PopQuestion.class);
-        intent.putExtra("data", "Test Popup");
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     public class getDiaryNum extends AsyncTask<Object,Object,Integer> {
