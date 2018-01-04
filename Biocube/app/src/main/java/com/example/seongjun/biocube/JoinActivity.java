@@ -61,13 +61,12 @@ public class JoinActivity extends AppCompatActivity {
         findViewById(R.id.radio_user).setOnClickListener(radioUserClickListener);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_join);
-        toolbar.setTitle("Bio Cube");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);    //커스터마이징 하기 위해 필요
         //actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);  //뒤로가기 버튼
+        //actionBar.setDisplayHomeAsUpEnabled(true);  //뒤로가기 버튼
     }
 
     @Override
