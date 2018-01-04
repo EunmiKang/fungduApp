@@ -209,11 +209,12 @@
                     android:layout_weight="0.3"
                     android:weightSum="1">
 
-                    <ImageView
+                    <ImageButton
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.8"
-                        android:src="@drawable/control_light_set"/>
+                        android:layout_margin="10dp"
+                        android:background="@drawable/control_light_set"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -245,11 +246,12 @@
                     android:layout_weight="0.3"
                     android:weightSum="1">
 
-                    <ImageView
+                    <ImageButton
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.8"
-                        android:src="@drawable/control_motor"/>
+                        android:layout_margin="10dp"
+                        android:background="@drawable/control_motor"/>
 
                     <TextView
                         android:layout_width="match_parent"
