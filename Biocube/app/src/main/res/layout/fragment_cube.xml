@@ -213,11 +213,12 @@
                     android:weightSum="1">
 
                     <ImageButton
+                        android:id="@+id/btn_led"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.8"
                         android:layout_margin="10dp"
-                        android:background="@drawable/control_light_set"/>
+                        android:layout_weight="0.8"
+                        android:background="@drawable/control_light_set" />
 
                     <TextView
                         android:layout_width="match_parent"
