@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -58,7 +59,6 @@ public class CubeRegister extends AppCompatActivity {
     //
     List<BluetoothDevice> bluetoothDevices;
 
-    int selectDevice;
 
 
 //새로운소스
@@ -83,6 +83,7 @@ public class CubeRegister extends AppCompatActivity {
     byte[] readBuffer;
     int readBufferPosition;
 
+
     //새로운소스 끝
 
 
@@ -99,7 +100,6 @@ public class CubeRegister extends AppCompatActivity {
         //Adapter
         dataDevice = new ArrayList<>();
         bluetoothDevices = new ArrayList<>();
-        selectDevice = -1;
         adapterDevice = new
                 SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name", "address"}, new int[]{android.R.id.text1, android.R.id.text2});
         listDevice.setAdapter(adapterDevice);
@@ -110,6 +110,11 @@ public class CubeRegister extends AppCompatActivity {
         searchFilter.addAction(BluetoothDevice.ACTION_FOUND); //BluetoothDevice.ACTION_FOUND : 블루투스 디바이스 찾음
         searchFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED); //BluetoothAdapter.ACTION_DISCOVERY_FINISHED : 블루투스 검색 종료
         registerReceiver(mBluetoothSearchReceiver, searchFilter);
+
+        IntentFilter stateFilter = new IntentFilter();
+        stateFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);//블루투스 연결됨
+        stateFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);//블루투스 끊김\
+        registerReceiver(mBluetoothStateReceiver, stateFilter);
 
         //블루투스 지원 유무 확인
         checkBluetooth();
@@ -258,6 +263,7 @@ public class CubeRegister extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unregisterReceiver(mBluetoothSearchReceiver);
+        unregisterReceiver(mBluetoothStateReceiver);
         try{
             mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
             mInputStream.close();
@@ -327,7 +333,6 @@ public class CubeRegister extends AppCompatActivity {
             // 이 메소드가 성공하면 스마트폰과 페어링 된 디바이스간 통신 채널에 대응하는 BluetoothSocket 오브젝트를 리턴함.
             mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
             mSocket.connect(); // 소켓이 생성 되면 connect() 함수를 호출함으로써 두기기의 연결은 완료된다.
-
             // 데이터 송수신을 위한 스트림 얻기.
             // BluetoothSocket 오브젝트는 두개의 Stream을 제공한다.
             // 1. 데이터를 보내기 위한 OutputStrem
@@ -345,9 +350,24 @@ public class CubeRegister extends AppCompatActivity {
         }
     }
 
+    BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {//블루투스 연결되었을 때 Toast 띄움.
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch(action){
+                case BluetoothDevice.ACTION_ACL_CONNECTED:
+                    Toast.makeText(context, "연결됨", Toast.LENGTH_SHORT).show();
+                    break;
+                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                    Toast.makeText(context, "연결실패", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
 
     //데이터 전송
-    void sendData(String msg) {
+   void sendData(String msg) {
         msg += mStrDelimiter;  // 문자열 종료표시 (\n)
         try{
             // getBytes() : String을 byte로 변환

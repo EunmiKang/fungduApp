@@ -1,5 +1,7 @@
 package com.example.seongjun.biocube;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
@@ -16,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,6 +50,10 @@ public class CubeFragment extends Fragment {
     String id;
     Spinner spinner_cubeName;
     CubeRegister mCubeRegister = new CubeRegister();
+
+    TextView text_temper;
+    TextView text_humi_air;
+    TextView text_humi_soil;
 
     public CubeFragment() {
         // Required empty public constructor
@@ -81,6 +88,10 @@ public class CubeFragment extends Fragment {
         spinner_cubeName = (Spinner) view.findViewById(R.id.spinner_cube_cubeselect);
         view.findViewById(R.id.btn_connect).setOnClickListener(connectClickListener);
         view.findViewById(R.id.btn_led).setOnClickListener(setLedClickListener);
+        view.findViewById(R.id.btn_pump).setOnClickListener(setPumpClickListener);
+        text_temper = (TextView) view.findViewById(R.id.text_temp);
+        text_humi_air = (TextView) view.findViewById(R.id.text_humi_air);
+        text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
 
         try {
             id = new GetId().execute(getActivity()).get();
@@ -131,6 +142,14 @@ public class CubeFragment extends Fragment {
         @Override
         public void onClick(View v) {
             mCubeRegister.sendData("hello");
+        }
+    };
+
+    ImageButton.OnClickListener setPumpClickListener = new ImageButton.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            mCubeRegister.sendData("pump");
         }
     };
 
@@ -225,6 +244,10 @@ public class CubeFragment extends Fragment {
             String deviceNum = result;
             mCubeRegister.checkBluetooth();
             mCubeRegister.connectToSelectedDevice(deviceNum, 1);
+            Intent intent = new Intent();
+            intent.setAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            mCubeRegister.mBluetoothStateReceiver.onReceive(getContext(),intent);
+            mCubeRegister.mWorkerThread.start();
         }
     }
 }

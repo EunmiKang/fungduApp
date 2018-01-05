@@ -126,7 +126,7 @@
                             android:layout_weight="0.3"
                             android:gravity="center"
                             android:text="몇 도"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -277,11 +277,12 @@
                         android:weightSum="1">
 
                         <ImageButton
+                            android:id="@+id/btn_pump"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="0.75"
                             android:layout_margin="5dp"
-                            android:background="@drawable/control_motor"/>
+                            android:layout_weight="0.75"
+                            android:background="@drawable/control_motor" />
 
                         <TextView
                             android:layout_width="match_parent"
