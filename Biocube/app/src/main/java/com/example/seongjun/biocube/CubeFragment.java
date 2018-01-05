@@ -54,6 +54,10 @@ public class CubeFragment extends Fragment {
     TextView text_temper;
     TextView text_humi_air;
     TextView text_humi_soil;
+    TextView text_motor;
+    TextView text_led;
+    int state_motor = 0;
+//    int state_led = 0;
 
     public CubeFragment() {
         // Required empty public constructor
@@ -92,6 +96,8 @@ public class CubeFragment extends Fragment {
         text_temper = (TextView) view.findViewById(R.id.text_temp);
         text_humi_air = (TextView) view.findViewById(R.id.text_humi_air);
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
+        text_motor = (TextView) view.findViewById(R.id.text_motor);
+        text_led = (TextView) view.findViewById(R.id.text_led);
 
         try {
             id = new GetId().execute(getActivity()).get();
@@ -150,6 +156,7 @@ public class CubeFragment extends Fragment {
         @Override
         public void onClick(View v) {
             mCubeRegister.sendData("pump");
+//                text_motor.setText("MOTOR ON");
         }
     };
 
@@ -244,10 +251,16 @@ public class CubeFragment extends Fragment {
             String deviceNum = result;
             mCubeRegister.checkBluetooth();
             mCubeRegister.connectToSelectedDevice(deviceNum, 1);
-            Intent intent = new Intent();
-            intent.setAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-            mCubeRegister.mBluetoothStateReceiver.onReceive(getContext(),intent);
-            mCubeRegister.mWorkerThread.start();
+//            Intent intent = new Intent();
+//            if(mCubeRegister.connectToSelectedDevice(deviceNum, 1)){
+//                intent.setAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+//            }
+//            else{
+//                intent.setAction("connectfail");
+//            }
+//            mCubeRegister.mBluetoothStateReceiver.onReceive(getContext(),intent);
+//            mCubeRegister.beginListenForData();
+//            mCubeRegister.mWorkerThread.start();
         }
     }
 }

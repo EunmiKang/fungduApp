@@ -243,11 +243,12 @@
                             android:background="@drawable/control_light_set" />
 
                         <TextView
+                            android:id="@+id/text_led"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.25"
-                            android:text="LED"
-                            android:gravity="center"/>
+                            android:gravity="center"
+                            android:text="LED" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -285,11 +286,12 @@
                             android:background="@drawable/control_motor" />
 
                         <TextView
+                            android:id="@+id/text_motor"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.25"
-                            android:text="모터"
-                            android:gravity="center"/>
+                            android:gravity="center"
+                            android:text="모터" />
                     </LinearLayout>
 
                     <LinearLayout

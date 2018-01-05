@@ -17,7 +17,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -83,10 +86,11 @@ public class CubeRegister extends AppCompatActivity {
     byte[] readBuffer;
     int readBufferPosition;
 
+    String stateMotor = "";
+    String stateLed = "";
 
-    //새로운소스 끝
 
-
+    TextView text_motor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +117,13 @@ public class CubeRegister extends AppCompatActivity {
 
         IntentFilter stateFilter = new IntentFilter();
         stateFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);//블루투스 연결됨
-        stateFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);//블루투스 끊김\
+        stateFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);//블루투스 끊김
         registerReceiver(mBluetoothStateReceiver, stateFilter);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.fragment_cube, null);
+
+        text_motor = (TextView) view.findViewById(R.id.text_motor);
 
         //블루투스 지원 유무 확인
         checkBluetooth();
@@ -316,8 +325,9 @@ public class CubeRegister extends AppCompatActivity {
         return selectedDevice;
     }
 
-    void connectToSelectedDevice(String selectedDevice, int flag) {
+    boolean connectToSelectedDevice(String selectedDevice, int flag) {
         // BluetoothDevice 원격 블루투스 기기를 나타냄.
+
         if(flag == 0) {//디바이스 이름 받았을 때
             mRemoteDevice = getDeviceFromBondedList(selectedDevice);
         }
@@ -343,10 +353,11 @@ public class CubeRegister extends AppCompatActivity {
             // 데이터 수신 준비.
             beginListenForData();
 
+            return true;
 
         }catch(Exception e) { // 블루투스 연결 중 오류 발생
             Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-            finish();  // App 종료
+            return false;  // App 종료
         }
     }
 
@@ -359,6 +370,9 @@ public class CubeRegister extends AppCompatActivity {
                     Toast.makeText(context, "연결됨", Toast.LENGTH_SHORT).show();
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                    Toast.makeText(context, "연결해제", Toast.LENGTH_SHORT).show();
+                    break;
+                case "connectfail":
                     Toast.makeText(context, "연결실패", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -418,6 +432,8 @@ public class CubeRegister extends AppCompatActivity {
                                         public void run() {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+//                                            text_motor.setText(data);
+
                                         }
 
                                     });
@@ -436,10 +452,16 @@ public class CubeRegister extends AppCompatActivity {
             }
 
         });
-
+        mWorkerThread.start();
     }
 
 
     //새로운 소스적용 끝
 
+    void setStateMotor(String stateMotor){
+        this.stateMotor = stateMotor;
+    }
+    String getStateMotor(){
+        return stateMotor;
+    }
 }
