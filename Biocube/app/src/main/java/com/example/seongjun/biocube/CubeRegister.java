@@ -108,6 +108,33 @@ public class CubeRegister extends AppCompatActivity {
                 SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name", "address"}, new int[]{android.R.id.text1, android.R.id.text2});
         listDevice.setAdapter(adapterDevice);
 
+        // 블루투스 권한 요청(마쉬멜로우 버전 이상)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(CubeRegister.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(CubeRegister.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(CubeRegister.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, BLUETOOTH_REQUEST_CODE);
+
+                    // BLUETOOTH_REQUEST_CODE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            }
+            else {
+                Toast.makeText(CubeRegister.this, "들어옴", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
         //리시버 등록
         IntentFilter searchFilter = new IntentFilter();
         searchFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED); //BluetoothAdapter.ACTION_DISCOVERY_STARTED : 블루투스 검색 시작
@@ -126,7 +153,7 @@ public class CubeRegister extends AppCompatActivity {
         text_motor = (TextView) view.findViewById(R.id.text_motor);
 
         //블루투스 지원 유무 확인
-        checkBluetooth();
+        checkBluetooth(this);
 
         listDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -141,6 +168,7 @@ public class CubeRegister extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -191,15 +219,16 @@ public class CubeRegister extends AppCompatActivity {
         }
     }
 
+
     //새로운 소스 적용
-    void checkBluetooth() {
+    void checkBluetooth(Context context) {
         /**
          * getDefaultAdapter() : 만일 폰에 블루투스 모듈이 없으면 null 을 리턴한다.
          이경우 Toast를 사용해 에러메시지를 표시하고 앱을 종료한다.
          */
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null ) {  // 블루투스 미지원
-            Toast.makeText(getApplicationContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
             finish();  // 앱종료
         }
         else { // 블루투스 지원
@@ -207,7 +236,7 @@ public class CubeRegister extends AppCompatActivity {
              *               true : 지원 ,  false : 미지원
              */
             if(!mBluetoothAdapter.isEnabled()) { // 블루투스 지원하며 비활성 상태인 경우.
-                Toast.makeText(getApplicationContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 // REQUEST_ENABLE_BT : 블루투스 활성 상태의 변경 결과를 App 으로 알려줄 때 식별자로 사용(0이상)
                 /**

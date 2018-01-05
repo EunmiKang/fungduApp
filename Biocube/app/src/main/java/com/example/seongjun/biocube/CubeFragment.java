@@ -249,7 +249,7 @@ public class CubeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             String deviceNum = result;
-            mCubeRegister.checkBluetooth();
+            mCubeRegister.checkBluetooth(getContext());
             mCubeRegister.connectToSelectedDevice(deviceNum, 1);
 //            Intent intent = new Intent();
 //            if(mCubeRegister.connectToSelectedDevice(deviceNum, 1)){
