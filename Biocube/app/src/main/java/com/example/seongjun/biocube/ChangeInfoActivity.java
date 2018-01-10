@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -96,15 +97,25 @@ public class ChangeInfoActivity extends AppCompatActivity {
     };
 
     public void settingData(){
-        if(!changeNick.getText().toString().equals("")){
-            setData = "nickname = '" +changeNick.getText().toString() +"',";
-            changenickname = changeNick.getText().toString();
+        String changejob="";
+        if(!(changenickname = changeNick.getText().toString()).equals("")){
+            try{
+                changenickname = URLEncoder.encode(changenickname,"UTF-8");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            setData = "nickname = '" + changenickname +"',";
         }
         if(!changePW.getText().toString().equals("")){
             setData = setData + "pw = '"+changePW.getText().toString() + "',";
         }
-        if(!changeJob.getText().toString().equals("")){
-            setData = setData + "job = '" + changeJob.getText().toString() + "',";
+        if(!(changejob = changeJob.getText().toString()).equals("")){
+            try{
+                changejob = URLEncoder.encode(changejob,"UTF-8");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            setData = setData + "job = '" + changejob + "',";
         }
         if(!changePhone.getText().toString().equals("")){
             setData = setData + "phone = '" + changePhone.getText().toString() + "',";
@@ -127,7 +138,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
                 http.setRequestMethod("POST");
                 http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-
 
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("userID").append("=").append(id).append("&");
@@ -166,12 +176,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
             if(result == 1 ){
                 Toast.makeText(getApplicationContext(), "변경에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                Intent intent;
-                intent = new Intent(ChangeInfoActivity.this, ExpertMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
+                finish();
             }
             else{
                 Toast.makeText(getApplicationContext(), "변경에 실패하였습니다.", Toast.LENGTH_SHORT).show();

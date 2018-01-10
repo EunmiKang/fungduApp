@@ -26,10 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserMainActivity" />
+        <activity android:name=".UserMainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".JoinActivity" />
-        <activity android:name=".AdminMainActivity" />
-        <activity android:name=".ExpertMainActivity" />
+        <activity android:name=".AdminMainActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ExpertMainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".CubeRegister" />
         <activity android:name=".PopCubeRegist" />
         <activity android:name=".CubeListActivity" />
