@@ -319,7 +319,7 @@ public class CubeFragment extends Fragment {
                         if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
-                            mInputStream.read(packetBytes);
+                            mBluetooth.mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
@@ -337,9 +337,12 @@ public class CubeFragment extends Fragment {
                                         public void run() {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
-                                            setStateMotor(data);
-                                            text_motor.setText(stateMotor);
-
+                                            if(data.equals("PUMPON")){
+                                                text_motor.setText("ON");
+                                            }
+                                            else if(data.equals("PUMPOFF")){
+                                                text_motor.setText("OFF");
+                                            }
                                         }
 
                                     });
