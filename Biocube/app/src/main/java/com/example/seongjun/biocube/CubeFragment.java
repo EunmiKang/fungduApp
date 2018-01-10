@@ -50,6 +50,7 @@ public class CubeFragment extends Fragment {
     String id;
     Spinner spinner_cubeName;
     CubeRegister mCubeRegister = new CubeRegister();
+    Bluetooth mBluetooth = new Bluetooth();
 
     TextView text_temper;
     TextView text_humi_air;
@@ -147,7 +148,9 @@ public class CubeFragment extends Fragment {
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-            mCubeRegister.sendData("hello");
+//            mCubeRegister.sendData("hello");
+            mBluetooth.sendData("hello");
+
         }
     };
 
@@ -155,7 +158,8 @@ public class CubeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            mCubeRegister.sendData("pump");
+//            mCubeRegister.sendData("pump");
+            mBluetooth.sendData("pump");
 //                text_motor.setText("MOTOR ON");
         }
     };
@@ -250,7 +254,7 @@ public class CubeFragment extends Fragment {
         protected void onPostExecute(String result){
             String deviceNum = result;
             mCubeRegister.checkBluetooth(getContext());
-            mCubeRegister.connectToSelectedDevice(deviceNum, 1);
+            mBluetooth.connectToSelectedDevice(deviceNum, 1, mCubeRegister.mDevices);
 //            Intent intent = new Intent();
 //            if(mCubeRegister.connectToSelectedDevice(deviceNum, 1)){
 //                intent.setAction(BluetoothDevice.ACTION_ACL_CONNECTED);
