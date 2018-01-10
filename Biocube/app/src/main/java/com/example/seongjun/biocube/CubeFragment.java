@@ -280,6 +280,7 @@ public class CubeFragment extends Fragment {
             BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
             if(mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
                 beginListenForData();
+                mBluetooth.sendData("connect");
             }else{
                 Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
             }
@@ -337,11 +338,15 @@ public class CubeFragment extends Fragment {
                                         public void run() {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
-                                            if(data.equals("PUMPON")){
+                                            String[] datas = data.split(",");
+                                            if(datas[0].equals("PUMPON")){
                                                 text_motor.setText("ON");
                                             }
-                                            else if(data.equals("PUMPOFF")){
+                                            else if(datas[0].equals("PUMPOFF")){
                                                 text_motor.setText("OFF");
+                                            }
+                                            else if(datas[0].equals("TEMPER")){
+                                                text_temper.setText(datas[1]);
                                             }
                                         }
 
