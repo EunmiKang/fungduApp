@@ -75,7 +75,7 @@
                 android:layout_height="0dp"
                 android:orientation="vertical"
                 android:layout_weight="0.4"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:weightSum="1">
 
                 <TextView
@@ -203,7 +203,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:orientation="vertical"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:weightSum="0.95">
 
                 <TextView
@@ -234,21 +234,28 @@
                         android:padding="5dp"
                         android:weightSum="1">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.2"
+                            android:gravity="center"
+                            android:text="LED"
+                            android:textSize="12sp"/>
+
                         <ImageButton
                             android:id="@+id/btn_led"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="5dp"
-                            android:layout_weight="0.75"
+                            android:layout_weight="0.6"
                             android:background="@drawable/control_light_set" />
 
                         <TextView
                             android:id="@+id/text_led"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="LED" />
+                            android:layout_weight="0.2"
+                            android:gravity="center" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -277,21 +284,28 @@
                         android:padding="5dp"
                         android:weightSum="1">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.2"
+                            android:gravity="center"
+                            android:text="모터"
+                            android:textSize="12sp"/>
+
                         <ImageButton
                             android:id="@+id/btn_pump"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="5dp"
-                            android:layout_weight="0.75"
+                            android:layout_weight="0.6"
                             android:background="@drawable/control_motor" />
 
                         <TextView
                             android:id="@+id/text_motor"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="모터" />
+                            android:layout_weight="0.2"
+                            android:gravity="center" />
                     </LinearLayout>
 
                     <LinearLayout
