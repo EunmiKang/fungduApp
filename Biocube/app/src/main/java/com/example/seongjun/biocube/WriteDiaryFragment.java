@@ -473,100 +473,24 @@ public class WriteDiaryFragment extends Fragment {
     View.OnClickListener diaryRegisterListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new uploadToServer().execute();
-        }
-    };
-
-    /* 사진 서버에 업로드용 쓰레드 */
-    class uploadToServer extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... params) {
-            String result = "false";
-            // 기타 필요한 내용
-            String urlString = "http://fungdu0624.phps.kr/biocube/uploadImage.php";
-            String attachmentName = "uploadfile";
+            String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
+            String attachmentName = "uploadfile_for_diary";
             String attachmentFileName = croppedFile.getName();
-            //String uploadImgPath = "http://fungdu0624.phps.kr/biocube/users/"+((UserMainActivity)getActivity()).userID+"/"+attachmentFileName;
             String uploadImgPath = "users/" + ((UserMainActivity)getActivity()).userID + "/";
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-            String boundary =  "*****";
-            int maxBufferSize = 1 * 1024 * 1024;
-
             try {
-                FileInputStream mFileInputStream = new FileInputStream(mCurrentPhotoPath);
-
-                URL connectUrl = new URL(urlString);
-
-                // open connection
-                HttpURLConnection con = (HttpURLConnection) connectUrl.openConnection();
-                con.setDoInput(true);
-                con.setDoOutput(true);
-                con.setUseCaches(false);
-                con.setRequestMethod("POST");
-                con.setRequestProperty("Connection", "Keep-Alive");
-                con.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                con.setRequestProperty("uploadfile", mCurrentPhotoPath);
-
-                // write data
-                DataOutputStream dos = new DataOutputStream(con.getOutputStream());
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"file_path\"" + lineEnd + lineEnd + uploadImgPath + lineEnd);
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + attachmentFileName + "\"" + lineEnd);
-                dos.writeBytes(lineEnd);
-
-                // create a buffer of  maximum size
-                int bytesAvailable = mFileInputStream.available();
-                int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                byte[] buffer = new byte[bufferSize];
-
-                // read file and write it into form...
-                int bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
-
-                while (bytesRead > 0) {
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = mFileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
+                if(new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
+                    Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
                 }
-
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-                // Responses from the server (code and message)
-                int serverResponseCode = con.getResponseCode();
-                String serverResponseMessage = con.getResponseMessage();
-                Log.i("uploadFile", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
-
-                if(serverResponseCode == 200){
-                    result = "success";
-                }
-
-                //close the streams //
-                mFileInputStream.close();
-                dos.flush();
-                dos.close();
-
-            } catch (IOException e) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            return result;
+
         }
-
-        @Override
-        protected void onPostExecute(String content) {
-            if (content.equals("success")) {
-                Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
-            };
-        }
-    }
-
-
-
+    };
 
     /* 날짜 설정 관련 메소드들 */
     private String getTodayDate() {
