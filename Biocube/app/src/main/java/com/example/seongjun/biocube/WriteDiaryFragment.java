@@ -31,16 +31,24 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,7 +77,7 @@ public class WriteDiaryFragment extends Fragment {
     private static final int CROP_FROM_CAMERA = 2;   //이미지를 크롭
 
     private Uri mImageCaptureUri;
-    private File photoFile = null, croppedFile;
+    private File photoFile = null, croppedFile= null;
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}; //권한 설정 변수
     private static final int MULTIPLE_PERMISSIONS = 101; //권한 동의 여부 문의 후 CallBack 함수에 쓰일 변수
 
@@ -80,8 +88,10 @@ public class WriteDiaryFragment extends Fragment {
 
     private Spinner cubeSpinner, filterSpinner;
 
-    Button dateBtn;
+    private Button dateBtn;
     private int iYear, iMonth, iDay;
+
+    private EditText contentText;
 
     public WriteDiaryFragment() {
         // Required empty public constructor
@@ -188,6 +198,9 @@ public class WriteDiaryFragment extends Fragment {
                 }
             }
         });
+
+        /* 내용 view */
+        contentText = view.findViewById(R.id.text_diary_content);
 
         /* 작성 완료 버튼 리스너 설정 */
         Button registerBtn = (Button) view.findViewById(R.id.btn_diary_register);
@@ -473,30 +486,137 @@ public class WriteDiaryFragment extends Fragment {
     View.OnClickListener diaryRegisterListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
-            String attachmentName = "uploadfile_for_diary";
-            String attachmentFileName = croppedFile.getName();
-            String uploadImgPath = "users/" + ((UserMainActivity)getActivity()).userID + "/";
-            try {
-                if(new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
-                    Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
+
+            /* 서버에 이미지 올리기 */
+            if(croppedFile != null) {
+                String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
+                String attachmentName = "uploadfile_for_diary";
+                String attachmentFileName = croppedFile.getName();
+                String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
+                // 서버에 이미지 업로드
+                try {
+                    if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
+                        Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
+            }
+
+            /* 다이어리 작성 내용 디비에 저장하기 */
+            String cube_name = cubeSpinner.getSelectedItem().toString();
+            String image_path = "NULL";
+            if(croppedFile != null) {
+                image_path = croppedFile.getName();
+            }
+            String date = dateBtn.getText().toString();
+            String filter = filterSpinner.getSelectedItem().toString();
+            String content = contentText.getText().toString();
+            try{
+                cube_name = URLEncoder.encode(cube_name,"UTF-8");
+                date = URLEncoder.encode(date, "UTF-8");
+                filter = URLEncoder.encode(filter, "UTF-8");
+                content = URLEncoder.encode(content, "UTF-8");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            // 디비에 업로드
+            try {
+                new UploadDiary().execute(cube_name, image_path, date, filter, content).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
         }
     };
+
+    /* 다이어리 업로드용 쓰레드 */
+    public class UploadDiary extends AsyncTask<String,Object,Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            boolean result = false;
+            try {
+             /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/uploadDiary.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+            /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버로 값 전송 */
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("userID").append("=").append(((UserMainActivity)getActivity()).userID).append("&");
+                buffer.append("cube_name").append("=").append(params[0]).append("&");
+                buffer.append("img_name").append("=").append(params[1]).append("&");
+                buffer.append("date").append("=").append(params[2]).append("&");
+                buffer.append("filter").append("=").append(params[3]).append("&");
+                buffer.append("content").append("=").append(params[4]);
+
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+            /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String str = reader.readLine();
+
+                if(str.equals("success")){  // 업로드 성공
+                    result = true;
+                }
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        public void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            Intent intent;
+            if(result) {   // 업로드 성공
+                Toast.makeText(getContext(), "일지 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                /* 뷰들 초기화 */
+                cubeSpinner.setSelection(0);
+                croppedFile = null;
+                iv_UserPhoto.setImageDrawable(null);
+                dateBtn.setText(getTodayDate());
+                filterSpinner.setSelection(0);
+                contentText.setText("");
+            } else {    // 업로드 실패
+                Toast.makeText(getContext(), "일지 작성 실패", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     /* 날짜 설정 관련 메소드들 */
     private String getTodayDate() {
         Date todayDate = new Date();
 
-        SimpleDateFormat todayDateFormat = new SimpleDateFormat("yyyy년MM월dd일");
+        String month = "M", day = "d";
+        if(todayDate.getMonth() > 9) {
+            month += "M";
+        }
+        if(todayDate.getDate() > 9) {
+            day += "d";
+        }
+        SimpleDateFormat todayDateFormat = new SimpleDateFormat("yyyy년 " + month + "월 " + day + "일");
         return todayDateFormat.format(todayDate);
     }
 
@@ -512,7 +632,7 @@ public class WriteDiaryFragment extends Fragment {
 
     private void updateDate() {
         StringBuffer sb = new StringBuffer();
-        dateBtn.setText(sb.append(iYear+"년").append((iMonth+1) + "월").append(iDay+"일"));
+        dateBtn.setText(sb.append(iYear+"년 ").append((iMonth+1) + "월 ").append(iDay+"일"));
     }
 
 }
