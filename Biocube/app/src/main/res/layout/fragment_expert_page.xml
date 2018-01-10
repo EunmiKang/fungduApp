@@ -55,11 +55,12 @@
                 android:weightSum="0.9">
 
                 <ImageView
+                    android:id="@+id/imageView3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_margin="20dp"
                     android:layout_weight="0.4"
-                    android:src="@drawable/tutor"
-                    android:layout_margin="20dp"/>
+                    android:src="@drawable/tutor" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -90,48 +91,126 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="0.6">
 
-            <Button
-                android:id="@+id/btn_expert_myComment"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="mycommnet"
-                android:background="#ffffff"/>
+                android:layout_height="0dp"
+                android:layout_margin="3dp"
+                android:layout_weight="0.25"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <Button
-                android:id="@+id/btn_expert_changeInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="changeinfo"
-                android:background="#ffffff"/>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@drawable/mypage_comment" />
 
-            <Button
-                android:id="@+id/btn_expert_question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="question"
-                android:background="#ffffff"/>
+                <Button
+                    android:id="@+id/btn_expert_myComment"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.7"
+                    android:background="#ffffff"
+                    android:gravity="left|center"
+                    android:text="My Comment"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_expert_logout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="logout"
-                android:background="#ffffff"/>
+                android:layout_height="0dp"
+                android:layout_margin="3dp"
+                android:layout_weight="0.25"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@drawable/mypage_info" />
+
+                <Button
+                    android:id="@+id/btn_expert_changeInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.7"
+                    android:background="#ffffff"
+                    android:gravity="left|center"
+                    android:text="회원 정보 변경"
+                    android:textSize="15sp"
+                    style="?android:attr/borderlessButtonStyle"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="3dp"
+                android:layout_weight="0.25"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@drawable/mypage_question" />
+
+                <Button
+                    android:id="@+id/btn_expert_question"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.7"
+                    android:background="#ffffff"
+                    android:gravity="left|center"
+                    android:text="문의"
+                    android:textSize="15sp"
+                    style="?android:attr/borderlessButtonStyle"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="3dp"
+                android:layout_weight="0.25"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@drawable/mypage_logout" />
+
+                <Button
+                    android:id="@+id/btn_expert_logout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.7"
+                    android:background="#ffffff"
+                    android:gravity="left|center"
+                    android:text="로그아웃"
+                    android:textSize="15sp"
+                    style="?android:attr/borderlessButtonStyle"/>
+            </LinearLayout>
 
         </LinearLayout>
 
