@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.LayoutInflaterCompat;
@@ -92,6 +93,7 @@ public class CubeRegister extends AppCompatActivity {
 
     TextView text_motor;
 
+    Bluetooth mBluetooth = new Bluetooth();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +147,7 @@ public class CubeRegister extends AppCompatActivity {
         IntentFilter stateFilter = new IntentFilter();
         stateFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);//블루투스 연결됨
         stateFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);//블루투스 끊김
-        registerReceiver(mBluetoothStateReceiver, stateFilter);
+        registerReceiver(mBluetooth.mBluetoothStateReceiver, stateFilter);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fragment_cube, null);
@@ -160,11 +162,18 @@ public class CubeRegister extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 BluetoothDevice device = bluetoothDevices.get(position);
-                connectToSelectedDevice(device.getName(), 0);//name을 보낼때는 0
+                if(mBluetooth.connectToSelectedDevice(device.getName(), 0, mDevices)){//name을 보낼때는 0
+                    beginListenForData();
+                    mOnPopupClick(device);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                }
                 //데이터 보내는부분
-                sendData("check");
-                mOnPopupClick(device);
-
+                if(!mBluetooth.sendData("check")){
+                    Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
+                    finish();  // App 종료
+                }
             }
         });
     }
@@ -301,7 +310,7 @@ public class CubeRegister extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unregisterReceiver(mBluetoothSearchReceiver);
-        unregisterReceiver(mBluetoothStateReceiver);
+        unregisterReceiver(mBluetooth.mBluetoothStateReceiver);
         try{
             mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
             mInputStream.close();
@@ -324,103 +333,6 @@ public class CubeRegister extends AppCompatActivity {
         mBluetoothAdapter.startDiscovery();
     }
 
-    BluetoothDevice getDeviceFromBondedList(String name) {
-        // BluetoothDevice : 페어링 된 기기 목록을 얻어옴.
-        BluetoothDevice selectedDevice = null;
-        // getBondedDevices 함수가 반환하는 페어링 된 기기 목록은 Set 형식이며,
-        // Set 형식에서는 n 번째 원소를 얻어오는 방법이 없으므로 주어진 이름과 비교해서 찾는다.
-        for(BluetoothDevice device : mDevices) {
-            // getName() : 단말기의 Bluetooth Adapter 이름을 반환
-            if(name.equals(device.getName())) {
-                selectedDevice = device;
-                break;
-            }
-        }
-        return selectedDevice;
-    }
-
-    BluetoothDevice getDeviceFromBondedListForMAC(String selectedDeviceMAC) {//맥주소로 디바이스 찾음
-        // BluetoothDevice : 페어링 된 기기 목록을 얻어옴.
-        BluetoothDevice selectedDevice = null;
-        // getBondedDevices 함수가 반환하는 페어링 된 기기 목록은 Set 형식이며,
-        // Set 형식에서는 n 번째 원소를 얻어오는 방법이 없으므로 주어진 이름과 비교해서 찾는다.
-        for(BluetoothDevice device : mDevices) {
-            // getName() : 단말기의 Bluetooth Adapter 이름을 반환
-            if(selectedDeviceMAC.equals(device.getAddress())) {
-                selectedDevice = device;
-                break;
-            }
-        }
-        return selectedDevice;
-    }
-
-    boolean connectToSelectedDevice(String selectedDevice, int flag) {
-        // BluetoothDevice 원격 블루투스 기기를 나타냄.
-
-        if(flag == 0) {//디바이스 이름 받았을 때
-            mRemoteDevice = getDeviceFromBondedList(selectedDevice);
-        }
-        else{//디바이스 MAC주소를 받았을 때
-            mRemoteDevice = getDeviceFromBondedListForMAC(selectedDevice);
-        }
-        // java.util.UUID.fromString : 자바에서 중복되지 않는 Unique 키 생성.
-        UUID uuid = java.util.UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-
-        try {
-            // 소켓 생성, RFCOMM 채널을 통한 연결.
-            // createRfcommSocketToServiceRecord(uuid) : 이 함수를 사용하여 원격 블루투스 장치와 통신할 수 있는 소켓을 생성함.
-            // 이 메소드가 성공하면 스마트폰과 페어링 된 디바이스간 통신 채널에 대응하는 BluetoothSocket 오브젝트를 리턴함.
-            mSocket = mRemoteDevice.createRfcommSocketToServiceRecord(uuid);
-            mSocket.connect(); // 소켓이 생성 되면 connect() 함수를 호출함으로써 두기기의 연결은 완료된다.
-            // 데이터 송수신을 위한 스트림 얻기.
-            // BluetoothSocket 오브젝트는 두개의 Stream을 제공한다.
-            // 1. 데이터를 보내기 위한 OutputStrem
-            // 2. 데이터를 받기 위한 InputStream
-            mOutputStream = mSocket.getOutputStream();
-            mInputStream = mSocket.getInputStream();
-
-            // 데이터 수신 준비.
-            beginListenForData();
-
-            return true;
-
-        }catch(Exception e) { // 블루투스 연결 중 오류 발생
-            Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-            return false;  // App 종료
-        }
-    }
-
-    BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {//블루투스 연결되었을 때 Toast 띄움.
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            switch(action){
-                case BluetoothDevice.ACTION_ACL_CONNECTED:
-                    Toast.makeText(context, "연결됨", Toast.LENGTH_SHORT).show();
-                    break;
-                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                    Toast.makeText(context, "연결해제", Toast.LENGTH_SHORT).show();
-                    break;
-                case "connectfail":
-                    Toast.makeText(context, "연결실패", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-
-    //데이터 전송
-   void sendData(String msg) {
-        msg += mStrDelimiter;  // 문자열 종료표시 (\n)
-        try{
-            // getBytes() : String을 byte로 변환
-            // OutputStream.write : 데이터를 쓸때는 write(byte[]) 메소드를 사용함. byte[] 안에 있는 데이터를 한번에 기록해 준다.
-            mOutputStream.write(msg.getBytes());  // 문자열 전송.
-        }catch(Exception e) {  // 문자열 전송 도중 오류가 발생한 경우
-            Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
-            finish();  // App 종료
-        }
-    }
     //데이터 수신
     void beginListenForData() {
         final Handler handler = new Handler();
@@ -474,7 +386,7 @@ public class CubeRegister extends AppCompatActivity {
                         }
 
                     } catch (Exception e) {    // 데이터 수신 중 오류 발생.
-                        Toast.makeText(getApplicationContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
                         finish();            // App 종료.
                     }
                 }
