@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eeeeee"
     android:orientation="vertical"
     android:layout_width="300dp"
@@ -8,18 +9,16 @@
 
     <!-- 타이틀바 -->
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
-            android:background="#ff7a00"
-            android:gravity="center"
-            android:text="큐브등록"
-            android:textColor="#fff"
-            android:textSize="20sp" />
+            android:layout_height="57dp"
+            android:background="#52b94b"
+            app:srcCompat="@drawable/biocube_logo_white_450x240" />
     </LinearLayout>
     <!-- //end 타이틀바 -->
 
@@ -29,15 +28,17 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/edit_cubeName"
-            android:textSize="15sp"
-            android:textColor="#000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
             android:alpha="0.87"
             android:gravity="center"
-            android:layout_marginBottom="3dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:hint="큐브이름"
+            android:textColor="#000"
+            android:textSize="15sp" />
     </LinearLayout>
     <!-- Notice -->
 
@@ -63,12 +64,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:background="#00000000"
+            android:background="@android:color/holo_green_light"
             android:gravity="center"
             android:onClick="mOnClose"
             android:padding="16dp"
             android:text="확인"
-            android:textColor="#ff7a00"
+            android:textColor="#FFFFFF"
             android:textSize="15sp" />
     </LinearLayout>
     <!--// 닫기 버튼 -->

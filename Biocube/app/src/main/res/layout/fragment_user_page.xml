@@ -118,46 +118,81 @@
             android:layout_margin="10dp"
             android:layout_weight="0.6">
 
-            <Button
-                android:id="@+id/btn_user_myCube"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="myCube"
-                android:background="#ffffff"/>
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_user_changeInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="changeinfo"
-                android:background="#ffffff"/>
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@drawable/mypage_mycube" />
 
-            <Button
-                android:id="@+id/btn_user_question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="question"
-                android:background="#ffffff"/>
+                <Button
+                    android:id="@+id/btn_user_myCube"
+                    android:layout_width="287dp"
+                    android:layout_height="78dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="#ffffff"
+                    android:text="myCube" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_user_logout"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="logout"
-                android:background="#ffffff"/>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_user_changeInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="changeinfo"
+                    android:background="#ffffff"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_user_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="question"
+                    android:background="#ffffff"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_user_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="logout"
+                    android:background="#ffffff"/>
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

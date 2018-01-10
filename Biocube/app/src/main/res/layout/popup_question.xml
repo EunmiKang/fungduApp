@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eeeeee"
     android:orientation="vertical"
     android:layout_width="300dp"
@@ -12,15 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView3"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="57dp"
             android:background="#52b94b"
-            android:gravity="center"
-            android:text="문의"
-            android:textColor="#fff"
-            android:textSize="20sp" />
+            app:srcCompat="@drawable/biocube_logo_white_450x240" />
     </LinearLayout>
     <!-- //end 타이틀바 -->
 
