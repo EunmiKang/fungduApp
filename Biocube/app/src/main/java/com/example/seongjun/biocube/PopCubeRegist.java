@@ -233,8 +233,6 @@ public class PopCubeRegist extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(), "실패" , Toast.LENGTH_SHORT).show();
                 }
-
-
                 //선택한 디바이스 페어링 요청
                 Method method = device.getClass().getMethod("createBond", (Class[]) null);
                 method.invoke(device, (Object[]) null);

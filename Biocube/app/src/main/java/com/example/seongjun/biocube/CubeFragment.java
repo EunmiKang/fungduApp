@@ -7,6 +7,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 
@@ -51,6 +54,9 @@ public class CubeFragment extends Fragment {
     Spinner spinner_cubeName;
     CubeRegister mCubeRegister = new CubeRegister();
     Bluetooth mBluetooth = new Bluetooth();
+    Set<BluetoothDevice> mDevices;
+    BluetoothAdapter mBluetoothAdapter;
+    int mPariedDeviceCount = 0;
 
     TextView text_temper;
     TextView text_humi_air;
@@ -58,7 +64,14 @@ public class CubeFragment extends Fragment {
     TextView text_motor;
     TextView text_led;
     int state_motor = 0;
+
+    private int readBufferPosition;
+    byte[] readBuffer;
+    Thread mWorkerThread = null;
+    InputStream mInputStream = null;
+    char mCharDelimiter =  '\n';
 //    int state_led = 0;
+    String stateMotor = "";
 
     public CubeFragment() {
         // Required empty public constructor
@@ -99,6 +112,7 @@ public class CubeFragment extends Fragment {
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
         text_motor = (TextView) view.findViewById(R.id.text_motor);
         text_led = (TextView) view.findViewById(R.id.text_led);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         try {
             id = new GetId().execute(getActivity()).get();
@@ -148,7 +162,6 @@ public class CubeFragment extends Fragment {
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-//            mCubeRegister.sendData("hello");
             mBluetooth.sendData("hello");
 
         }
@@ -158,11 +171,12 @@ public class CubeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-//            mCubeRegister.sendData("pump");
             mBluetooth.sendData("pump");
+//            text_motor.setText(mCubeRegister.getStateMotor());
 //                text_motor.setText("MOTOR ON");
         }
     };
+
 
     Button.OnClickListener connectClickListener= new Button.OnClickListener(){
         @Override
@@ -253,8 +267,23 @@ public class CubeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             String deviceNum = result;
-            mCubeRegister.checkBluetooth(getContext());
-            mBluetooth.connectToSelectedDevice(deviceNum, 1, mCubeRegister.mDevices);
+            switch (mBluetooth.checkBluetooth(getContext())){
+                case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                    break;
+                case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                    break;
+                case 2: mDevices = mBluetoothAdapter.getBondedDevices();
+                mPariedDeviceCount = mDevices.size();
+            }
+            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+            if(mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+                beginListenForData();
+            }else{
+                Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+            }
+
 //            Intent intent = new Intent();
 //            if(mCubeRegister.connectToSelectedDevice(deviceNum, 1)){
 //                intent.setAction(BluetoothDevice.ACTION_ACL_CONNECTED);
@@ -267,4 +296,76 @@ public class CubeFragment extends Fragment {
 //            mCubeRegister.mWorkerThread.start();
         }
     }
+
+    //데이터 수신
+    void beginListenForData() {
+        final Handler handler = new Handler();
+
+        readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
+        readBuffer = new byte[1024];            // 수신 버퍼.
+
+        // 문자열 수신 쓰레드.
+        mWorkerThread = new Thread(new Runnable()
+        {
+            @Override
+            public void run() {
+                // interrupt() 메소드를 이용 스레드를 종료시키는 예제이다.
+                // interrupt() 메소드는 하던 일을 멈추는 메소드이다.
+                // isInterrupted() 메소드를 사용하여 멈추었을 경우 반복문을 나가서 스레드가 종료하게 된다.
+                while(!Thread.currentThread().isInterrupted()) {
+                    try {
+                        // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
+                        int byteAvailable = mBluetooth.mInputStream.available();   // 수신 데이터 확인
+                        if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
+                            byte[] packetBytes = new byte[byteAvailable];
+                            // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
+                            mInputStream.read(packetBytes);
+                            for(int i=0; i<byteAvailable; i++) {
+                                byte b = packetBytes[i];
+                                if(b == mCharDelimiter) {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
+                                    //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+
+                                    handler.post(new Runnable(){
+                                        // 수신된 문자열 데이터에 대한 처리.
+                                        @Override
+                                        public void run() {
+                                            // mStrDelimiter = '\n';
+//                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+                                            setStateMotor(data);
+                                            text_motor.setText(stateMotor);
+
+                                        }
+
+                                    });
+                                }
+                                else {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+
+                    } catch (Exception e) {    // 데이터 수신 중 오류 발생.
+//                        Toast.makeText(getContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
+//                        getActivity().finish();            // App 종료.
+                    }
+                }
+            }
+
+        });
+        mWorkerThread.start();
+    }
+
+    void setStateMotor(String stateMotor){
+        this.stateMotor = stateMotor;
+    }
+    String getStateMotor(){
+        return stateMotor;
+    }
+
 }

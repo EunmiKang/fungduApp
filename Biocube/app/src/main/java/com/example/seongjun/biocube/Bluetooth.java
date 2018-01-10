@@ -46,20 +46,20 @@ public class Bluetooth {
     int readBufferPosition;
 
 
-    BluetoothDevice getDeviceFromBondedList(String name) {
-        // BluetoothDevice : 페어링 된 기기 목록을 얻어옴.
-        BluetoothDevice selectedDevice = null;
-        // getBondedDevices 함수가 반환하는 페어링 된 기기 목록은 Set 형식이며,
-        // Set 형식에서는 n 번째 원소를 얻어오는 방법이 없으므로 주어진 이름과 비교해서 찾는다.
-        for(BluetoothDevice device : mDevices) {
-            // getName() : 단말기의 Bluetooth Adapter 이름을 반환
-            if(name.equals(device.getName())) {
-                selectedDevice = device;
-                break;
-            }
-        }
-        return selectedDevice;
-    }
+//    BluetoothDevice getDeviceFromBondedList(String name) {
+//        // BluetoothDevice : 페어링 된 기기 목록을 얻어옴.
+//        BluetoothDevice selectedDevice = null;
+//        // getBondedDevices 함수가 반환하는 페어링 된 기기 목록은 Set 형식이며,
+//        // Set 형식에서는 n 번째 원소를 얻어오는 방법이 없으므로 주어진 이름과 비교해서 찾는다.
+//        for(BluetoothDevice device : mDevices) {
+//            // getName() : 단말기의 Bluetooth Adapter 이름을 반환
+//            if(name.equals(device.getName())) {
+//                selectedDevice = device;
+//                break;
+//            }
+//        }
+//        return selectedDevice;
+//    }
 
     BluetoothDevice getDeviceFromBondedListForMAC(String selectedDeviceMAC) {//맥주소로 디바이스 찾음
         // BluetoothDevice : 페어링 된 기기 목록을 얻어옴.
@@ -76,15 +76,13 @@ public class Bluetooth {
         return selectedDevice;
     }
 
-    boolean connectToSelectedDevice(String selectedDevice, int flag, Set<BluetoothDevice> mDevices) {
+    boolean connectToSelectedDevice(String selectedDevice, Set<BluetoothDevice> mDevices, BluetoothDevice device) {
         // BluetoothDevice 원격 블루투스 기기를 나타냄.
         this.mDevices = mDevices;
         mPariedDeviceCount = mDevices.size();
-        if(flag == 0) {//디바이스 이름 받았을 때
-            mRemoteDevice = getDeviceFromBondedList(selectedDevice);
-        }
-        else{//디바이스 MAC주소를 받았을 때
-            mRemoteDevice = getDeviceFromBondedListForMAC(selectedDevice);
+        mRemoteDevice = getDeviceFromBondedListForMAC(selectedDevice);
+        if(mRemoteDevice == null){
+            mRemoteDevice = device;
         }
         // java.util.UUID.fromString : 자바에서 중복되지 않는 Unique 키 생성.
         UUID uuid = java.util.UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
@@ -101,9 +99,6 @@ public class Bluetooth {
             // 2. 데이터를 받기 위한 InputStream
             mOutputStream = mSocket.getOutputStream();
             mInputStream = mSocket.getInputStream();
-
-            // 데이터 수신 준비.
-//            beginListenForData();
 
             return true;
 
@@ -144,6 +139,37 @@ public class Bluetooth {
 //            Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
 //            finish();  // App 종료
             return false;
+        }
+    }
+
+    int checkBluetooth(Context context) {
+        /**
+         * getDefaultAdapter() : 만일 폰에 블루투스 모듈이 없으면 null 을 리턴한다.
+         이경우 Toast를 사용해 에러메시지를 표시하고 앱을 종료한다.
+         */
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter == null ) {  // 블루투스 미지원
+            return 0;
+        }
+        else { // 블루투스 지원
+            /** isEnable() : 블루투스 모듈이 활성화 되었는지 확인.
+             *               true : 지원 ,  false : 미지원
+             */
+            if(!mBluetoothAdapter.isEnabled()) { // 블루투스 지원하며 비활성 상태인 경우.
+
+                // REQUEST_ENABLE_BT : 블루투스 활성 상태의 변경 결과를 App 으로 알려줄 때 식별자로 사용(0이상)
+                /**
+                 startActivityForResult 함수 호출후 다이얼로그가 나타남
+                 "예" 를 선택하면 시스템의 블루투스 장치를 활성화 시키고
+                 "아니오" 를 선택하면 비활성화 상태를 유지 한다.
+                 선택 결과는 onActivityResult 콜백 함수에서 확인할 수 있다.
+                 */
+                return 1;
+            }
+            else { // 블루투스 지원하며 활성 상태인 경우.
+                return 2;
+//                selectDevice();
+            }
         }
     }
     //새로운 소스적용 끝

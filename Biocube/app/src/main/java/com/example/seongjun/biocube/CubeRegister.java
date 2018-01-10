@@ -86,6 +86,7 @@ public class CubeRegister extends AppCompatActivity {
     Thread mWorkerThread = null;
     byte[] readBuffer;
     int readBufferPosition;
+//    CubeFragment mCubeFragment = new CubeFragment();
 
     String stateMotor = "";
     String stateLed = "";
@@ -162,7 +163,7 @@ public class CubeRegister extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 BluetoothDevice device = bluetoothDevices.get(position);
-                if(mBluetooth.connectToSelectedDevice(device.getName(), 0, mDevices)){//name을 보낼때는 0
+                if(mBluetooth.connectToSelectedDevice(device.getAddress(), mDevices, device)){
                     beginListenForData();
                     mOnPopupClick(device);
                 }
@@ -373,7 +374,8 @@ public class CubeRegister extends AppCompatActivity {
                                         public void run() {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
-//                                            text_motor.setText(data);
+                                            text_motor.setText(data);
+                                            setStateMotor(data);
 
                                         }
 
