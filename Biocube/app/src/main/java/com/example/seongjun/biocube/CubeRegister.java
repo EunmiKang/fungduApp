@@ -334,11 +334,4 @@ public class CubeRegister extends AppCompatActivity {
     }
 
     //새로운 소스적용 끝
-
-    void setStateMotor(String stateMotor){
-        this.stateMotor = stateMotor;
-    }
-    String getStateMotor(){
-        return stateMotor;
-    }
 }

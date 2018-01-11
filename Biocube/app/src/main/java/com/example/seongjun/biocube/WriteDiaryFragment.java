@@ -4,9 +4,14 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -16,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -54,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static android.app.Activity.RESULT_OK;
@@ -92,6 +99,20 @@ public class WriteDiaryFragment extends Fragment {
     private int iYear, iMonth, iDay;
 
     private EditText contentText;
+    private Button btn_sensor;
+
+    Bluetooth mBluetooth = new Bluetooth();
+    CubeFragment mCubeFragment = new CubeFragment();
+
+    private int readBufferPosition;
+    byte[] readBuffer;
+    Thread mWorkerThread = null;
+    InputStream mInputStream = null;
+    char mCharDelimiter =  '\n';
+
+    Set<BluetoothDevice> mDevices;
+    BluetoothAdapter mBluetoothAdapter;
+    int mPariedDeviceCount = 0;
 
     public WriteDiaryFragment() {
         // Required empty public constructor
@@ -130,6 +151,8 @@ public class WriteDiaryFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
+        btn_sensor = (Button) view.findViewById(R.id.btn_sensor);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         /* 큐브, 필터 spinner 설정 */
         String[] cubeList, filterList;
@@ -174,6 +197,20 @@ public class WriteDiaryFragment extends Fragment {
             }
         });
 
+        btn_sensor.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String selectedCube = cubeSpinner.getSelectedItem().toString();
+                try{
+                    selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+                new GetDevice().execute(selectedCube);
+
+            }
+        });
+
         /* 날짜 버튼 설정 */
         dateBtn = view.findViewById(R.id.btn_date);
         dateBtn.setText(getTodayDate());
@@ -208,7 +245,6 @@ public class WriteDiaryFragment extends Fragment {
 
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -633,6 +669,143 @@ public class WriteDiaryFragment extends Fragment {
     private void updateDate() {
         StringBuffer sb = new StringBuffer();
         dateBtn.setText(sb.append(iYear+"년 ").append((iMonth+1) + "월 ").append(iDay+"일"));
+    }
+
+    class GetDevice extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String device= "";
+            try {
+         /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/getdevice.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+        /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+        /* 서버로 값 전송 */
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("user_id").append("=").append(((UserMainActivity) getActivity()).userID).append("&");
+                buffer.append("cubename").append("=").append(params[0].toString());
+
+
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+        /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                device = reader.readLine();
+
+
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return device;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            String deviceNum = result;
+            switch (mBluetooth.checkBluetooth(getContext())){
+                case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                    break;
+                case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                    break;
+                case 2: mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
+                    mPariedDeviceCount = mDevices.size();
+            }
+            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+            if(mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+                beginListenForData();
+                mBluetooth.sendData("connect");
+            }else{
+                Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+            }
+            try{
+                mBluetooth.mSocket.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    //데이터 수신
+    void beginListenForData() {
+        final Handler handler = new Handler();
+
+        readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
+        readBuffer = new byte[1024];            // 수신 버퍼.
+
+        // 문자열 수신 쓰레드.
+        mWorkerThread = new Thread(new Runnable()
+        {
+            @Override
+            public void run() {
+                // interrupt() 메소드를 이용 스레드를 종료시키는 예제이다.
+                // interrupt() 메소드는 하던 일을 멈추는 메소드이다.
+                // isInterrupted() 메소드를 사용하여 멈추었을 경우 반복문을 나가서 스레드가 종료하게 된다.
+                while(!Thread.currentThread().isInterrupted()) {
+                    try {
+                        // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
+                        int byteAvailable = mBluetooth.mInputStream.available();   // 수신 데이터 확인
+                        if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
+                            byte[] packetBytes = new byte[byteAvailable];
+                            // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
+                            mBluetooth.mInputStream.read(packetBytes);
+                            for(int i=0; i<byteAvailable; i++) {
+                                byte b = packetBytes[i];
+                                if(b == mCharDelimiter) {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
+                                    //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+
+                                    handler.post(new Runnable(){
+                                        // 수신된 문자열 데이터에 대한 처리.
+                                        @Override
+                                        public void run() {
+                                            // mStrDelimiter = '\n';
+//                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+                                            String[] datas = data.split(",");
+                                            contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] +"\n" +contentText.getText().toString());
+
+                                        }
+
+                                    });
+                                }
+                                else {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+
+                    } catch (Exception e) {    // 데이터 수신 중 오류 발생.
+//                        Toast.makeText(getContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
+//                        getActivity().finish();            // App 종료.
+                    }
+                }
+            }
+
+        });
+        mWorkerThread.start();
     }
 
 }

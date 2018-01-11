@@ -201,8 +201,14 @@ public class CubeFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        try{
+            mBluetooth.mSocket.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         super.onDetach();
         mListener = null;
+
     }
 
     /**
@@ -347,6 +353,7 @@ public class CubeFragment extends Fragment {
                                             }
                                             else if(datas[0].equals("TEMPER")){
                                                 text_temper.setText(datas[1]);
+                                                text_humi_air.setText(datas[2]);
                                             }
                                         }
 
@@ -369,11 +376,14 @@ public class CubeFragment extends Fragment {
         mWorkerThread.start();
     }
 
-    void setStateMotor(String stateMotor){
-        this.stateMotor = stateMotor;
-    }
-    String getStateMotor(){
-        return stateMotor;
+    @Override
+    public void onDestroy() {
+        try{
+            mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
+            mInputStream.close();
+            mBluetooth.mSocket.close();
+        }catch(Exception e){}
+        super.onDestroy();
     }
 
 }
