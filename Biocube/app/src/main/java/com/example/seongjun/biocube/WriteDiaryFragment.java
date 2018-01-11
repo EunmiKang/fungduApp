@@ -735,12 +735,6 @@ public class WriteDiaryFragment extends Fragment {
             }else{
                 Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
             }
-            try{
-                mBluetooth.mSocket.close();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
         }
     }
 

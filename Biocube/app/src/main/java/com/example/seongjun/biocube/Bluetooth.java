@@ -103,6 +103,7 @@ public class Bluetooth {
             return true;
 
         }catch(Exception e) { // 블루투스 연결 중 오류 발생
+            e.printStackTrace();
 //            Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
             return false;  // App 종료
         }

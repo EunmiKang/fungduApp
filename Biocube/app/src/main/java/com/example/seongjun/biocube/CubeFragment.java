@@ -94,8 +94,6 @@ public class CubeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -201,11 +199,6 @@ public class CubeFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        try{
-            mBluetooth.mSocket.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         super.onDetach();
         mListener = null;
 
