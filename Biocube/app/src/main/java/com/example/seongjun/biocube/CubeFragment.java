@@ -181,10 +181,12 @@ public class CubeFragment extends Fragment {
         public void onClick(View v) {
             String selectedCube = spinner_cubeName.getSelectedItem().toString();
             try{
+//                ((WriteDiaryFragment)getTargetFragment()).mBluetooth.mSocket.close();//다이어리에 소켓 끊음.
                 selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
             } catch(Exception e) {
                 e.printStackTrace();
             }
+
             new GetDevice().execute(selectedCube);
         }
     };

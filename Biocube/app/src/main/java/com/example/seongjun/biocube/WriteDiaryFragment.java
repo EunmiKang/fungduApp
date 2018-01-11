@@ -202,6 +202,7 @@ public class WriteDiaryFragment extends Fragment {
             public void onClick(View v) {
                 String selectedCube = cubeSpinner.getSelectedItem().toString();
                 try{
+//                    ((CubeFragment)getTargetFragment()).mBluetooth.mSocket.close();//cubefragment의 연결 끊음.
                     selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -792,6 +793,7 @@ public class WriteDiaryFragment extends Fragment {
                         }
 
                     } catch (Exception e) {    // 데이터 수신 중 오류 발생.
+                        e.printStackTrace();
 //                        Toast.makeText(getContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
 //                        getActivity().finish();            // App 종료.
                     }

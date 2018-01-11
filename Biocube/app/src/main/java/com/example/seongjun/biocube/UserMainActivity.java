@@ -1,12 +1,19 @@
 package com.example.seongjun.biocube;
 
+import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 public class UserMainActivity extends AppCompatActivity {
