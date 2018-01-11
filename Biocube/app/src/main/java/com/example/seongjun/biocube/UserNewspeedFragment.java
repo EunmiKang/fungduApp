@@ -177,6 +177,7 @@ public class UserNewspeedFragment extends Fragment {
                         diary = jsonObj.getJSONArray(TAG_DIARY);
                         Bitmap plantImg;
 
+
                         for (int i = 0; i < diary.length(); i++) {
                             JSONObject c = diary.getJSONObject(i);
                             String nickname = c.getString(TAG_NICKNAME);
@@ -194,7 +195,9 @@ public class UserNewspeedFragment extends Fragment {
                                 //스트림생성
                                 InputStream inStream = http.getInputStream();
                                 //스트림에서 받은 데이터를 비트맵 변환
-                                plantImg = BitmapFactory.decodeStream(inStream);
+                                BitmapFactory.Options option = new BitmapFactory.Options();
+                                option.inSampleSize = 2;
+                                plantImg = BitmapFactory.decodeStream(inStream,null,option);
                                 diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content));
                             }
                             else{
