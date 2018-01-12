@@ -160,7 +160,7 @@ public class CubeFragment extends Fragment {
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-            mBluetooth.sendData("led");
+            ((UserMainActivity)getActivity()).mBluetooth.sendData("led");
 
         }
     };
@@ -169,7 +169,7 @@ public class CubeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            mBluetooth.sendData("pump");
+            ((UserMainActivity)getActivity()).mBluetooth.sendData("pump");
 //            text_motor.setText(mCubeRegister.getStateMotor());
 //                text_motor.setText("MOTOR ON");
         }
@@ -181,6 +181,7 @@ public class CubeFragment extends Fragment {
         public void onClick(View v) {
             String selectedCube = spinner_cubeName.getSelectedItem().toString();
             try{
+                ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
 //                ((WriteDiaryFragment)getTargetFragment()).mBluetooth.mSocket.close();//다이어리에 소켓 끊음.
                 selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
             } catch(Exception e) {
@@ -268,7 +269,7 @@ public class CubeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             String deviceNum = result;
-            switch (mBluetooth.checkBluetooth(getContext())){
+            switch (((UserMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
                 case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
                     break;
                 case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
@@ -279,9 +280,9 @@ public class CubeFragment extends Fragment {
                 mPariedDeviceCount = mDevices.size();
             }
             BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-            if(mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
-                beginListenForData();
-                mBluetooth.sendData("connect");
+            if(((UserMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+                beginListenForData_1();
+                ((UserMainActivity)getActivity()).mBluetooth.sendData("connect");
             }else{
                 Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
             }
@@ -300,7 +301,7 @@ public class CubeFragment extends Fragment {
     }
 
     //데이터 수신
-    void beginListenForData() {
+    void beginListenForData_1() {
         final Handler handler = new Handler();
 
         readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
@@ -317,11 +318,11 @@ public class CubeFragment extends Fragment {
                 while(!Thread.currentThread().isInterrupted()) {
                     try {
                         // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
-                        int byteAvailable = mBluetooth.mInputStream.available();   // 수신 데이터 확인
+                        int byteAvailable = ((UserMainActivity)getActivity()).mBluetooth.mInputStream.available();   // 수신 데이터 확인
                         if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
-                            mBluetooth.mInputStream.read(packetBytes);
+                            ((UserMainActivity)getActivity()).mBluetooth.mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
@@ -373,9 +374,9 @@ public class CubeFragment extends Fragment {
                     }
                 }
             }
-
         });
         mWorkerThread.start();
+
     }
 
     @Override
@@ -383,7 +384,7 @@ public class CubeFragment extends Fragment {
         try{
             mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
             mInputStream.close();
-            mBluetooth.mSocket.close();
+            ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
         }catch(Exception e){}
         super.onDestroy();
     }

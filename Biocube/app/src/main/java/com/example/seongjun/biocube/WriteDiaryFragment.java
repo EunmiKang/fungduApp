@@ -719,20 +719,27 @@ public class WriteDiaryFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             String deviceNum = result;
-            switch (mBluetooth.checkBluetooth(getContext())){
+            try {
+                ((UserMainActivity) getActivity()).mBluetooth.mSocket.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            switch (((UserMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
                 case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
                     break;
                 case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                    startActivityForResult(enableBtIntent, ((UserMainActivity)getActivity()).mBluetooth.REQUEST_ENABLE_BT);
                     break;
                 case 2: mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
                     mPariedDeviceCount = mDevices.size();
             }
             BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-            if(mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+            if(((UserMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+//                ((UserMainActivity)getActivity()).stopThread();
+//                ((CubeFragment)getTargetFragment()).mWorkerThread.interrupt();
                 beginListenForData();
-                mBluetooth.sendData("connect");
+                ((UserMainActivity)getActivity()).mBluetooth.sendData("read_data");
             }else{
                 Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
             }
@@ -757,11 +764,11 @@ public class WriteDiaryFragment extends Fragment {
                 while(!Thread.currentThread().isInterrupted()) {
                     try {
                         // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
-                        int byteAvailable = mBluetooth.mInputStream.available();   // 수신 데이터 확인
+                        int byteAvailable = ((UserMainActivity)getActivity()).mBluetooth.mInputStream.available();   // 수신 데이터 확인
                         if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
-                            mBluetooth.mInputStream.read(packetBytes);
+                            ((UserMainActivity)getActivity()).mBluetooth.mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
@@ -781,6 +788,13 @@ public class WriteDiaryFragment extends Fragment {
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
                                             String[] datas = data.split(",");
                                             contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] +"\n" +contentText.getText().toString());
+                                            try{
+                                                ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
+                                            }catch (Exception e){
+                                                e.printStackTrace();
+                                            }
+                                            mWorkerThread.interrupt();
+
 
                                         }
 
