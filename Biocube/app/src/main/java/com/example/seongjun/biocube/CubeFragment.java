@@ -160,7 +160,7 @@ public class CubeFragment extends Fragment {
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-            mBluetooth.sendData("hello");
+            mBluetooth.sendData("led");
 
         }
     };
@@ -340,7 +340,13 @@ public class CubeFragment extends Fragment {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
                                             String[] datas = data.split(",");
-                                            if(datas[0].equals("PUMPON")){
+                                            if(datas[0].equals("LEDON")) {
+                                                text_led.setText("ON");
+                                            }
+                                            else if(datas[0].equals("LEDOFF")) {
+                                                text_led.setText("OFF");
+                                            }
+                                            else if(datas[0].equals("PUMPON")){
                                                 text_motor.setText("ON");
                                             }
                                             else if(datas[0].equals("PUMPOFF")){
