@@ -9,9 +9,9 @@
 
     <!-- 타이틀바 -->
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView"
@@ -36,8 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="궁금한 사항은 아래 전화 번호로 연락 부탁 드립니다
-010-****-****"
+        android:text="궁금한 사항은 아래 전화 번호로 연락 부탁 드립니다 \n010-****-****"
         android:textSize="25sp"
         android:background="#ffffff"/>
 
