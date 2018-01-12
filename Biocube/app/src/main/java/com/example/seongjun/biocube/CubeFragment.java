@@ -355,6 +355,7 @@ public class CubeFragment extends Fragment {
                                             else if(datas[0].equals("TEMPER")){
                                                 text_temper.setText(datas[1]);
                                                 text_humi_air.setText(datas[2]);
+                                                text_humi_soil.setText(datas[3]);
                                             }
                                         }
 
