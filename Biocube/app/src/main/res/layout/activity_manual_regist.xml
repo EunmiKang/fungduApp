@@ -50,16 +50,25 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:id="@+id/text_manualRegist_plantName"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:padding="5dp" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_selectManualIamge"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:text="업로드 할 매뉴얼 이미지 선택"/>
+
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9" />
+            android:layout_weight="0.8"
+            android:background="#ffffff"/>
 
     </LinearLayout>
 
