@@ -2,14 +2,18 @@ package com.example.seongjun.biocube;
 
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +47,23 @@ public class LoginActivity extends AppCompatActivity {
         new checkDBTask().execute(helper);
     }
 
+
+    public boolean isConnectingToInternet(){//네트워크 연결 상태를 확인하는 메소드
+        ConnectivityManager connectivity = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            @SuppressWarnings("deprecation")
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            //use getAllNetworks() instead
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+        }
+        return false;
+    }
     /* OnClickListener: login 버튼 클릭했을 때 */
     Button.OnClickListener loginClickListener = new Button.OnClickListener() {
         public void onClick(View v) {
@@ -236,20 +257,27 @@ public class LoginActivity extends AppCompatActivity {
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-            Intent intent = new Intent();
-            if(result == -1) {
-                Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
-            } else {
-                if(result == 0) {    //관리자
-                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                } else if(result == 1) {    //일반사용자
-                    intent = new Intent(LoginActivity.this, UserMainActivity.class);
-                } else if(result == 2) {    //전문가
-                    intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+
+            if(isConnectingToInternet()){//네트워크에 연결되어 있을경우
+                Intent intent = new Intent();
+                if(result == -1) {
+                    Toast.makeText(getApplicationContext(), "아이디, 비밀번호를 잘못 입력하셨습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    if(result == 0) {    //관리자
+                        intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                    } else if(result == 1) {    //일반사용자
+                        intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                    } else if(result == 2) {    //전문가
+                        intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
+                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
             }
+            else{//네트워크에 연결되어 있지 않을 경우
+                Toast.makeText(LoginActivity.this, "네트워크 연결상태를 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         @Override
