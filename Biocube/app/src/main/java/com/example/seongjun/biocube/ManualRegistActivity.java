@@ -60,7 +60,7 @@ public class ManualRegistActivity extends AppCompatActivity {
 
         text_plantName = (EditText) findViewById(R.id.text_manualRegist_plantName);
         btn_selectImage = (Button) findViewById(R.id.btn_selectManualIamge);
-        btn_registImage = (Button) findViewById(R.id.btn_manual_regist);
+        btn_registImage = (Button) findViewById(R.id.btn_regist);
 
         btn_selectImage.setOnClickListener(selectImageClickListener);
         btn_registImage.setOnClickListener(registManualClickListener);
@@ -132,6 +132,10 @@ public class ManualRegistActivity extends AppCompatActivity {
             if(checkPermissions()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     try {
+                        // list 초기화
+                        priorList = new ArrayList<>();
+                        pathList = new ArrayList<>();
+
                         Intent intent = new Intent(Intent.ACTION_PICK);
                         intent.setType("image/*");
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -181,6 +185,7 @@ public class ManualRegistActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
+        pager.setAdapter(null);
         String flag = priorList.get(0).substring(0,7);
 
         // pathList에 원본 넣어둠
