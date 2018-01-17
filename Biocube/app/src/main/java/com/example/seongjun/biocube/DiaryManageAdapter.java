@@ -77,6 +77,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         }
         DiaryItem diaryItem = this.list.get(position);
         holder.nicknameView.setText(diaryItem.getNickname());
+
         if(authority ==2 || (!nickname.equals("admin")&&!nickname.equals(diaryItem.getNickname()))){
             deleteButton.setVisibility(View.GONE);
         }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
@@ -99,8 +100,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         ImageView plantImgView;
         TextView contentView;
         ImageButton deleteButtonView;
-
-        TextView idTestView;
+        TextView hiddenDiaryNo;
     }
 
 }
