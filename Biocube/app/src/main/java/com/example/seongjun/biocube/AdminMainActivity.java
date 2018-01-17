@@ -35,7 +35,7 @@ public class AdminMainActivity extends AppCompatActivity {
         );
 
         mAdminPagerAdapter.addFragment(R.drawable.menu_home,new AdminManualFragment());
-        mAdminPagerAdapter.addFragment(R.drawable.menu_newsfeed, new AdminNewspeedFragment());
+        mAdminPagerAdapter.addFragment(R.drawable.menu_newsfeed, new UserNewspeedFragment());
         mAdminPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
         mAdminPagerAdapter.addFragment(R.drawable.menu_my, new AdminPageFragment());
 
