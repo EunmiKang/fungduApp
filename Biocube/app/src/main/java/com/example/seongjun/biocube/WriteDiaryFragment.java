@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -46,6 +47,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -530,12 +533,27 @@ public class WriteDiaryFragment extends Fragment {
                 String attachmentName = "uploadfile_for_diary";
                 String attachmentFileName = croppedFile.getName();
                 String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
+
+                // 용량 줄이기
+                BitmapFactory.Options option = new BitmapFactory.Options();
+                option.inSampleSize = 2;    // 1/2만큼 줄임
+                Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
+                try {
+                    FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
+                    src.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 // 서버에 이미지 업로드
                 try {
                     if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
-                        Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
