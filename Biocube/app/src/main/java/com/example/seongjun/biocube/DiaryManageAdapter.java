@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,9 +20,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -35,6 +38,8 @@ public class DiaryManageAdapter extends BaseAdapter{
     ImageButton deleteButton;
     String nickname = "admin";
     Context context;
+    Button btn_registComment;
+    EditText cmt_edit;
 
     public DiaryManageAdapter(Context context, String nickname, List<DiaryItem> list, int authority) {
         this.list = list;
@@ -78,8 +83,10 @@ public class DiaryManageAdapter extends BaseAdapter{
             holder.contentView = (TextView) view.findViewById(R.id.content_text);
             holder.deleteButtonView = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
             holder.hiddenDiaryNo = (TextView) view.findViewById(R.id.hidden_diaryNo);
+            holder.registButtonView = (Button) view.findViewById(R.id.btn_registComment);
             deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
-
+            btn_registComment = (Button) view.findViewById(R.id.btn_registComment);
+            cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -93,12 +100,26 @@ public class DiaryManageAdapter extends BaseAdapter{
         holder.hiddenDiaryNo.setText(String.valueOf(diaryItem.getDiaryNo()));
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {//삭제버튼 눌렀을 때
             @Override
             public void onClick(View v) {
                 new DeleteDiary().execute(hiddenNo);
             }
         });
+
+        btn_registComment.setOnClickListener(new View.OnClickListener() {//등록버튼을 눌렀을 때,
+            @Override
+            public void onClick(View v) {
+                String comment = cmt_edit.getText().toString();
+                try {
+                    comment = URLEncoder.encode(comment,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                new RegistComment().execute(comment);
+            }
+        });
+
         if(authority ==2 || (!nickname.equals("admin")&&!nickname.equals(diaryItem.getNickname()))){
             deleteButton.setVisibility(View.GONE);
         }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
@@ -115,6 +136,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         TextView contentView;
         ImageButton deleteButtonView;
         TextView hiddenDiaryNo;
+        Button registButtonView;
     }
     class DeleteDiary extends AsyncTask<String, Void, String> {
 
@@ -136,6 +158,59 @@ public class DiaryManageAdapter extends BaseAdapter{
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("diaryNo").append("=").append(params[0].toString());
+
+
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+        /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                result = reader.readLine();
+
+
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            if(result.equals("success")) {
+                Toast.makeText(context, "성공적으로 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(context, "삭제를 실패하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    class RegistComment extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+            try {
+         /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/registComment.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+        /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+        /* 서버로 값 전송 */
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("comment").append("=").append(params[0].toString());
 
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");

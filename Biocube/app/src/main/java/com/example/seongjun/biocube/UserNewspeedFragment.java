@@ -68,6 +68,7 @@ public class UserNewspeedFragment extends Fragment {
     List filterItems;
     String id;
 
+
     public UserNewspeedFragment() {
         // Required empty public constructor
     }
