@@ -17,7 +17,7 @@ public class ManualRegistActivity extends AppCompatActivity {
 
         text_plantName = (EditText) findViewById(R.id.text_manualRegist_plantName);
         btn_selectImage = (Button) findViewById(R.id.btn_selectManualIamge);
-        
+
     }
 
 
