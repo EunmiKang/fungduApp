@@ -120,7 +120,7 @@ public class ManualManageActivity extends AppCompatActivity {
                     plantName = manualList[i];
 
                     /* 이미지 처리 */
-                    String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + plantName + "/" + plantName + ".jpg";
+                    String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + plantName + ".jpg";
                     url = new URL(readURL);
                     http = (HttpURLConnection) url.openConnection();
                     http.connect();

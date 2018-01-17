@@ -64,7 +64,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
 
                 /* 매뉴얼 처음 이미지 setting */
             for(int i=1; i<=Integer.parseInt(token[0]); i++) {
-                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + token[i] + "/" + token[i] + ".jpg";
+                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + token[i] + ".jpg";
                 url = new URL(readURL);
                 http = (HttpURLConnection) url.openConnection();
                 http.connect();

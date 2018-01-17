@@ -135,7 +135,7 @@ public class ManualRegistActivity extends AppCompatActivity {
                         // list 초기화
                         priorList = new ArrayList<>();
                         pathList = new ArrayList<>();
-                        
+
                         Intent intent = new Intent(Intent.ACTION_PICK);
                         intent.setType("image/*");
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
