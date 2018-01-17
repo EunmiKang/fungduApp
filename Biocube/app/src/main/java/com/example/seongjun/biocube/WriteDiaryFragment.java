@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -46,6 +47,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -293,6 +296,46 @@ public class WriteDiaryFragment extends Fragment {
         return true;
     }
 
+    /**
+     * 권한 요청 Callback 함수
+     * PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있음.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MULTIPLE_PERMISSIONS: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++) {
+                        if (permissions[i].equals(this.permissions[0])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                                showNoPermissionToastAndFinish();
+                            }
+                        } else if (permissions[i].equals(this.permissions[1])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                                showNoPermissionToastAndFinish();
+                            }
+                        } else if (permissions[i].equals(this.permissions[2])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                                showNoPermissionToastAndFinish();
+                            }
+                        }
+                    }
+                } else {
+                    showNoPermissionToastAndFinish();
+                }
+                return;
+            }
+        }
+    }
+
+    /**
+     * 권한 획득에 동의하지 않았을 경우 아래 Toast 메세지 띄우며 종료시킴.
+     */
+    private void showNoPermissionToastAndFinish() {
+        Toast.makeText(getContext(), "권한 요청에 동의 해주셔야 이용 가능합니다. 설정에서 권한 허용 하시기 바랍니다.", Toast.LENGTH_SHORT).show();
+        getActivity().finish();
+    }
+
     private void selectImage(View view) {
         DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
             @Override
@@ -413,46 +456,6 @@ public class WriteDiaryFragment extends Fragment {
         }
     }
 
-    /**
-     * 권한 요청 Callback 함수
-     * PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있음.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MULTIPLE_PERMISSIONS: {
-                if (grantResults.length > 0) {
-                    for (int i = 0; i < permissions.length; i++) {
-                        if (permissions[i].equals(this.permissions[0])) {
-                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                                showNoPermissionToastAndFinish();
-                            }
-                        } else if (permissions[i].equals(this.permissions[1])) {
-                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                                showNoPermissionToastAndFinish();
-                            }
-                        } else if (permissions[i].equals(this.permissions[2])) {
-                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                                showNoPermissionToastAndFinish();
-                            }
-                        }
-                    }
-                } else {
-                    showNoPermissionToastAndFinish();
-                }
-                return;
-            }
-        }
-    }
-
-    /**
-     * 권한 획득에 동의하지 않았을 경우 아래 Toast 메세지 띄우며 종료시킴.
-     */
-    private void showNoPermissionToastAndFinish() {
-        Toast.makeText(getContext(), "권한 요청에 동의 해주셔야 이용 가능합니다. 설정에서 권한 허용 하시기 바랍니다.", Toast.LENGTH_SHORT).show();
-        getActivity().finish();
-    }
-
     //Android N crop image
     public void cropImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {   // 마쉬멜로우 이상 버전일 때
@@ -530,12 +533,27 @@ public class WriteDiaryFragment extends Fragment {
                 String attachmentName = "uploadfile_for_diary";
                 String attachmentFileName = croppedFile.getName();
                 String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
+
+                // 용량 줄이기
+                BitmapFactory.Options option = new BitmapFactory.Options();
+                option.inSampleSize = 2;    // 1/2만큼 줄임
+                Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
+                try {
+                    FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
+                    src.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 // 서버에 이미지 업로드
                 try {
                     if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
-                        Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
