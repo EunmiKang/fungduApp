@@ -73,9 +73,4 @@
             android:layout_weight="6.75"
             android:text="등 몇개" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/idTest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ab"/>
 </LinearLayout>
