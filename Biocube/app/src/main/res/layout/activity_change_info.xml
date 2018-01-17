@@ -49,16 +49,6 @@
             android:privateImeOptions="defaultInputmode=english" />
 
         <EditText
-            android:id="@+id/edit_addFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="필터추가"
-            android:inputType="textPersonName" />
-
-        <EditText
             android:id="@+id/edit_changeJob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,6 +83,50 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:text="변경" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_addFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="필터추가"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/btn_addFilter"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:text="필터추가"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Spinner
+            android:id="@+id/spinner_filter"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btn_deleteFilter"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:text="필터삭제"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </LinearLayout>

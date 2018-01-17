@@ -1,30 +1,27 @@
 package com.example.seongjun.biocube;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -46,7 +43,13 @@ public class ChangeInfoActivity extends AppCompatActivity {
     String id;
     String changenickname;
     private TokenDBHelper helper = new TokenDBHelper(this);
+    Spinner spinner_filter;
+    List filterItems;
+    Context context = this;
+    private static final String TAG_FILTERS = "filteritems";
+    private static final String TAG_FILTER = "filter";
 
+    ArrayAdapter<String> dataAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,22 @@ public class ChangeInfoActivity extends AppCompatActivity {
         changeJob = (EditText) findViewById(R.id.edit_changeJob);
         changePhone = (EditText) findViewById(R.id.edit_changePhone);
         findViewById(R.id.btn_change).setOnClickListener(changeInfoClickListener);
+        findViewById(R.id.btn_addFilter).setOnClickListener(addFilterClickListener);
+        spinner_filter = (Spinner) findViewById(R.id.spinner_filter);
+        findViewById(R.id.btn_deleteFilter).setOnClickListener(deleteFilterClickListener);
+
+
+        try {
+            filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getMyfilter.php", id).get();
+            dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, filterItems);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner_filter.setAdapter(dataAdapter);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         try {
 
@@ -86,8 +105,34 @@ public class ChangeInfoActivity extends AppCompatActivity {
         }
 
     }
+    Button.OnClickListener addFilterClickListener = new Button.OnClickListener(){//필터추가버튼
+        @Override
+        public void onClick(View v) {
+            String addFilterName = addFilter.getText().toString();
+            try {
+                addFilterName = URLEncoder.encode(addFilterName,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            new ModifyFilterTask().execute("ADD",addFilterName);
+        }
+    };
 
-    Button.OnClickListener changeInfoClickListener= new Button.OnClickListener(){
+    Button.OnClickListener deleteFilterClickListener = new Button.OnClickListener(){//필터삭제버튼
+
+        @Override
+        public void onClick(View v) {
+            String deleteFilterName = spinner_filter.getSelectedItem().toString();
+            try {
+                deleteFilterName = URLEncoder.encode(deleteFilterName,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            new ModifyFilterTask().execute("DELETE",deleteFilterName);
+        }
+    };
+
+    Button.OnClickListener changeInfoClickListener= new Button.OnClickListener(){//변경버튼 클릭시
 
         @Override
         public void onClick(View v) {
@@ -184,4 +229,86 @@ public class ChangeInfoActivity extends AppCompatActivity {
         }
 
     }
+
+
+    public class ModifyFilterTask extends AsyncTask<Object,Object,String>{
+
+        @Override
+        protected String doInBackground(Object... params) {
+
+            try{
+                URL url;
+                if(params[0].toString().equals("ADD")){//추가시
+                    url = new URL("http://fungdu0624.phps.kr/biocube/addFilter.php");
+                }
+                else{//삭제시
+                    url = new URL("http://fungdu0624.phps.kr/biocube/deleteFilter.php");
+                }
+
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("user_id").append("=").append(id).append("&");
+                buffer.append("filter").append("=").append(params[1].toString());
+
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String result = reader.readLine();
+
+                return result;
+            }catch(MalformedURLException e){
+                e.printStackTrace();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            switch (result){
+                case "add_success":
+                    Toast.makeText(ChangeInfoActivity.this, "필터추가에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                    addFilter.setText("");
+                    break;
+                case "add_fail":
+                    Toast.makeText(ChangeInfoActivity.this, "필터추가에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                case "delete_success":
+                    Toast.makeText(ChangeInfoActivity.this, "필터삭제에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                case "delete_fail":
+                    Toast.makeText(ChangeInfoActivity.this, "필터삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            try {
+                filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getMyfilter.php", id).get();
+                dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, filterItems);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_filter.setAdapter(dataAdapter);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
 }
