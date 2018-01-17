@@ -62,9 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:text="업로드 할 매뉴얼 이미지 선택"/>
+            android:text="업로드 할 매뉴얼 이미지 선택" />
 
-        <ImageButton
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_manual"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.8"

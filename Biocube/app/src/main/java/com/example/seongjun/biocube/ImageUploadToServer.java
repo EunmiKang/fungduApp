@@ -54,6 +54,8 @@ class ImageUploadToServer extends AsyncTask<String, Void, Boolean> {
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + attachmentFileName + "\"" + lineEnd);
                 dos.writeBytes(lineEnd);
+            } else if(params[1].equals("uploadfile_for_manual")) {
+
             }
 
             // create a buffer of  maximum size
