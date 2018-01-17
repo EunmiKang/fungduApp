@@ -32,6 +32,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -132,7 +133,7 @@ public class UserNewspeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    new GetFilterItems().execute(id).get();
+                    filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getFilterItems.php", id).get();
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UserNewspeedFragment.this.getContext());
                     final String[] filter = new String[filterItems.size()];
                     for(int i = 0; i<filterItems.size(); i++){
@@ -142,7 +143,7 @@ public class UserNewspeedFragment extends Fragment {
                     alertDialogBuilder.setItems(filter, new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getNewsppedAsFilter.php", filter[which]);
+                            new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getNewspeedAsFilter.php", filter[which]);
                             Toast.makeText(UserNewspeedFragment.this.getContext(), filter[which] + "이 선택되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -197,7 +198,7 @@ public class UserNewspeedFragment extends Fragment {
             String uri = params[0];
             List<DiaryItem> diarylist = new ArrayList<DiaryItem>();
 
-            BufferedReader bufferedReader = null;
+
             try {
                 URL url = new URL(uri);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -207,24 +208,26 @@ public class UserNewspeedFragment extends Fragment {
                 con.setRequestMethod("POST");
                 con.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
+
                 if(params.length == 2){//filter를 선택했을때
                     StringBuffer buffer = new StringBuffer();
-                    buffer.append("user_id").append("=").append(params[1].toString());
+                    params[1] = URLEncoder.encode(params[1],"UTF-8");
+                    buffer.append("filter").append("=").append(params[1].toString());
 
-
+                    /* 서버로 값 전송 */
                     OutputStreamWriter outStream = new OutputStreamWriter(con.getOutputStream(), "EUC-KR");
                     PrintWriter writer = new PrintWriter(outStream);
                     writer.write(buffer.toString());
                     writer.flush();
                     writer.close();
                 }
-        /* 서버로 값 전송 */
-
-                bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                /* 서버에서 전송 받음 */
+                InputStream inStream = con.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 StringBuilder sb = new StringBuilder();
 
                 String json;
-                while((json = bufferedReader.readLine())!= null){
+                while((json = reader.readLine())!= null){
                     sb.append(json+"\n");
                 }
 
@@ -249,11 +252,11 @@ public class UserNewspeedFragment extends Fragment {
                             http = (HttpURLConnection) url.openConnection();
                             http.connect();
                             //스트림생성
-                            InputStream inStream = http.getInputStream();
+                            InputStream inStream2 = http.getInputStream();
                             //스트림에서 받은 데이터를 비트맵 변환
                             BitmapFactory.Options option = new BitmapFactory.Options();
                             option.inSampleSize = 2;
-                            plantImg = BitmapFactory.decodeStream(inStream,null,option);
+                            plantImg = BitmapFactory.decodeStream(inStream2,null,option);
                             diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content));
                         }
                         else{
@@ -278,72 +281,70 @@ public class UserNewspeedFragment extends Fragment {
         }
     }
 
-
-
-    class GetFilterItems extends AsyncTask<String, Void, List<String>> {
-
-        @Override
-        protected List<String> doInBackground(String... params) {
-            filterItems = new ArrayList();
-            try {
-     /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/getFilterItems.php");
-                HttpURLConnection http = (HttpURLConnection) url.openConnection();
-
-    /* 전송모드 설정 */
-                http.setDefaultUseCaches(false);
-                http.setDoInput(true);  //서버에서 읽기 모드로 지정
-                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-                http.setRequestMethod("POST");
-                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-
-    /* 서버로 값 전송 */
-                StringBuffer buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(params[0].toString());
-
-
-                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-                PrintWriter writer = new PrintWriter(outStream);
-                writer.write(buffer.toString());
-                writer.flush();
-                writer.close();
-
-    /* 서버에서 전송 받기 */
-                InputStream inStream = http.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                StringBuilder sb = new StringBuilder();
-
-                String json;
-                while((json = reader.readLine())!= null){
-                    sb.append(json+"\n");
-                }
-
-                try {
-                    JSONObject jsonObj = new JSONObject(sb.toString().trim());
-                    filter = jsonObj.getJSONArray(TAG_FILTERS);
-
-                    for (int i = 0; i < filter.length(); i++) {
-                        JSONObject c = filter.getJSONObject(i);
-                        String filter = c.getString(TAG_FILTER);
-                        filterItems.add(filter);
-                    }
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            } catch(MalformedURLException e) {
-                e.printStackTrace();
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-
-            return filterItems;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> result){
-
-        }
-    }
+//    class GetFilterItems extends AsyncTask<String, Void, List<String>> {
+//
+//        @Override
+//        protected List<String> doInBackground(String... params) {
+//            filterItems = new ArrayList();
+//            try {
+//     /* URL 설정하고 접속 */
+//                URL url = new URL(params[0]);
+//                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+//
+//    /* 전송모드 설정 */
+//                http.setDefaultUseCaches(false);
+//                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+//                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+//                http.setRequestMethod("POST");
+//                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+//
+//    /* 서버로 값 전송 */
+//                StringBuffer buffer = new StringBuffer();
+//                buffer.append("user_id").append("=").append(params[1].toString());
+//
+//
+//                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+//                PrintWriter writer = new PrintWriter(outStream);
+//                writer.write(buffer.toString());
+//                writer.flush();
+//                writer.close();
+//
+//    /* 서버에서 전송 받기 */
+//                InputStream inStream = http.getInputStream();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+//                StringBuilder sb = new StringBuilder();
+//
+//                String json;
+//                while((json = reader.readLine())!= null){
+//                    sb.append(json+"\n");
+//                }
+//
+//                try {
+//                    JSONObject jsonObj = new JSONObject(sb.toString().trim());
+//                    filter = jsonObj.getJSONArray(TAG_FILTERS);
+//
+//                    for (int i = 0; i < filter.length(); i++) {
+//                        JSONObject c = filter.getJSONObject(i);
+//                        String filter = c.getString(TAG_FILTER);
+//                        filterItems.add(filter);
+//                    }
+//                }catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            } catch(MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch(IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return filterItems;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<String> result){
+//
+//        }
+//    }
 }
