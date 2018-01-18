@@ -121,33 +121,19 @@ public class UserPageFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        Button logoutBtn = (Button) view.findViewById(R.id.btn_user_logout);
-        logoutBtn.setOnClickListener(logoutClickListener);
 
-        Button myCube = (Button) view.findViewById(R.id.btn_user_myCube);
-        myCube.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CubeListActivity.class);
-                intent.putExtra("id", ((UserMainActivity)getActivity()).userID);
-                startActivity(intent);
-            }
-        });
+        /* OnClickListener 설정 */
+        view.findViewById(R.id.img_user_myCube).setOnClickListener(myCubeClickListener);
+        view.findViewById(R.id.btn_user_myCube).setOnClickListener(myCubeClickListener);
 
-        Button changeInfo = (Button) view.findViewById(R.id.btn_user_changeInfo);
-        changeInfo.setOnClickListener(new View.OnClickListener(){
+        view.findViewById(R.id.img_user_changeInfo).setOnClickListener(changeInfoClickListener);
+        view.findViewById(R.id.btn_user_changeInfo).setOnClickListener(changeInfoClickListener);
 
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(v.getContext(), ChangeInfoActivity.class);
-                intent.putExtra("id", ((UserMainActivity)getActivity()).userID);
-                startActivity(intent);
-            }
-        });
+        view.findViewById(R.id.img_user_question).setOnClickListener(questionClickListener);
+        view.findViewById(R.id.btn_user_question).setOnClickListener(questionClickListener);
 
-        Button question = (Button) view.findViewById(R.id.btn_user_question);
-        question.setOnClickListener(questionClickListener);
+        view.findViewById(R.id.img_user_logout).setOnClickListener(logoutClickListener);
+        view.findViewById(R.id.btn_user_logout).setOnClickListener(logoutClickListener);
 
         return view;
     }
@@ -179,26 +165,6 @@ public class UserPageFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-    Button.OnClickListener logoutClickListener = new Button.OnClickListener() {
-        public void onClick(View v) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-            db.delete("TOKEN", "token is not null", null);
-
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-    };
-
-    Button.OnClickListener questionClickListener = new Button.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //데이터 담아서 팝업(액티비티) 호출
-            mOnPopupClick();
-        }
-    };
 
     public void mOnPopupClick(){
         //데이터 담아서 팝업(액티비티) 호출
@@ -255,6 +221,47 @@ public class UserPageFragment extends Fragment {
             super.onPostExecute(result);
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
             text_diaryNum.setText(result.toString());
-            }
         }
     }
+
+
+    /* OnClickListener 정의 */
+    View.OnClickListener myCubeClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getContext(), CubeListActivity.class);
+            intent.putExtra("id", ((UserMainActivity)getActivity()).userID);
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener changeInfoClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent intent;
+            intent = new Intent(v.getContext(), ChangeInfoActivity.class);
+            intent.putExtra("id", ((UserMainActivity)getActivity()).userID);
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener questionClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //데이터 담아서 팝업(액티비티) 호출
+            mOnPopupClick();
+        }
+    };
+
+    View.OnClickListener logoutClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.delete("TOKEN", "token is not null", null);
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    };
+}

@@ -91,6 +91,7 @@ public class ExpertPageFragment extends Fragment {
         }
 
         new getCommentNum().execute();
+
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_expert_page);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -98,27 +99,18 @@ public class ExpertPageFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        /* 버튼들 리스너 설정 */
-        Button myCommentBtn = (Button) view.findViewById(R.id.btn_expert_myComment);
-        myCommentBtn.setOnClickListener(myCommentClickListener);
+        /* OnClickListener 설정 */
+        view.findViewById(R.id.img_expert_myComment).setOnClickListener(myCommentClickListener);
+        view.findViewById(R.id.btn_expert_myComment).setOnClickListener(myCommentClickListener);
 
-        Button changeInfoBtn = (Button) view.findViewById(R.id.btn_expert_changeInfo);
-        changeInfoBtn.setOnClickListener(new View.OnClickListener(){
+        view.findViewById(R.id.img_expert_changeInfo).setOnClickListener(changeInfoClickListener);
+        view.findViewById(R.id.btn_expert_changeInfo).setOnClickListener(changeInfoClickListener);
 
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(v.getContext(), ChangeInfoActivity.class);
-                intent.putExtra("id", ((ExpertMainActivity)getActivity()).expertID);
-                startActivity(intent);
-            }
-        });
+        view.findViewById(R.id.img_expert_question).setOnClickListener(questionClickListener);
+        view.findViewById(R.id.btn_expert_question).setOnClickListener(questionClickListener);
 
-        Button questionBtn = (Button) view.findViewById(R.id.btn_expert_question);
-        questionBtn.setOnClickListener(questionClickListener);
-
-        Button logoutBtn = (Button) view.findViewById(R.id.btn_expert_logout);
-        logoutBtn.setOnClickListener(logoutClickListener);
+        view.findViewById(R.id.img_expert_logout).setOnClickListener(logoutClickListener);
+        view.findViewById(R.id.btn_expert_logout).setOnClickListener(logoutClickListener);
 
         return view;
     }
@@ -151,8 +143,9 @@ public class ExpertPageFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    /* 버튼 리스너들 */
-    Button.OnClickListener myCommentClickListener = new Button.OnClickListener() {
+
+    /* OnClickListener 정의 */
+    View.OnClickListener myCommentClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getContext(), CommentListActivity.class);
             intent.putExtra("id", ((ExpertMainActivity)getActivity()).expertID);
@@ -160,7 +153,17 @@ public class ExpertPageFragment extends Fragment {
         }
     };
 
-    Button.OnClickListener questionClickListener = new Button.OnClickListener(){
+    View.OnClickListener changeInfoClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent intent;
+            intent = new Intent(v.getContext(), ChangeInfoActivity.class);
+            intent.putExtra("id", ((ExpertMainActivity)getActivity()).expertID);
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener questionClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             //데이터 담아서 팝업(액티비티) 호출
@@ -170,7 +173,7 @@ public class ExpertPageFragment extends Fragment {
         }
     };
 
-    Button.OnClickListener logoutClickListener = new Button.OnClickListener() {
+    View.OnClickListener logoutClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             SQLiteDatabase db = helper.getWritableDatabase();
             db.delete("TOKEN", "token is not null", null);

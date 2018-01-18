@@ -82,18 +82,18 @@ public class AdminPageFragment extends Fragment {
         countUserView = (TextView) view.findViewById(R.id.text_admin_userNum);
         new SettingAdminPage().execute();
 
-        /* 버튼들 리스너 설정 */
-        Button manualManageBtn = (Button) view.findViewById(R.id.btn_admin_manualManage);
-        manualManageBtn.setOnClickListener(manaualManageClickListener);
+        /* OnClickListener 설정 */
+        view.findViewById(R.id.img_admin_mycomment).setOnClickListener(myCommentClickListener);
+        view.findViewById(R.id.btn_admin_mycomment).setOnClickListener(myCommentClickListener);
 
-        Button myCommentBtn = (Button) view.findViewById(R.id.btn_admin_mycomment);
-        myCommentBtn.setOnClickListener(myCommentClickListener);
+        view.findViewById(R.id.img_admin_mycube).setOnClickListener(myCubeClickListener);
+        view.findViewById(R.id.btn_admin_mycube).setOnClickListener(myCubeClickListener);
 
-        Button myCubeBtn = (Button) view.findViewById(R.id.btn_admin_mycube);
-        myCubeBtn.setOnClickListener(myCubeClickListener);
+        view.findViewById(R.id.img_admin_manualManage).setOnClickListener(manaualManageClickListener);
+        view.findViewById(R.id.btn_admin_manualManage).setOnClickListener(manaualManageClickListener);
 
-        Button logoutBtn = (Button) view.findViewById(R.id.btn_admin_logout);
-        logoutBtn.setOnClickListener(logoutClickListener);
+        view.findViewById(R.id.img_admin_logout).setOnClickListener(logoutClickListener);
+        view.findViewById(R.id.btn_admin_logout).setOnClickListener(logoutClickListener);
 
         return view;
     }
@@ -127,15 +127,15 @@ public class AdminPageFragment extends Fragment {
     }
 
 
-    /* 버튼 리스너들 */
-    Button.OnClickListener manaualManageClickListener = new Button.OnClickListener() {
+    /* OnClickListener 정의 */
+    View.OnClickListener manaualManageClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getContext(), ManualManageActivity.class);
             startActivity(intent);
         }
     };
 
-    Button.OnClickListener myCommentClickListener = new Button.OnClickListener() {
+    View.OnClickListener myCommentClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getContext(), CommentListActivity.class);
             intent.putExtra("id", ((AdminMainActivity)getActivity()).adminID);
@@ -143,7 +143,7 @@ public class AdminPageFragment extends Fragment {
         }
     };
 
-    Button.OnClickListener myCubeClickListener = new Button.OnClickListener() {
+    View.OnClickListener myCubeClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getContext(), CubeListActivity.class);
             intent.putExtra("id", ((AdminMainActivity)getActivity()).adminID);
@@ -151,7 +151,7 @@ public class AdminPageFragment extends Fragment {
         }
     };
 
-    Button.OnClickListener logoutClickListener = new Button.OnClickListener() {
+    View.OnClickListener logoutClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             SQLiteDatabase db = helper.getWritableDatabase();
             db.delete("TOKEN", "token is not null", null);
