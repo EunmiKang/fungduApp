@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
-import android.widget.ImageView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,17 +26,13 @@ import me.relex.circleindicator.CircleIndicator;
 public class SettingManuals extends AsyncTask<Object, Object, Integer> {
     private ManualsAdapter adapter;
     private ViewPager pager;
-    //private ImageView logo;
     private CircleIndicator indicator;
-
-    //private Bitmap logoImg;
 
     // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
     @Override
     public Integer doInBackground(Object... params) {
         try {
             /* parameter로 받은 것들 저장 */
-            //logo = (ImageView) params[0];
             pager = (ViewPager) params[0];
             adapter = (ManualsAdapter) params[1];
             indicator = (CircleIndicator) params[2];
@@ -92,21 +87,6 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             http.disconnect();
             adapter.setManualInitImg(manualInitArray);
             adapter.setManualList(manualList);
-
-                /* 매뉴얼 화면에 로고 이미지 가져오기 */
-                /*
-            String readURL = "http://fungdu0624.phps.kr/biocube/img/testimg.jpg";
-            url = new URL(readURL);
-            http = (HttpURLConnection) url.openConnection();
-            http.connect();
-            //스트림생성
-            inStream = http.getInputStream();
-            logoImg = BitmapFactory.decodeStream(inStream);
-
-            inStream.close();
-            http.disconnect();
-            */
-            return 0;
         } catch(MalformedURLException e) {
             e.printStackTrace();
         } catch(IOException e) {
@@ -123,7 +103,6 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
         adapter.registerDataSetObserver(indicator.getDataSetObserver());
         pager.setAdapter(adapter);
         indicator.setViewPager(pager);
-        //logo.setImageBitmap(logoImg);
     }
 
     @Override

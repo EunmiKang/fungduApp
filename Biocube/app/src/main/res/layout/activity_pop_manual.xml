@@ -8,9 +8,28 @@
     tools:context="com.example.seongjun.biocube.PopManualActivity">
 
     <TextView
-        android:id="@+id/testText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello~"
-        android:textSize="20sp"/>
+        android:id="@+id/text_plantName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:textSize="20sp"
+        android:gravity="center" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_showManual"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.85">
+    </android.support.v4.view.ViewPager>
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator_showManual"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        app:ci_width="8dp"
+        app:ci_height="8dp"
+        app:ci_margin="5dp"
+        app:ci_drawable="@drawable/flower">
+    </me.relex.circleindicator.CircleIndicator>
 </LinearLayout>
