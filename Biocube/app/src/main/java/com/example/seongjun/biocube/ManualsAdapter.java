@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
@@ -21,10 +22,13 @@ public class ManualsAdapter extends PagerAdapter {
     int manualNum;
     Bitmap[] manualInitImg;
     ArrayList<String []> manualList;
+    Context context;
+    int position;
 
 
-    public ManualsAdapter(LayoutInflater inflater) {
+    public ManualsAdapter(LayoutInflater inflater, Context context) {
         this.inflater = inflater;
+        this.context = context;
     }
 
     public void setManualNum(int manualNum) {
@@ -68,6 +72,7 @@ public class ManualsAdapter extends PagerAdapter {
         //img.setImageResource(R.drawable.plant_0+position);
         img.setImageBitmap(manualInitImg[position]);
         img.setOnClickListener(showManualClickListener);
+        this.position = position;
 
         container.addView(view);
 
@@ -93,7 +98,9 @@ public class ManualsAdapter extends PagerAdapter {
     View.OnClickListener showManualClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            //Intent intent = new Intent(, );
+            Intent intent = new Intent(context, PopManualActivity.class);
+            intent.putExtra("manual", manualList.get(position));
+            context.startActivity(intent);
         }
     };
 }
