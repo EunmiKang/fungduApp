@@ -34,8 +34,8 @@ public class ExpertMainActivity extends AppCompatActivity {
                 getSupportFragmentManager()
         );
 
-        mExpertPagerAdapter.addFragment(R.drawable.menu_home,new ExpertManualFragment());
-        mExpertPagerAdapter.addFragment(R.drawable.menu_newsfeed, new UserNewspeedFragment());
+        mExpertPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
+        mExpertPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
         mExpertPagerAdapter.addFragment(R.drawable.menu_my, new ExpertPageFragment());
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_expert);

@@ -13,6 +13,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by Eunmi on 2017-11-29.
@@ -24,18 +27,20 @@ import java.net.URL;
 public class SettingManuals extends AsyncTask<Object, Object, Integer> {
     private ManualsAdapter adapter;
     private ViewPager pager;
-    private ImageView logo;
+    //private ImageView logo;
+    private CircleIndicator indicator;
 
-    private Bitmap logoImg;
+    //private Bitmap logoImg;
 
     // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
     @Override
     public Integer doInBackground(Object... params) {
         try {
             /* parameter로 받은 것들 저장 */
-            logo = (ImageView) params[0];
-            pager = (ViewPager) params[1];
-            adapter = (ManualsAdapter) params[2];
+            //logo = (ImageView) params[0];
+            pager = (ViewPager) params[0];
+            adapter = (ManualsAdapter) params[1];
+            indicator = (CircleIndicator) params[2];
 
              /* URL 설정하고 접속 */
             URL url = new URL("http://fungdu0624.phps.kr/biocube/manuals.php");
@@ -58,13 +63,18 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
 
             String[] token = str.split(",");
 
-                /* 매뉴얼 수 setting */
+            /* 매뉴얼 수 setting */
             adapter.setManualNum(Integer.parseInt(token[0]));
             Bitmap[] manualInitArray = new Bitmap[Integer.parseInt(token[0])];
 
-                /* 매뉴얼 처음 이미지 setting */
+            ArrayList<String []> manualList = new ArrayList<>();
+
+            /* 매뉴얼 종류별로 정리 */
             for(int i=1; i<=Integer.parseInt(token[0]); i++) {
-                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + token[i] + ".jpg";
+                String[] manualArray = token[i].split(" "); //ex) rose 1.jpg 2.jpg 3.jpg
+
+                /* 매뉴얼 대표 이미지 setting */
+                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + manualArray[0] + ".jpg";
                 url = new URL(readURL);
                 http = (HttpURLConnection) url.openConnection();
                 http.connect();
@@ -74,10 +84,14 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
                 //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
                 Bitmap readImg = BitmapFactory.decodeStream(inStream);
                 manualInitArray[(i-1)] = readImg;
+
+                /* 매뉴얼 설명 이미지들 리스트에 저장 */
+                manualList.add(manualArray);
             }
             inStream.close();
             http.disconnect();
             adapter.setManualInitImg(manualInitArray);
+            adapter.setManualList(manualList);
 
                 /* 매뉴얼 화면에 로고 이미지 가져오기 */
                 /*
@@ -92,6 +106,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             inStream.close();
             http.disconnect();
             */
+            return 0;
         } catch(MalformedURLException e) {
             e.printStackTrace();
         } catch(IOException e) {
@@ -105,7 +120,9 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
     public void onPostExecute(Integer result) {
         super.onPostExecute(result);
         // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+        adapter.registerDataSetObserver(indicator.getDataSetObserver());
         pager.setAdapter(adapter);
+        indicator.setViewPager(pager);
         //logo.setImageBitmap(logoImg);
     }
 

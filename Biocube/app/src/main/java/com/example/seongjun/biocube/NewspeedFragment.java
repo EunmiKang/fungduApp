@@ -1,6 +1,5 @@
 package com.example.seongjun.biocube;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,13 +23,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -41,12 +38,12 @@ import java.util.concurrent.ExecutionException;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link UserNewspeedFragment.OnFragmentInteractionListener} interface
+ * {@link NewspeedFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link UserNewspeedFragment#newInstance} factory method to
+ * Use the {@link NewspeedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserNewspeedFragment extends Fragment {
+public class NewspeedFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private static final String TAG_DIARY="diaryinfo";
@@ -69,7 +66,7 @@ public class UserNewspeedFragment extends Fragment {
     String id;
 
 
-    public UserNewspeedFragment() {
+    public NewspeedFragment() {
         // Required empty public constructor
     }
 
@@ -77,11 +74,11 @@ public class UserNewspeedFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment UserNewspeedFragment.
+     * @return A new instance of fragment NewspeedFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserNewspeedFragment newInstance() {
-        UserNewspeedFragment fragment = new UserNewspeedFragment();
+    public static NewspeedFragment newInstance() {
+        NewspeedFragment fragment = new NewspeedFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -135,7 +132,7 @@ public class UserNewspeedFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getFilterItems.php", id).get();
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UserNewspeedFragment.this.getContext());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NewspeedFragment.this.getContext());
                     final String[] filter = new String[filterItems.size()];
                     for(int i = 0; i<filterItems.size(); i++){
                         filter[i] = filterItems.get(i).toString();
@@ -145,7 +142,7 @@ public class UserNewspeedFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getNewspeedAsFilter.php", filter[which]);
-                            Toast.makeText(UserNewspeedFragment.this.getContext(), filter[which] + "이 선택되었습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewspeedFragment.this.getContext(), filter[which] + "이 선택되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();

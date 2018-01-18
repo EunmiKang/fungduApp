@@ -1,6 +1,5 @@
 package com.example.seongjun.biocube;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,25 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AdminManualFragment.OnFragmentInteractionListener} interface
+ * {@link ManualFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AdminManualFragment#newInstance} factory method to
+ * Use the {@link ManualFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdminManualFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
-
+public class ManualFragment extends Fragment  {
     private ViewPager pager;
     private ManualsAdapter adapter;
-    private ImageView logo;
 
-    public AdminManualFragment() {
+    private OnFragmentInteractionListener mListener;
+
+    public ManualFragment() {
         // Required empty public constructor
     }
 
@@ -37,11 +35,11 @@ public class AdminManualFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment AdminManualFragment.
+     * @return A new instance of fragment ManualFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AdminManualFragment newInstance() {
-        AdminManualFragment fragment = new AdminManualFragment();
+    public static ManualFragment newInstance() {
+        ManualFragment fragment = new ManualFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -56,20 +54,20 @@ public class AdminManualFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_admin_manual, container, false);
+        View view = inflater.inflate(R.layout.fragment_manual, container, false);
 
         /* Toolbar 설정 */
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_admin_manual);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_manual);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
+        //actionBar.setDisplayShowTitleEnabled(false);
 
-        logo = view.findViewById(R.id.image_admin_manuallogo);  // 로고 이미지뷰
-        pager = (ViewPager) view.findViewById(R.id.pager_admin_manual);
-        adapter = new ManualsAdapter(inflater); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+        pager = (ViewPager) view.findViewById(R.id.pager_manual);
+        adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator);
 
-        new SettingManuals().execute(logo, pager, adapter);
+        new SettingManuals().execute(pager, adapter, indicator);
 
         return view;
     }

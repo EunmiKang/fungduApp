@@ -7,7 +7,7 @@
     android:weightSum="1">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_user_manual"
+        android:id="@+id/toolbar_manual"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#52B94B"
@@ -28,7 +28,7 @@
         android:layout_weight="0.35">
 
         <ImageView
-            android:id="@+id/image_user_manuallogo"
+            android:id="@+id/image_manual_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -39,13 +39,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.65">
+        android:layout_weight="0.65"
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/pager_user_manual"
+            android:id="@+id/pager_manual"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="0.9">
         </android.support.v4.view.ViewPager>
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            app:ci_width="10dp"
+            app:ci_height="10dp"
+            app:ci_margin="5dp"
+            app:ci_drawable="@drawable/flower">
+        </me.relex.circleindicator.CircleIndicator>
     </LinearLayout>
 
 </LinearLayout>

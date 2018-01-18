@@ -1,25 +1,34 @@
 package com.example.seongjun.biocube;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by Eunmi on 2017-11-23.
  */
 
 public class ManualsAdapter extends PagerAdapter {
-
     LayoutInflater inflater;
     int manualNum;
     Bitmap[] manualInitImg;
+    ArrayList<String []> manualList;
+    Context context;
+    int position;
 
 
-    public ManualsAdapter(LayoutInflater inflater) {
+    public ManualsAdapter(LayoutInflater inflater, Context context) {
         this.inflater = inflater;
+        this.context = context;
     }
 
     public void setManualNum(int manualNum) {
@@ -29,6 +38,10 @@ public class ManualsAdapter extends PagerAdapter {
 
     public void setManualInitImg(Bitmap[] manualInitImg) {
         this.manualInitImg = manualInitImg;
+    }
+
+    public void setManualList(ArrayList<String[]> manualList) {
+        this.manualList = manualList;
     }
 
     /* PagerAdapter가 가지고 있는 View의 갯수를 return
@@ -58,6 +71,8 @@ public class ManualsAdapter extends PagerAdapter {
         //현재 position에 해당하는 이미지를 setting
         //img.setImageResource(R.drawable.plant_0+position);
         img.setImageBitmap(manualInitImg[position]);
+        img.setOnClickListener(showManualClickListener);
+        this.position = position;
 
         container.addView(view);
 
@@ -79,4 +94,13 @@ public class ManualsAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return (view==object);
     }
+
+    View.OnClickListener showManualClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(context, PopManualActivity.class);
+            intent.putExtra("manual", manualList.get(position));
+            context.startActivity(intent);
+        }
+    };
 }

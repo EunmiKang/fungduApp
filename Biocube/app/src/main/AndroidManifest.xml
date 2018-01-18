@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -28,20 +28,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserMainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".UserMainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".JoinActivity" />
-        <activity android:name=".AdminMainActivity"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ExpertMainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".AdminMainActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ExpertMainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".CubeRegister" />
         <activity android:name=".PopCubeRegist" />
         <activity android:name=".CubeListActivity" />
         <activity android:name=".DiaryAsCubeName" />
         <activity android:name=".ChangeInfoActivity" />
-        <activity android:name=".PopQuestion" android:theme="@android:style/Theme.Dialog"/>
-        <activity android:name=".PopCheckCube" android:theme="@android:style/Theme.Dialog"/>
+        <activity
+            android:name=".PopQuestion"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".PopCheckCube"
+            android:theme="@android:style/Theme.Dialog" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -55,7 +62,10 @@
 
         <activity android:name=".CommentListActivity" />
         <activity android:name=".ManualManageActivity" />
-        <activity android:name=".ManualRegistActivity"></activity>
+        <activity android:name=".ManualRegistActivity" />
+        <activity
+            android:name=".PopManualActivity"
+            android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>
