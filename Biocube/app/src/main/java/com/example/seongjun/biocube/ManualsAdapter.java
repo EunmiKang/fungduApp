@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +70,6 @@ public class ManualsAdapter extends PagerAdapter {
         //img.setImageResource(R.drawable.plant_0+position);
         img.setImageBitmap(manualInitImg[position]);
         img.setOnClickListener(showManualClickListener);
-        this.position = position;
 
         container.addView(view);
 
@@ -103,4 +100,8 @@ public class ManualsAdapter extends PagerAdapter {
             context.startActivity(intent);
         }
     };
+
+    public void setCurrentPosition(int position) {
+        this.position = position;
+    }
 }
