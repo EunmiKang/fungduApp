@@ -1,19 +1,10 @@
 package com.example.seongjun.biocube;
 
-import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 public class UserMainActivity extends AppCompatActivity {
@@ -44,8 +35,8 @@ public class UserMainActivity extends AppCompatActivity {
         PagerAdapter mUserPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
-        mUserPagerAdapter.addFragment(R.drawable.menu_home,new UserManualFragment());
-        mUserPagerAdapter.addFragment(R.drawable.menu_newsfeed, new UserNewspeedFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_note, new WriteDiaryFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_my, new UserPageFragment());

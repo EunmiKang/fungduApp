@@ -10,25 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import me.relex.circleindicator.CircleIndicator;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link UserManualFragment.OnFragmentInteractionListener} interface
+ * {@link ManualFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link UserManualFragment#newInstance} factory method to
+ * Use the {@link ManualFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserManualFragment extends Fragment  {
+public class ManualFragment extends Fragment  {
     private ViewPager pager;
     private ManualsAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 
-    public UserManualFragment() {
+    public ManualFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +35,11 @@ public class UserManualFragment extends Fragment  {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment UserManualFragment.
+     * @return A new instance of fragment ManualFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserManualFragment newInstance() {
-        UserManualFragment fragment = new UserManualFragment();
+    public static ManualFragment newInstance() {
+        ManualFragment fragment = new ManualFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -55,18 +54,18 @@ public class UserManualFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_manual, container, false);
+        View view = inflater.inflate(R.layout.fragment_manual, container, false);
 
         /* Toolbar 설정 */
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_user_manual);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_manual);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         //actionBar.setDisplayShowTitleEnabled(false);
 
-        pager = (ViewPager) view.findViewById(R.id.pager_user_manual);
+        pager = (ViewPager) view.findViewById(R.id.pager_manual);
         adapter = new ManualsAdapter(inflater); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
-        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator_user);
+        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator);
 
         new SettingManuals().execute(pager, adapter, indicator);
 

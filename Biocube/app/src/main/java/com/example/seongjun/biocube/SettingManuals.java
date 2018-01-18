@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -62,13 +63,18 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
 
             String[] token = str.split(",");
 
-                /* 매뉴얼 수 setting */
+            /* 매뉴얼 수 setting */
             adapter.setManualNum(Integer.parseInt(token[0]));
             Bitmap[] manualInitArray = new Bitmap[Integer.parseInt(token[0])];
 
-                /* 매뉴얼 처음 이미지 setting */
+            ArrayList<String []> manualList = new ArrayList<>();
+
+            /* 매뉴얼 종류별로 정리 */
             for(int i=1; i<=Integer.parseInt(token[0]); i++) {
-                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + token[i] + ".jpg";
+                String[] manualArray = token[i].split(" "); //ex) rose 1.jpg 2.jpg 3.jpg
+
+                /* 매뉴얼 대표 이미지 setting */
+                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + manualArray[0] + ".jpg";
                 url = new URL(readURL);
                 http = (HttpURLConnection) url.openConnection();
                 http.connect();
@@ -78,10 +84,14 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
                 //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
                 Bitmap readImg = BitmapFactory.decodeStream(inStream);
                 manualInitArray[(i-1)] = readImg;
+
+                /* 매뉴얼 설명 이미지들 리스트에 저장 */
+                manualList.add(manualArray);
             }
             inStream.close();
             http.disconnect();
             adapter.setManualInitImg(manualInitArray);
+            adapter.setManualList(manualList);
 
                 /* 매뉴얼 화면에 로고 이미지 가져오기 */
                 /*

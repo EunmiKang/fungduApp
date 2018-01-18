@@ -1,21 +1,26 @@
 package com.example.seongjun.biocube;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by Eunmi on 2017-11-23.
  */
 
 public class ManualsAdapter extends PagerAdapter {
-
     LayoutInflater inflater;
     int manualNum;
     Bitmap[] manualInitImg;
+    ArrayList<String []> manualList;
 
 
     public ManualsAdapter(LayoutInflater inflater) {
@@ -29,6 +34,10 @@ public class ManualsAdapter extends PagerAdapter {
 
     public void setManualInitImg(Bitmap[] manualInitImg) {
         this.manualInitImg = manualInitImg;
+    }
+
+    public void setManualList(ArrayList<String[]> manualList) {
+        this.manualList = manualList;
     }
 
     /* PagerAdapter가 가지고 있는 View의 갯수를 return
@@ -84,7 +93,7 @@ public class ManualsAdapter extends PagerAdapter {
     View.OnClickListener showManualClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            //Intent intent = new Intent(, );
         }
     };
 }
