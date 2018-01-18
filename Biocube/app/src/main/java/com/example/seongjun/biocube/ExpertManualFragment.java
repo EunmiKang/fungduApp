@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import me.relex.circleindicator.CircleIndicator;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +27,6 @@ import android.widget.ImageView;
 public class ExpertManualFragment extends Fragment {
     private ViewPager pager;
     private ManualsAdapter adapter;
-    private ImageView logo;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,11 +66,11 @@ public class ExpertManualFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        logo = view.findViewById(R.id.image_expert_manuallogo);  // 로고 이미지뷰
         pager = (ViewPager) view.findViewById(R.id.pager_expert_manual);
         adapter = new ManualsAdapter(inflater); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator_expert);
 
-        new SettingManuals().execute(logo, pager, adapter);
+        new SettingManuals().execute(pager, adapter, indicator);
 
         return view;
     }

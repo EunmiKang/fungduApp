@@ -58,6 +58,7 @@ public class ManualsAdapter extends PagerAdapter {
         //현재 position에 해당하는 이미지를 setting
         //img.setImageResource(R.drawable.plant_0+position);
         img.setImageBitmap(manualInitImg[position]);
+        img.setOnClickListener(showManualClickListener);
 
         container.addView(view);
 
@@ -79,4 +80,11 @@ public class ManualsAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return (view==object);
     }
+
+    View.OnClickListener showManualClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 }

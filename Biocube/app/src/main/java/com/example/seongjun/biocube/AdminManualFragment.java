@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import me.relex.circleindicator.CircleIndicator;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -27,7 +29,6 @@ public class AdminManualFragment extends Fragment {
 
     private ViewPager pager;
     private ManualsAdapter adapter;
-    private ImageView logo;
 
     public AdminManualFragment() {
         // Required empty public constructor
@@ -65,11 +66,11 @@ public class AdminManualFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        logo = view.findViewById(R.id.image_admin_manuallogo);  // 로고 이미지뷰
         pager = (ViewPager) view.findViewById(R.id.pager_admin_manual);
         adapter = new ManualsAdapter(inflater); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator_admin);
 
-        new SettingManuals().execute(logo, pager, adapter);
+        new SettingManuals().execute(pager, adapter, indicator);
 
         return view;
     }

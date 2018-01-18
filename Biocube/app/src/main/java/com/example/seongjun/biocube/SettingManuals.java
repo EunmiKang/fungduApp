@@ -14,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import me.relex.circleindicator.CircleIndicator;
+
 /**
  * Created by Eunmi on 2017-11-29.
  */
@@ -24,18 +26,20 @@ import java.net.URL;
 public class SettingManuals extends AsyncTask<Object, Object, Integer> {
     private ManualsAdapter adapter;
     private ViewPager pager;
-    private ImageView logo;
+    //private ImageView logo;
+    private CircleIndicator indicator;
 
-    private Bitmap logoImg;
+    //private Bitmap logoImg;
 
     // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
     @Override
     public Integer doInBackground(Object... params) {
         try {
             /* parameter로 받은 것들 저장 */
-            logo = (ImageView) params[0];
-            pager = (ViewPager) params[1];
-            adapter = (ManualsAdapter) params[2];
+            //logo = (ImageView) params[0];
+            pager = (ViewPager) params[0];
+            adapter = (ManualsAdapter) params[1];
+            indicator = (CircleIndicator) params[2];
 
              /* URL 설정하고 접속 */
             URL url = new URL("http://fungdu0624.phps.kr/biocube/manuals.php");
@@ -92,6 +96,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             inStream.close();
             http.disconnect();
             */
+            return 0;
         } catch(MalformedURLException e) {
             e.printStackTrace();
         } catch(IOException e) {
@@ -105,7 +110,9 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
     public void onPostExecute(Integer result) {
         super.onPostExecute(result);
         // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+        adapter.registerDataSetObserver(indicator.getDataSetObserver());
         pager.setAdapter(adapter);
+        indicator.setViewPager(pager);
         //logo.setImageBitmap(logoImg);
     }
 
