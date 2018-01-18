@@ -55,6 +55,9 @@ public class DiaryAsCubeName extends AppCompatActivity{
     private static final String TAG_IMG = "img";
     private static final String TAG_CONTENT ="content";
     private static final String TAG_DIARYNO = "diaryNo";
+    private static final String TAG_LASTCOMMENT = "lastComment";
+    private static final String TAG_COUNTCOMMENT = "countComment";
+
 
     JSONArray diary = null;
 
@@ -153,6 +156,8 @@ public class DiaryAsCubeName extends AppCompatActivity{
                             String img = c.getString(TAG_IMG);
                             String content = c.getString(TAG_CONTENT);
                             int diaryNo = c.getInt(TAG_DIARYNO);
+                            String lastComment = c.getString(TAG_LASTCOMMENT);
+                            int countComment = c.getInt(TAG_COUNTCOMMENT);
 
                             if(!img.equals("null")) {
                                 String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
@@ -166,11 +171,11 @@ public class DiaryAsCubeName extends AppCompatActivity{
                                 BitmapFactory.Options option = new BitmapFactory.Options();
                                 option.inSampleSize = 2;
                                 plantImg = BitmapFactory.decodeStream(inStream,null,option);
-                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content));
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment));
                             }
                             else{
                                 plantImg = null;
-                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content));
+                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content, lastComment, countComment));
                             }
                         }
                     }catch (JSONException e) {

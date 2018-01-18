@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Seongjun on 2017. 12. 21..
@@ -40,7 +41,7 @@ public class DiaryManageAdapter extends BaseAdapter{
     Context context;
     Button btn_registComment;
     EditText cmt_edit;
-
+    View views;
     public DiaryManageAdapter(Context context, String nickname, List<DiaryItem> list, int authority) {
         this.list = list;
         layoutInflater = LayoutInflater.from(context);
@@ -73,7 +74,7 @@ public class DiaryManageAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         ViewHolder holder;
-
+        this.views=view;
         if (view == null) {
             view = layoutInflater.inflate(R.layout.custom_newspeed, null);
 
@@ -84,6 +85,8 @@ public class DiaryManageAdapter extends BaseAdapter{
             holder.deleteButtonView = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
             holder.hiddenDiaryNo = (TextView) view.findViewById(R.id.hidden_diaryNo);
             holder.registButtonView = (Button) view.findViewById(R.id.btn_registComment);
+            holder.commentView = (TextView) view.findViewById(R.id.comment_text);
+            holder.commentCountView = (TextView) view.findViewById(R.id.cmtCount_text);
             deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
             btn_registComment = (Button) view.findViewById(R.id.btn_registComment);
             cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
@@ -98,6 +101,8 @@ public class DiaryManageAdapter extends BaseAdapter{
         DiaryItem diaryItem = this.list.get(position);
         holder.nicknameView.setText(diaryItem.getNickname());
         holder.hiddenDiaryNo.setText(String.valueOf(diaryItem.getDiaryNo()));
+        holder.commentView.setText(diaryItem.getLastComment());
+        holder.commentCountView.setText("등 "+diaryItem.getCountComment()+"개");
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
         cmt_edit.setTag(hiddenNo);
 
@@ -111,16 +116,28 @@ public class DiaryManageAdapter extends BaseAdapter{
         btn_registComment.setOnClickListener(new View.OnClickListener() {//등록버튼을 눌렀을 때,
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(context, cmt_edit.getTag().toString(), Toast.LENGTH_SHORT).show();
-//                String comment = test.getText().toString();
-////                String comment = cmt.getText().toString();
-//                try {
-//                    comment = URLEncoder.encode(comment,"UTF-8");
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
-//                new RegistComment().execute(comment,hiddenNo);
+                v =(View) v.getParent();
+                EditText edit_comment = (EditText) v.findViewWithTag(hiddenNo);
+//                Toast.makeText(context, test.getText().toString() ,Toast.LENGTH_SHORT).show();
+                String comment = edit_comment.getText().toString();
+                try {
+                    comment = URLEncoder.encode(comment,"UTF-8");
+                    String result = new RegistComment().execute(comment,hiddenNo).get();//댓글 성공여부를 string으로 리턴.
+                    if(result.equals("comment_success")) {
+                        Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                        edit_comment.setText("");
+                    }
+                    else{
+                        Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        edit_comment.setText("");
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -144,6 +161,8 @@ public class DiaryManageAdapter extends BaseAdapter{
         ImageButton deleteButtonView;
         TextView hiddenDiaryNo;
         Button registButtonView;
+        TextView commentView;
+        TextView commentCountView;
     }
     class DeleteDiary extends AsyncTask<String, Void, String> {
 
@@ -243,12 +262,6 @@ public class DiaryManageAdapter extends BaseAdapter{
 
         @Override
         protected void onPostExecute(String result){
-            if(result.equals("comment_success")) {
-                Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 

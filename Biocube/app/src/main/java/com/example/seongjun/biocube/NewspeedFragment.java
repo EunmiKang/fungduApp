@@ -52,11 +52,10 @@ public class NewspeedFragment extends Fragment {
     private static final String TAG_CONTENT ="content";
     private static final String TAG_ID ="id";
     private static final String TAG_DIARYNO = "diaryNo";
+    private static final String TAG_LASTCOMMENT = "lastComment";
+    private static final String TAG_COUNTCOMMENT = "countComment";
 
-    private static final String TAG_FILTERS = "filteritems";
-    private static final String TAG_FILTER = "filter";
     JSONArray diary = null;
-    JSONArray filter = null;
     int authority;
     ListView list_newspeed;
     private TokenDBHelper helper;
@@ -242,6 +241,8 @@ public class NewspeedFragment extends Fragment {
                         String content = c.getString(TAG_CONTENT);
                         String id = c.getString(TAG_ID);
                         int diaryNo = c.getInt(TAG_DIARYNO);
+                        String lastComment = c.getString(TAG_LASTCOMMENT);
+                        int countComment = c.getInt(TAG_COUNTCOMMENT);
 
                         if(!img.equals("null")) {
                             String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
@@ -255,11 +256,11 @@ public class NewspeedFragment extends Fragment {
                             BitmapFactory.Options option = new BitmapFactory.Options();
                             option.inSampleSize = 2;
                             plantImg = BitmapFactory.decodeStream(inStream2,null,option);
-                            diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content));
+                            diarylist.add(new DiaryItem(diaryNo, nickname, plantImg ,content, lastComment, countComment));
                         }
                         else{
                             plantImg = null;
-                            diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content));
+                            diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content,lastComment,countComment));
                         }
 
                     }
@@ -278,71 +279,4 @@ public class NewspeedFragment extends Fragment {
             list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), nickname, result, authority));
         }
     }
-
-//    class GetFilterItems extends AsyncTask<String, Void, List<String>> {
-//
-//        @Override
-//        protected List<String> doInBackground(String... params) {
-//            filterItems = new ArrayList();
-//            try {
-//     /* URL 설정하고 접속 */
-//                URL url = new URL(params[0]);
-//                HttpURLConnection http = (HttpURLConnection) url.openConnection();
-//
-//    /* 전송모드 설정 */
-//                http.setDefaultUseCaches(false);
-//                http.setDoInput(true);  //서버에서 읽기 모드로 지정
-//                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-//                http.setRequestMethod("POST");
-//                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-//
-//    /* 서버로 값 전송 */
-//                StringBuffer buffer = new StringBuffer();
-//                buffer.append("user_id").append("=").append(params[1].toString());
-//
-//
-//                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-//                PrintWriter writer = new PrintWriter(outStream);
-//                writer.write(buffer.toString());
-//                writer.flush();
-//                writer.close();
-//
-//    /* 서버에서 전송 받기 */
-//                InputStream inStream = http.getInputStream();
-//                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-//                StringBuilder sb = new StringBuilder();
-//
-//                String json;
-//                while((json = reader.readLine())!= null){
-//                    sb.append(json+"\n");
-//                }
-//
-//                try {
-//                    JSONObject jsonObj = new JSONObject(sb.toString().trim());
-//                    filter = jsonObj.getJSONArray(TAG_FILTERS);
-//
-//                    for (int i = 0; i < filter.length(); i++) {
-//                        JSONObject c = filter.getJSONObject(i);
-//                        String filter = c.getString(TAG_FILTER);
-//                        filterItems.add(filter);
-//                    }
-//                }catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//            } catch(MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch(IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            return filterItems;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<String> result){
-//
-//        }
-//    }
 }
