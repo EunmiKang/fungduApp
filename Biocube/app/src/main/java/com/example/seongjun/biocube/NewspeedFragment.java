@@ -243,7 +243,9 @@ public class NewspeedFragment extends Fragment {
                         int diaryNo = c.getInt(TAG_DIARYNO);
                         String lastComment = c.getString(TAG_LASTCOMMENT);
                         int countComment = c.getInt(TAG_COUNTCOMMENT);
-
+                        if(lastComment.equals("null")){
+                            lastComment = "댓글이 없습니다.";
+                        }
                         if(!img.equals("null")) {
                             String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
                             HttpURLConnection http = (HttpURLConnection) url.openConnection();
