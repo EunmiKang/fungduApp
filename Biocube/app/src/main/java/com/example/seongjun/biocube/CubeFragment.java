@@ -242,7 +242,7 @@ public class CubeFragment extends Fragment {
 
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(id).append("&");
+
                 buffer.append("cubename").append("=").append(params[0].toString());
 
 
