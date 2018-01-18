@@ -56,7 +56,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             inStream.close();
             http.disconnect();
 
-            String[] token = str.split(" ");
+            String[] token = str.split(",");
 
                 /* 매뉴얼 수 setting */
             adapter.setManualNum(Integer.parseInt(token[0]));
