@@ -154,6 +154,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_admin_manualManage"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
@@ -183,6 +184,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_admin_mycomment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
@@ -212,6 +214,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_admin_mycube"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
@@ -241,6 +244,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_admin_logout"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"

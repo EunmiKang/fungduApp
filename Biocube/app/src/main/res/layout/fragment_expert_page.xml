@@ -106,6 +106,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_expert_myComment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
@@ -135,6 +136,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_expert_changeInfo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
@@ -164,6 +166,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_expert_question"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
@@ -193,6 +196,7 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/img_expert_logout"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
