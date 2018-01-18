@@ -116,13 +116,16 @@ public class DiaryManageAdapter extends BaseAdapter{
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                new RegistComment().execute(comment);
+                new RegistComment().execute(comment,hiddenNo);
             }
         });
 
         if(authority ==2 || (!nickname.equals("admin")&&!nickname.equals(diaryItem.getNickname()))){
             deleteButton.setVisibility(View.GONE);
         }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
+        if(authority == 1){
+            btn_registComment.setVisibility(View.GONE);
+        }
 //        holder.deleteButtonView.setId(diaryItem.getDiaryNo());
         holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
         holder.contentView.setText(diaryItem.getContent());
@@ -210,6 +213,7 @@ public class DiaryManageAdapter extends BaseAdapter{
 
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
+                buffer.append("diaryNo").append("=").append(params[1]).append("&");
                 buffer.append("comment").append("=").append(params[0].toString());
 
 
