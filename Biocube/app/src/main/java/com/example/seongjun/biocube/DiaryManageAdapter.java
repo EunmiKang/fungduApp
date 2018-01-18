@@ -99,6 +99,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         holder.nicknameView.setText(diaryItem.getNickname());
         holder.hiddenDiaryNo.setText(String.valueOf(diaryItem.getDiaryNo()));
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
+        cmt_edit.setTag(hiddenNo);
 
         deleteButton.setOnClickListener(new View.OnClickListener() {//삭제버튼 눌렀을 때
             @Override
@@ -110,13 +111,16 @@ public class DiaryManageAdapter extends BaseAdapter{
         btn_registComment.setOnClickListener(new View.OnClickListener() {//등록버튼을 눌렀을 때,
             @Override
             public void onClick(View v) {
-                String comment = cmt_edit.getText().toString();
-                try {
-                    comment = URLEncoder.encode(comment,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                new RegistComment().execute(comment,hiddenNo);
+
+                Toast.makeText(context, cmt_edit.getTag().toString(), Toast.LENGTH_SHORT).show();
+//                String comment = test.getText().toString();
+////                String comment = cmt.getText().toString();
+//                try {
+//                    comment = URLEncoder.encode(comment,"UTF-8");
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+//                new RegistComment().execute(comment,hiddenNo);
             }
         });
 
@@ -239,11 +243,11 @@ public class DiaryManageAdapter extends BaseAdapter{
 
         @Override
         protected void onPostExecute(String result){
-            if(result.equals("success")) {
-                Toast.makeText(context, "성공적으로 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+            if(result.equals("comment_success")) {
+                Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(context, "삭제를 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }
