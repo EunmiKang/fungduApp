@@ -54,6 +54,7 @@ public class NewspeedFragment extends Fragment {
     private static final String TAG_DIARYNO = "diaryNo";
     private static final String TAG_LASTCOMMENT = "lastComment";
     private static final String TAG_COUNTCOMMENT = "countComment";
+    private static final String TAG_LASTCOMMENTNICK = "lastCmtNick";
 
     JSONArray diary = null;
     int authority;
@@ -243,8 +244,10 @@ public class NewspeedFragment extends Fragment {
                         int diaryNo = c.getInt(TAG_DIARYNO);
                         String lastComment = c.getString(TAG_LASTCOMMENT);
                         int countComment = c.getInt(TAG_COUNTCOMMENT);
+                        String lastCmtNick = c.getString(TAG_LASTCOMMENTNICK);
                         if(lastComment.equals("null")){
                             lastComment = "댓글이 없습니다.";
+                            lastCmtNick = "";
                         }
                         if(!img.equals("null")) {
                             String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
@@ -258,11 +261,11 @@ public class NewspeedFragment extends Fragment {
                             BitmapFactory.Options option = new BitmapFactory.Options();
                             option.inSampleSize = 2;
                             plantImg = BitmapFactory.decodeStream(inStream2,null,option);
-                            diarylist.add(new DiaryItem(diaryNo, nickname, plantImg ,content, lastComment, countComment));
+                            diarylist.add(new DiaryItem(diaryNo, nickname, plantImg ,content, lastComment, countComment, lastCmtNick));
                         }
                         else{
                             plantImg = null;
-                            diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content,lastComment,countComment));
+                            diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content,lastComment,countComment, lastCmtNick));
                         }
 
                     }
@@ -278,7 +281,7 @@ public class NewspeedFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<DiaryItem> result){
-            list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), nickname, result, authority));
+            list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), nickname, result, authority, id));
         }
     }
 }

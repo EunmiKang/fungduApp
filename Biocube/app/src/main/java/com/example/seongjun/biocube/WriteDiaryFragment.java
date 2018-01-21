@@ -104,9 +104,6 @@ public class WriteDiaryFragment extends Fragment {
     private EditText contentText;
     private Button btn_sensor;
 
-    Bluetooth mBluetooth = new Bluetooth();
-    CubeFragment mCubeFragment = new CubeFragment();
-
     private int readBufferPosition;
     byte[] readBuffer;
     Thread mWorkerThread = null;

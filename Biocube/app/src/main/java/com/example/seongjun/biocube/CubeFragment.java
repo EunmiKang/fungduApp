@@ -52,7 +52,7 @@ public class CubeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     String id;
     Spinner spinner_cubeName;
-    CubeRegister mCubeRegister = new CubeRegister();
+//    CubeRegister mCubeRegister = new CubeRegister();
     Bluetooth mBluetooth = new Bluetooth();
     Set<BluetoothDevice> mDevices;
     BluetoothAdapter mBluetoothAdapter;

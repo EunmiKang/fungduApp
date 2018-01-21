@@ -57,6 +57,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
     private static final String TAG_DIARYNO = "diaryNo";
     private static final String TAG_LASTCOMMENT = "lastComment";
     private static final String TAG_COUNTCOMMENT = "countComment";
+    private static final String TAG_LASTCOMMENTNICK = "lastCmtNick";
 
 
     JSONArray diary = null;
@@ -158,7 +159,12 @@ public class DiaryAsCubeName extends AppCompatActivity{
                             int diaryNo = c.getInt(TAG_DIARYNO);
                             String lastComment = c.getString(TAG_LASTCOMMENT);
                             int countComment = c.getInt(TAG_COUNTCOMMENT);
+                            String lastCmtNick = c.getString(TAG_LASTCOMMENTNICK);
 
+                            if(lastComment.equals("null")){
+                                lastComment = "댓글이 없습니다.";
+                                lastCmtNick = "";
+                            }
                             if(!img.equals("null")) {
                                 String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
                                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -171,11 +177,11 @@ public class DiaryAsCubeName extends AppCompatActivity{
                                 BitmapFactory.Options option = new BitmapFactory.Options();
                                 option.inSampleSize = 2;
                                 plantImg = BitmapFactory.decodeStream(inStream,null,option);
-                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment));
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick));
                             }
                             else{
                                 plantImg = null;
-                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content, lastComment, countComment));
+                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content, lastComment, countComment, lastCmtNick));
                             }
                         }
                     }catch (JSONException e) {
@@ -190,7 +196,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
 
             @Override
             protected void onPostExecute(List<DiaryItem> result){
-                list_diary_cubename.setAdapter(new DiaryManageAdapter(DiaryAsCubeName.this, result, authority));
+                list_diary_cubename.setAdapter(new DiaryManageAdapter(DiaryAsCubeName.this, result, authority, id));
 
             }
         }

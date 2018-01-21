@@ -15,23 +15,26 @@ public class DiaryItem {
     private String content;
     private String lastComment;
     private int countComment;
+    private String lastCmtNick;
 
 
-    public DiaryItem(int diaryNo, String nickname, Bitmap plantImg, String content, String lastComment, int countComment) {
+    public DiaryItem(int diaryNo, String nickname, Bitmap plantImg, String content, String lastComment, int countComment, String lastCmtNick) {
         this.diaryNo = diaryNo;
         this.nickname = nickname;
         this.plantImg = plantImg;
         this.content = content;
         this.lastComment = lastComment;
         this.countComment = countComment;
+        this.lastCmtNick = lastCmtNick;
 
     }
-    public DiaryItem(int diaryNo, String nickname, String content, String lastComment, int countComment){
+    public DiaryItem(int diaryNo, String nickname, String content, String lastComment, int countComment, String lastCmtNick){
         this.diaryNo = diaryNo;
         this.nickname = nickname;
         this.content = content;
         this.lastComment = lastComment;
         this.countComment = countComment;
+        this.lastCmtNick = lastCmtNick;
     }
 
     public String getNickname() {
@@ -75,5 +78,13 @@ public class DiaryItem {
 
     public void setCountComment(int countComment) {
         this.countComment = countComment;
+    }
+
+    public String getLastCmtNick() {
+        return lastCmtNick;
+    }
+
+    public void setLastCmtNick(String lastCmtNick) {
+        this.lastCmtNick = lastCmtNick;
     }
 }

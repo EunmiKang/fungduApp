@@ -42,18 +42,23 @@ public class DiaryManageAdapter extends BaseAdapter{
     Button btn_registComment;
     EditText cmt_edit;
     View views;
-    public DiaryManageAdapter(Context context, String nickname, List<DiaryItem> list, int authority) {
+    String id;
+
+//    TextView text_cmtNick;
+    public DiaryManageAdapter(Context context, String nickname, List<DiaryItem> list, int authority, String id) {
         this.list = list;
         layoutInflater = LayoutInflater.from(context);
         this.authority = authority;
         this.nickname = nickname;
         this.context = context;
+        this.id = id;
     }
-    public DiaryManageAdapter(Context context, List<DiaryItem> list, int authority) {
+    public DiaryManageAdapter(Context context, List<DiaryItem> list, int authority, String id) {
         this.list = list;
         layoutInflater = LayoutInflater.from(context);
         this.authority = authority;
         this.context = context;
+        this.id = id;
     }
 
     @Override
@@ -87,8 +92,10 @@ public class DiaryManageAdapter extends BaseAdapter{
             holder.registButtonView = (Button) view.findViewById(R.id.btn_registComment);
             holder.commentView = (TextView) view.findViewById(R.id.comment_text);
             holder.commentCountView = (TextView) view.findViewById(R.id.cmtCount_text);
+            holder.cmtNicknameView = (TextView) view.findViewById(R.id.text_cmtNick);
             deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
             btn_registComment = (Button) view.findViewById(R.id.btn_registComment);
+
             cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
             view.setTag(holder);
         } else {
@@ -101,6 +108,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         DiaryItem diaryItem = this.list.get(position);
         holder.nicknameView.setText(diaryItem.getNickname());
         holder.hiddenDiaryNo.setText(String.valueOf(diaryItem.getDiaryNo()));
+        holder.cmtNicknameView.setText(diaryItem.getLastCmtNick());
         holder.commentView.setText(diaryItem.getLastComment());
         holder.commentCountView.setText("등 "+diaryItem.getCountComment()+"개");
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
@@ -122,7 +130,7 @@ public class DiaryManageAdapter extends BaseAdapter{
                 String comment = edit_comment.getText().toString();
                 try {
                     comment = URLEncoder.encode(comment,"UTF-8");
-                    String result = new RegistComment().execute(comment,hiddenNo).get();//댓글 성공여부를 string으로 리턴.
+                    String result = new RegistComment().execute(comment,hiddenNo, id).get();//댓글 성공여부를 string으로 리턴.
                     if(result.equals("comment_success")) {
                         Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                         edit_comment.setText("");
@@ -163,6 +171,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         Button registButtonView;
         TextView commentView;
         TextView commentCountView;
+        TextView cmtNicknameView;
     }
     class DeleteDiary extends AsyncTask<String, Void, String> {
 
@@ -237,7 +246,8 @@ public class DiaryManageAdapter extends BaseAdapter{
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("diaryNo").append("=").append(params[1]).append("&");
-                buffer.append("comment").append("=").append(params[0].toString());
+                buffer.append("comment").append("=").append(params[0].toString()).append("&");
+                buffer.append("user_id").append("=").append(params[2].toString());
 
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
