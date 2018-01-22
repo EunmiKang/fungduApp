@@ -3,17 +3,21 @@ package com.example.seongjun.biocube;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.*;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -25,22 +29,32 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ManualRegistActivity extends AppCompatActivity {
 
     EditText text_plantName;
-    Button btn_selectRepImage, btn_selectManualImages, btn_registImage;
+    Button btn_selectRepImage, btn_selectManualImages, btn_registNewManual;
+    ImageView img_repImage;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}; //권한 설정 변수
     private static final int MULTIPLE_PERMISSIONS = 101; //권한 동의 여부 문의 후 CallBack 함수에 쓰일 변수
-    private static final int REQUEST_TAKE_ALBUM = 1;
+    private static final int REQUEST_REP_IMAGE = 0;
+    private static final int REQUEST_MANUAL_IMAGES = 1;
+    private static final int CROP_FROM_CAMERA = 2;
+
+    private Uri mImageCaptureUri;
+    private String mCurrentPhotoPath;
+    private File photoFile = null, croppedFile= null;
 
     ViewPager pager;
     android.support.v4.view.PagerAdapter pagerAdapter;
@@ -59,12 +73,14 @@ public class ManualRegistActivity extends AppCompatActivity {
         checkPermissions();
 
         text_plantName = (EditText) findViewById(R.id.text_manualRegist_plantName);
-        btn_selectRepImage = (Button) findViewById(R.id.btn_selectManualImage);
+        btn_selectRepImage = (Button) findViewById(R.id.btn_selectRepImage);
         btn_selectManualImages = (Button) findViewById(R.id.btn_selectManualImage);
-        btn_registImage = (Button) findViewById(R.id.btn_regist);
+        btn_registNewManual = (Button) findViewById(R.id.btn_regist);
+        img_repImage = (ImageView) findViewById(R.id.img_manual_rep);
 
-        btn_selectManualImages.setOnClickListener(selectImageClickListener);
-        btn_registImage.setOnClickListener(registManualClickListener);
+        btn_selectRepImage.setOnClickListener(selectRepImageClickListener);
+        btn_selectManualImages.setOnClickListener(selectManualImagesClickListener);
+        btn_registNewManual.setOnClickListener(registManualClickListener);
 
         pager = (ViewPager) findViewById(R.id.viewpager_manual);
     }
@@ -125,8 +141,24 @@ public class ManualRegistActivity extends AppCompatActivity {
     }
 
 
-    /* 이미지 선택 버튼 클릭 리스너 */
-    View.OnClickListener selectImageClickListener = new View.OnClickListener() {
+    /* 매뉴얼 대표 이미지 선택 버튼 클릭 리스너 */
+    View.OnClickListener selectRepImageClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // 앨범 호출
+            if(checkPermissions()) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, REQUEST_REP_IMAGE);
+            } else {
+                Toast.makeText(ManualRegistActivity.this, "권한 허용 해주셔야 이미지를 선택할 수 있어요ㅠ", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+
+    /* 매뉴얼 이미지 선택 버튼 클릭 리스너 */
+    View.OnClickListener selectManualImagesClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             // 앨범 호출
@@ -141,7 +173,7 @@ public class ManualRegistActivity extends AppCompatActivity {
                         intent.setType("image/*");
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                        startActivityForResult(Intent.createChooser(intent, "여러 장을 선택하시려면 '포토'를 선택해주세요."), REQUEST_TAKE_ALBUM);
+                        startActivityForResult(Intent.createChooser(intent, "여러 장을 선택하시려면 '포토'를 선택해주세요."), REQUEST_MANUAL_IMAGES);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -157,7 +189,14 @@ public class ManualRegistActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_TAKE_ALBUM:
+            case REQUEST_REP_IMAGE:
+                if (data == null) {
+                    return;
+                }
+                mImageCaptureUri = data.getData();
+                cropImage();
+                break;
+            case REQUEST_MANUAL_IMAGES:
                 if(resultCode == Activity.RESULT_OK) {
                     // 멀티 선택을 지원하지 않는 기기에서는 getClipdata()가 없음 => getData()로 접근해야 함
                     if(data.getClipData() == null) {
@@ -182,7 +221,93 @@ public class ManualRegistActivity extends AppCompatActivity {
                     Toast.makeText(ManualRegistActivity.this, "사진 선택을 취소하였습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case CROP_FROM_CAMERA:
+                img_repImage.setImageURI(null);
+                img_repImage.setImageURI(mImageCaptureUri);
+
+                if(photoFile != null) {
+                    photoFile.delete(); // 임시 파일 삭제
+                }
+                break;
         }
+    }
+
+    //Android N crop image
+    public void cropImage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {   // 마쉬멜로우 이상 버전일 때
+            grantUriPermission("com.android.camera", mImageCaptureUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(mImageCaptureUri, "image/*");
+
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            grantUriPermission(list.get(0).activityInfo.packageName, mImageCaptureUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        int size = list.size();
+        if (size == 0) {
+            Toast.makeText(ManualRegistActivity.this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            Toast.makeText(ManualRegistActivity.this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("scale", true);
+            croppedFile = null;
+            try {
+                croppedFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            File folder = new File(Environment.getExternalStorageDirectory() + "/BioCube/");
+            File tempFile = new File(folder.toString(), croppedFile.getName());
+
+            mCurrentPhotoPath = tempFile.getAbsolutePath();
+            mImageCaptureUri = FileProvider.getUriForFile(ManualRegistActivity.this,
+                    "com.example.seongjun.biocube.provider", tempFile);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+
+            intent.putExtra("return-data", false);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+
+            Intent i = new Intent(intent);
+            ResolveInfo res = list.get(0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                grantUriPermission(res.activityInfo.packageName, mImageCaptureUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            startActivityForResult(i, CROP_FROM_CAMERA);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyMMddHHmmss").format(new Date());
+        String imageFileName = "biocube_" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/BioCube/");
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
+        }
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 
     private void selectImage() {
@@ -280,7 +405,7 @@ public class ManualRegistActivity extends AppCompatActivity {
     }
 
 
-    /* 등록 버튼 클릭 리스너 */
+    /* 완료 버튼 클릭 리스너 */
     View.OnClickListener registManualClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {

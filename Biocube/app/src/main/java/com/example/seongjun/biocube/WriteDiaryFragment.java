@@ -334,14 +334,6 @@ public class WriteDiaryFragment extends Fragment {
     }
 
     private void selectImage(View view) {
-        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                //dialog.cancel();
-            }
-        };
-
         final CharSequence[] mArrayItem = {"사진 촬영", "앨범에서 선택"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -365,7 +357,17 @@ public class WriteDiaryFragment extends Fragment {
                 }
             }
         });
+
+        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //dialog.cancel();
+            }
+        };
+
         builder.setNegativeButton("취소", cancelListener);
+
 
         AlertDialog dialog = builder.create();  //알림창 객체 생성
         dialog.show();  //알림창 띄우기
