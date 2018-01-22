@@ -18,21 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:background="#52b94b"
-            app:srcCompat="@drawable/biocube_logo_white_450x240" />
+            android:src="@drawable/biocube_logo_white_450x240" />
 
     </LinearLayout>
     <!-- //end 타이틀바 -->
 
     <!-- Notice -->
 
-    <View
-        android:background="#66bdbdbd"
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
-
-    <!-- 닫기 버튼 -->
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -41,6 +34,8 @@
         android:padding="10dp"
         android:text="선택하신 디바이스가 원하시는 디바이스가 맞습니까?"
         android:textSize="20sp" />
+
+    <!-- 닫기 버튼 -->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -57,10 +52,10 @@
             android:background="@android:color/darker_gray"
             android:gravity="center"
             android:onClick="mCheckNo"
-            android:padding="16dp"
+            android:padding="10dp"
             android:text="취소"
             android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/btn_checkYes"
@@ -70,10 +65,10 @@
             android:background="@android:color/holo_green_light"
             android:gravity="center"
             android:onClick="mCheckYes"
-            android:padding="16dp"
+            android:padding="10dp"
             android:text="확인"
             android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
     </LinearLayout>
     <!--// 닫기 버튼 -->
 </LinearLayout>
