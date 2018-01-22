@@ -36,7 +36,7 @@ import java.util.concurrent.ExecutionException;
 public class ManualRegistActivity extends AppCompatActivity {
 
     EditText text_plantName;
-    Button btn_selectImage, btn_registImage;
+    Button btn_selectRepImage, btn_selectManualImages, btn_registImage;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}; //권한 설정 변수
     private static final int MULTIPLE_PERMISSIONS = 101; //권한 동의 여부 문의 후 CallBack 함수에 쓰일 변수
@@ -59,10 +59,11 @@ public class ManualRegistActivity extends AppCompatActivity {
         checkPermissions();
 
         text_plantName = (EditText) findViewById(R.id.text_manualRegist_plantName);
-        btn_selectImage = (Button) findViewById(R.id.btn_selectManualIamge);
+        btn_selectRepImage = (Button) findViewById(R.id.btn_selectManualImage);
+        btn_selectManualImages = (Button) findViewById(R.id.btn_selectManualImage);
         btn_registImage = (Button) findViewById(R.id.btn_regist);
 
-        btn_selectImage.setOnClickListener(selectImageClickListener);
+        btn_selectManualImages.setOnClickListener(selectImageClickListener);
         btn_registImage.setOnClickListener(registManualClickListener);
 
         pager = (ViewPager) findViewById(R.id.viewpager_manual);

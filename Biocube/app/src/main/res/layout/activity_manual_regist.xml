@@ -5,41 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.seongjun.biocube.ManualRegistActivity"
-    android:weightSum="6">
+    tools:context="com.example.seongjun.biocube.ManualRegistActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_expert_page"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#ffffff"
+        android:layout_height="60dp"
+        android:background="#52B94B"
+        android:gravity="center"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:layout_weight="0.5"
-        android:gravity="center">
+        android:theme="?attr/actionBarTheme">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:gravity="center"
             android:text="매뉴얼 등록"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:textColor="#ffffff"/>
+
+        <Button
+            android:id="@+id/btn_regist"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#52B94B"
+            android:text="완료"
+            android:textSize="17sp"
+            android:textColor="#ffffff"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            style="?android:attr/borderlessButtonStyle"/>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1"
-        android:layout_margin="5dp">
+        android:weightSum="11"
+        android:layout_margin="5dp"
+        android:background="#f2f2f2">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.1"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:weightSum="5"
+            android:layout_margin="3dp"
+            android:background="#ffffff">
 
             <TextView
                 android:layout_width="0dp"
@@ -57,30 +71,53 @@
                 android:padding="5dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_selectManualIamge"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:text="업로드 할 매뉴얼 이미지 선택" />
+            android:layout_weight="5"
+            android:weightSum="6"
+            android:orientation="vertical"
+            android:layout_margin="3dp"
+            android:background="#ffffff">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager_manual"
+            <Button
+                android:id="@+id/btn_selectRepImage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="업로드 할 식물의 대표 이미지 선택" />
+
+            <ImageView
+                android:id="@+id/img_manual_rep"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.8"
-            android:background="#ffffff"/>
+            android:orientation="vertical"
+            android:layout_weight="5"
+            android:weightSum="6"
+            android:layout_margin="3dp"
+            android:background="#ffffff">
+
+            <Button
+                android:id="@+id/btn_selectManualImage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="업로드 할 매뉴얼 이미지 선택 (10장까지 가능)" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager_manual"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:background="#ffffff"/>
+        </LinearLayout>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_regist"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:background="#ffffff"
-        android:text="등록"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"/>
 
 </LinearLayout>
