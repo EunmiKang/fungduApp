@@ -10,8 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_commentlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:layout_height="60dp"
+        android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" >
 
@@ -19,7 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:gravity="center"
             android:text="My Comment"
+            android:textColor="#ffffff"
             android:textSize="30sp"/>
     </android.support.v7.widget.Toolbar>
 
