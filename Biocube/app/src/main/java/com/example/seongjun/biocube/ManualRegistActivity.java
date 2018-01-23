@@ -409,32 +409,85 @@ public class ManualRegistActivity extends AppCompatActivity {
     View.OnClickListener registManualClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            // null 체크
+            /* null 체크 */
+            String plant_name = text_plantName.getText().toString();
+            if(plant_name.equals("")) {
+                Toast.makeText(ManualRegistActivity.this, "식물 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(croppedFile == null) {
+                Toast.makeText(ManualRegistActivity.this, "식물의 대표 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(priorList.size() == 0) {
+                Toast.makeText(ManualRegistActivity.this, "매뉴얼로 등록할 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            // 식물 이름 중복 검사
 
+            /* 식물 이름 중복 검사 */
+            if(true) {  // 중복 X
+                /* 서버에 이미지 업로드 */
+                uploadImages(plant_name);
 
-            // 서버에 이미지 업로드
-            uploadImages();
+                /* 디비에 업로드 */
+                uploadDB();
 
-            // 디비에 업로드
-            uploadDB();
+            } else {    // 중복 된 경우
+                Toast.makeText(ManualRegistActivity.this, "이미 등록되어 있는 식물 이름입니다.", Toast.LENGTH_SHORT).show();
+                text_plantName.setText("");
+            }
         }
     };
 
-    public void uploadImages() {
-        /* 서버에 이미지 올리기 */
-        String url = "http://fungdu0624.phps.kr/biocube/uploadImageForManual.php";
-        String attachmentName = "uploadfile_for_diary";
-        //String attachmentFileName = croppedFile.getName();
-        //String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
+    /* 식물 이름 중복 검사 쓰레드 */
+
+
+    /* 서버에 이미지 업로드 */
+    public void uploadImages(String plant_name) {
+        /* 대표 이미지 업로드 */
+        String url = "http://fungdu0624.phps.kr/biocube/uploadRepImageForManual.php";
+        String attachmentName = "uploadfile_repimage";
+        //String attachmentFileName = plant_name + ".jpg";
+        String attachmentFileName = croppedFile.getName();
+        String uploadImgPath = "manual/";
+        try{
+            plant_name = URLEncoder.encode(plant_name,"UTF-8");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        // 용량 줄이기
+        BitmapFactory.Options option = new BitmapFactory.Options();
+        option.inSampleSize = 4;    // 1/4만큼 줄임
+        Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
+        try {
+            FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
+            src.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // 서버에 이미지 업로드
-
+        try {
+            if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath, plant_name).get()) {
+                Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                croppedFile.delete();
+            } else {
+                Toast.makeText(ManualRegistActivity.this, "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
+    /* 다이어리 작성 내용 디비에 저장하기 */
     public void uploadDB() {
-        /* 다이어리 작성 내용 디비에 저장하기 */
 
         // 디비에 업로드
     }

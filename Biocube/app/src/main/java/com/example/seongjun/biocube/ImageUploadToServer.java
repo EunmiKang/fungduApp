@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Created by Eunmi on 2018-01-10.
@@ -23,7 +24,6 @@ class ImageUploadToServer extends AsyncTask<String, Void, Boolean> {
         String urlString = params[0];
         String attachmentName = params[1];
         String attachmentFileName = params[2];
-        //String uploadImgPath = "http://fungdu0624.phps.kr/biocube/users/"+((UserMainActivity)getActivity()).userID+"/"+attachmentFileName;
         String uploadImgPath = params[3];
 
         String lineEnd = "\r\n";
@@ -54,11 +54,22 @@ class ImageUploadToServer extends AsyncTask<String, Void, Boolean> {
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + attachmentFileName + "\"" + lineEnd);
                 dos.writeBytes(lineEnd);
-            } else if(params[1].equals("uploadfile_for_manual")) {
+            } else if(params[1].equals("uploadfile_repimage")) {
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"file_path\"" + lineEnd + lineEnd + uploadImgPath + lineEnd);
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"plant_name\"" + lineEnd + lineEnd + params[5] + lineEnd);
+                //dos.writeBytes("Content-Disposition: form-data; name=\"plant_name\"" + lineEnd + lineEnd);
+                //dos.writeUTF(params[5]);
+                //dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + attachmentFileName + "\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+            } else if(params[1].equals("upload_for_manual")){
 
             }
 
-            // create a buffer of  maximum size
+            // create a buffer of maximum size
             int bytesAvailable = mFileInputStream.available();
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
             byte[] buffer = new byte[bufferSize];
