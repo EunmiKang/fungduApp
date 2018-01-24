@@ -451,15 +451,10 @@ public class ManualRegistActivity extends AppCompatActivity {
         //String attachmentFileName = plant_name + ".jpg";
         String attachmentFileName = croppedFile.getName();
         String uploadImgPath = "manual/";
-        try{
-            plant_name = URLEncoder.encode(plant_name,"UTF-8");
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
 
         // 용량 줄이기
         BitmapFactory.Options option = new BitmapFactory.Options();
-        option.inSampleSize = 4;    // 1/4만큼 줄임
+        option.inSampleSize = 2;    // 1/2만큼 줄임
         Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
         try {
             FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);

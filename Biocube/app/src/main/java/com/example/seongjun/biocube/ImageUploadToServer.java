@@ -4,9 +4,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -58,14 +61,11 @@ class ImageUploadToServer extends AsyncTask<String, Void, Boolean> {
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"file_path\"" + lineEnd + lineEnd + uploadImgPath + lineEnd);
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"plant_name\"" + lineEnd + lineEnd + params[5] + lineEnd);
-                //dos.writeBytes("Content-Disposition: form-data; name=\"plant_name\"" + lineEnd + lineEnd);
-                //dos.writeUTF(params[5]);
-                //dos.writeBytes(lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"plant_name\"" + lineEnd + lineEnd + URLEncoder.encode(params[5], "UTF-8") + lineEnd);
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + attachmentFileName + "\"" + lineEnd);
                 dos.writeBytes(lineEnd);
-            } else if(params[1].equals("upload_for_manual")){
+            } else if(params[1].equals("uploadfile_for_manual")){
 
             }
 
@@ -93,9 +93,9 @@ class ImageUploadToServer extends AsyncTask<String, Void, Boolean> {
             String serverResponseMessage = con.getResponseMessage();
             Log.i("uploadFile", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
 
-            if(serverResponseCode == 200){
-                result = "success";
-            }
+            InputStream inStream = con.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+            result = reader.readLine();
 
             //close the streams //
             mFileInputStream.close();
