@@ -44,7 +44,7 @@ public class UserMainActivity extends AppCompatActivity {
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_user);
         mViewPager.setAdapter(mUserPagerAdapter);
 
-        mCubeFragment = (CubeFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_user+":"+mViewPager.getCurrentItem()+1);
+//        mCubeFragment = (CubeFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_user+":"+mViewPager.getCurrentItem()+1);
         /* 탭 설정 */
         TabLayout mTab = (TabLayout) findViewById(R.id.tabs);
         mTab.setupWithViewPager(mViewPager);
@@ -59,7 +59,7 @@ public class UserMainActivity extends AppCompatActivity {
         super.onBackPressed();
         backPressCloseHandler.onBackPressed();
     }
-    public void stopThread(){
-        mCubeFragment.mWorkerThread.interrupt();
-    }
+//    public void stopThread(){
+//        mCubeFragment.mWorkerThread.interrupt();
+//    }
 }

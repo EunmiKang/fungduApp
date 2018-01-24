@@ -37,7 +37,7 @@ public class DiaryManageAdapter extends BaseAdapter{
     int authority;
     private LayoutInflater layoutInflater;
     ImageButton deleteButton;
-    String nickname = "admin";
+    String nickname = "adminNick";
     Context context;
     Button btn_registComment;
     EditText cmt_edit;
@@ -117,6 +117,9 @@ public class DiaryManageAdapter extends BaseAdapter{
         deleteButton.setOnClickListener(new View.OnClickListener() {//삭제버튼 눌렀을 때
             @Override
             public void onClick(View v) {
+                View v_grandParent = (View) v.getParent().getParent();
+                TextView hiddenDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
+                String hiddenNo = hiddenDiaryNo.getText().toString();
                 new DeleteDiary().execute(hiddenNo);
             }
         });
@@ -124,13 +127,16 @@ public class DiaryManageAdapter extends BaseAdapter{
         btn_registComment.setOnClickListener(new View.OnClickListener() {//등록버튼을 눌렀을 때,
             @Override
             public void onClick(View v) {
-                v =(View) v.getParent();
-                EditText edit_comment = (EditText) v.findViewWithTag(hiddenNo);
+                View v_parent =(View) v.getParent();
+                EditText edit_comment = (EditText) v_parent.findViewWithTag(hiddenNo);
 //                Toast.makeText(context, test.getText().toString() ,Toast.LENGTH_SHORT).show();
                 String comment = edit_comment.getText().toString();
+                View v_grandParent = (View) v.getParent().getParent();
+                TextView textDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
+                String diaryNo = textDiaryNo.getText().toString();
                 try {
                     comment = URLEncoder.encode(comment,"UTF-8");
-                    String result = new RegistComment().execute(comment,hiddenNo, id).get();//댓글 성공여부를 string으로 리턴.
+                    String result = new RegistComment().execute(comment,diaryNo, id).get();//댓글 성공여부를 string으로 리턴.
                     if(result.equals("comment_success")) {
                         Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                         edit_comment.setText("");
@@ -149,7 +155,7 @@ public class DiaryManageAdapter extends BaseAdapter{
             }
         });
 
-        if(authority ==2 || (!nickname.equals("admin")&&!nickname.equals(diaryItem.getNickname()))){
+        if(authority ==2 || (!nickname.equals("adminNick")&&!nickname.equals(diaryItem.getNickname()))){
             deleteButton.setVisibility(View.GONE);
         }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
         if(authority == 1){

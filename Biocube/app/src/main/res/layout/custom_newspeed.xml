@@ -90,7 +90,7 @@
             android:id="@+id/text_cmtNick"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.17"
+            android:layout_weight="0.20"
             android:textStyle="bold" />
 
         <TextView
@@ -98,7 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="댓글"
-            android:layout_weight="0.7" />
+            android:layout_weight="0.68" />
 
         <TextView
             android:id="@+id/cmtCount_text"

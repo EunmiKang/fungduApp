@@ -157,6 +157,8 @@ public class AdminPageFragment extends Fragment {
             db.delete("TOKEN", "token is not null", null);
 
             Intent intent = new Intent(getContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     };
