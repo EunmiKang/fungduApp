@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 public class UserMainActivity extends AppCompatActivity {
@@ -12,9 +13,7 @@ public class UserMainActivity extends AppCompatActivity {
 
     String userID;
     Bluetooth mBluetooth = new Bluetooth();
-
     CubeFragment mCubeFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
