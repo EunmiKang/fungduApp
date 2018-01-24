@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 public class UserMainActivity extends AppCompatActivity {
@@ -12,9 +13,7 @@ public class UserMainActivity extends AppCompatActivity {
 
     String userID;
     Bluetooth mBluetooth = new Bluetooth();
-
     CubeFragment mCubeFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,7 @@ public class UserMainActivity extends AppCompatActivity {
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_user);
         mViewPager.setAdapter(mUserPagerAdapter);
 
-        mCubeFragment = (CubeFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_user+":"+mViewPager.getCurrentItem()+1);
+//        mCubeFragment = (CubeFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_user+":"+mViewPager.getCurrentItem()+1);
         /* 탭 설정 */
         TabLayout mTab = (TabLayout) findViewById(R.id.tabs);
         mTab.setupWithViewPager(mViewPager);
@@ -59,7 +58,7 @@ public class UserMainActivity extends AppCompatActivity {
         super.onBackPressed();
         backPressCloseHandler.onBackPressed();
     }
-    public void stopThread(){
-        mCubeFragment.mWorkerThread.interrupt();
-    }
+//    public void stopThread(){
+//        mCubeFragment.mWorkerThread.interrupt();
+//    }
 }
