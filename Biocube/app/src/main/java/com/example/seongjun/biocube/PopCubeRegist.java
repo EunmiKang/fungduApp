@@ -107,11 +107,16 @@ public class PopCubeRegist extends AppCompatActivity {
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
-                String[] token = str.split(" ");
+                String[] token = str.split(",");
+                String[] plant = new String[Integer.parseInt(token[0])];
+                for(int i = 1; i <token.length; i++){
+                    String[] tmp = token[i].split(" ");
+                    plant[i-1] = tmp[0];
+                }
                 /* 매뉴얼 수 setting */
 
-                for(int i=1; i<token.length; i++){
-                    plantList.add(token[i]);
+                for(int i=0; i<plant.length; i++){
+                    plantList.add(plant[i]);
                 }
                 inStream.close();
                 http.disconnect();

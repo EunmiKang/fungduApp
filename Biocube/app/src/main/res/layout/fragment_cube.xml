@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_cubeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.seongjun.biocube.CubeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.seongjun.biocube.CubeFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_cube"
@@ -59,12 +60,12 @@
 
             <Button
                 android:id="@+id/btn_connect"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:text="연결"
-                android:textSize="15sp"
-                style="?android:attr/borderlessButtonStyle"/>
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -266,8 +267,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
                         android:layout_weight="0.8"
+                        android:orientation="horizontal"
                         android:weightSum="1">
 
                         <LinearLayout
@@ -284,15 +285,16 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text="AM"
-                                android:theme="@style/BioCubeButton"
-                                android:textColor="#FFFFFF"/>
+                                android:textColor="#FFFFFF"
+                                android:theme="@style/BioCubeButton" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
                             android:layout_weight="0.8"
+                            android:orientation="vertical"
                             android:weightSum="2">
 
                             <LinearLayout
@@ -308,9 +310,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp" />
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time2"
@@ -318,9 +320,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time3"
@@ -328,9 +330,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time4"
@@ -338,9 +340,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time5"
@@ -348,9 +350,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time6"
@@ -358,9 +360,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                             </LinearLayout>
 
@@ -376,9 +378,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time8"
@@ -386,9 +388,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time9"
@@ -396,9 +398,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time10"
@@ -406,9 +408,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time11"
@@ -416,9 +418,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
 
                                 <ImageButton
                                     android:id="@+id/led_time12"
@@ -426,11 +428,11 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_yellow" />
                             </LinearLayout>
-                    </LinearLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -481,8 +483,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
                         android:layout_weight="0.8"
+                        android:orientation="horizontal"
                         android:weightSum="1">
 
                         <LinearLayout
@@ -499,16 +501,17 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text="AM"
-                                android:theme="@style/BioCubeButton"
-                                android:textColor="#FFFFFF"/>
+                                android:textColor="#FFFFFF"
+                                android:theme="@style/BioCubeButton" />
 
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
                             android:layout_weight="0.8"
+                            android:orientation="vertical"
                             android:weightSum="2">
 
                             <LinearLayout
@@ -524,9 +527,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time2"
@@ -534,9 +537,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time3"
@@ -544,9 +547,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time4"
@@ -554,9 +557,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time5"
@@ -564,9 +567,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time6"
@@ -574,9 +577,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                             </LinearLayout>
 
@@ -592,9 +595,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time8"
@@ -602,9 +605,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time9"
@@ -612,9 +615,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time10"
@@ -622,9 +625,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time11"
@@ -632,9 +635,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
 
                                 <ImageButton
                                     android:id="@+id/pump_time12"
@@ -642,9 +645,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#FFFFFF"
+                                    android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue"
-                                    android:padding="5dp"/>
+                                    android:src="@drawable/circle_blue" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -655,5 +658,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </LinearLayout>

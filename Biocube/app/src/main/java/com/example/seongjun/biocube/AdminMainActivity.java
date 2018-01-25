@@ -12,6 +12,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private BackPressCloseHandler backPressCloseHandler;
 
     String adminID;
+    Bluetooth mBluetooth = new Bluetooth();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

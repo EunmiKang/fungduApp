@@ -162,8 +162,12 @@ public class CubeFragment extends Fragment {
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-            ((UserMainActivity)getActivity()).mBluetooth.sendData("led");
-
+            if(!id.equals("admin")) {
+                ((UserMainActivity) getActivity()).mBluetooth.sendData("led");
+            }
+            else{
+                ((AdminMainActivity) getActivity()).mBluetooth.sendData("led");
+            }
         }
     };
 
@@ -171,9 +175,12 @@ public class CubeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            ((UserMainActivity)getActivity()).mBluetooth.sendData("pump");
-//            text_motor.setText(mCubeRegister.getStateMotor());
-//                text_motor.setText("MOTOR ON");
+            if(!id.equals("admin")) {
+                ((UserMainActivity) getActivity()).mBluetooth.sendData("pump");
+            }
+            else{
+                ((AdminMainActivity) getActivity()).mBluetooth.sendData("pump");
+            }
         }
     };
 
@@ -198,7 +205,7 @@ public class CubeFragment extends Fragment {
         public void onClick(View v) {
             String selectedCube = spinner_cubeName.getSelectedItem().toString();
             try{
-                ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
+//                ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
 //                ((WriteDiaryFragment)getTargetFragment()).mBluetooth.mSocket.close();//다이어리에 소켓 끊음.
                 selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
             } catch(Exception e) {
@@ -259,7 +266,7 @@ public class CubeFragment extends Fragment {
 
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(((UserMainActivity) getActivity()).userID).append("&");//나중에 고쳐야함. 어드민은 안돼.
+                buffer.append("user_id").append("=").append(id).append("&");//나중에 고쳐야함. 어드민은 안돼.
                 buffer.append("cubename").append("=").append(params[0].toString());
 
 
@@ -286,23 +293,47 @@ public class CubeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             String deviceNum = result;
-            switch (((UserMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
-                case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-                    break;
-                case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
-                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
-                    break;
-                case 2: mDevices = mBluetoothAdapter.getBondedDevices();
-                mPariedDeviceCount = mDevices.size();
+            if(!id.equals("admin")) {
+                switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
+                    case 0:
+                        Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                        break;
+                    case 2:
+                        mDevices = mBluetoothAdapter.getBondedDevices();
+                        mPariedDeviceCount = mDevices.size();
+                }
+                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                    beginListenForData_1();
+                    ((UserMainActivity) getActivity()).mBluetooth.sendData("connect");
+                } else {
+                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                }
+            } else{
+                switch (((AdminMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
+                    case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                        break;
+                    case 2: mDevices = mBluetoothAdapter.getBondedDevices();
+                        mPariedDeviceCount = mDevices.size();
+                }
+                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                if(((AdminMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+                    beginListenForData_1();
+                    ((AdminMainActivity)getActivity()).mBluetooth.sendData("connect");
+                }else{
+                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                }
             }
-            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-            if(((UserMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
-                beginListenForData_1();
-                ((UserMainActivity)getActivity()).mBluetooth.sendData("connect");
-            }else{
-                Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-            }
+
 
 //            Intent intent = new Intent();
 //            if(mCubeRegister.connectToSelectedDevice(deviceNum, 1)){
@@ -334,12 +365,23 @@ public class CubeFragment extends Fragment {
                 // isInterrupted() 메소드를 사용하여 멈추었을 경우 반복문을 나가서 스레드가 종료하게 된다.
                 while(!Thread.currentThread().isInterrupted()) {
                     try {
-                        // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
-                        int byteAvailable = ((UserMainActivity)getActivity()).mBluetooth.mInputStream.available();   // 수신 데이터 확인
-                        if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
+                        int byteAvailable;
+                        if(!id.equals("admin")) {
+                            // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
+                            byteAvailable = ((UserMainActivity) getActivity()).mBluetooth.mInputStream.available();   // 수신 데이터 확인
+                        }
+                        else{
+                            byteAvailable = ((AdminMainActivity) getActivity()).mBluetooth.mInputStream.available();   // 수신 데이터 확인
+                        }
+                        if(byteAvailable > 0) {                       // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
-                            ((UserMainActivity)getActivity()).mBluetooth.mInputStream.read(packetBytes);
+                            if(!id.equals("admin")) {
+                                ((UserMainActivity) getActivity()).mBluetooth.mInputStream.read(packetBytes);
+                            }
+                            else{
+                                ((AdminMainActivity) getActivity()).mBluetooth.mInputStream.read(packetBytes);
+                            }
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
@@ -386,8 +428,7 @@ public class CubeFragment extends Fragment {
                         }
 
                     } catch (Exception e) {    // 데이터 수신 중 오류 발생.
-//                        Toast.makeText(getContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
-//                        getActivity().finish();            // App 종료.
+                        e.printStackTrace();
                     }
                 }
             }
@@ -402,6 +443,7 @@ public class CubeFragment extends Fragment {
             mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
             mInputStream.close();
             ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
+            ((AdminMainActivity)getActivity()).mBluetooth.mSocket.close();
         }catch(Exception e){}
         super.onDestroy();
     }
