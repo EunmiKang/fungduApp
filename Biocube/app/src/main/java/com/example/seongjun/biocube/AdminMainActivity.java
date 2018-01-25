@@ -53,7 +53,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         backPressCloseHandler.onBackPressed();
     }
 }

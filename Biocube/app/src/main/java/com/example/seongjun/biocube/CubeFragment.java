@@ -105,6 +105,8 @@ public class CubeFragment extends Fragment {
         view.findViewById(R.id.btn_connect).setOnClickListener(connectClickListener);
         view.findViewById(R.id.btn_led).setOnClickListener(setLedClickListener);
         view.findViewById(R.id.btn_pump).setOnClickListener(setPumpClickListener);
+        view.findViewById(R.id.btn_ledTime).setOnClickListener(setLedTimeClickListener);
+        view.findViewById(R.id.btn_pumpTime).setOnClickListener(setPumpTimeClickListener);
         text_temper = (TextView) view.findViewById(R.id.text_temp);
         text_humi_air = (TextView) view.findViewById(R.id.text_humi_air);
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
@@ -175,6 +177,21 @@ public class CubeFragment extends Fragment {
         }
     };
 
+    Button.OnClickListener setLedTimeClickListener = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    Button.OnClickListener setPumpTimeClickListener = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     Button.OnClickListener connectClickListener= new Button.OnClickListener(){
         @Override

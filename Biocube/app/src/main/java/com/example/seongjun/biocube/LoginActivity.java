@@ -177,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {    //status == 2
                     intent = new Intent(LoginActivity.this, ExpertMainActivity.class);
                 }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         }
