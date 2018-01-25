@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -11,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,17 +34,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import me.relex.circleindicator.CircleIndicator;
+
 public class ManualRegistActivity extends AppCompatActivity {
 
     EditText text_plantName;
-    Button btn_selectRepImage, btn_selectManualImages, btn_registNewManual;
+    Button btn_selectRepImage, btn_registNewManual, btn_reset;
     ImageView img_repImage;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}; //권한 설정 변수
@@ -57,12 +59,14 @@ public class ManualRegistActivity extends AppCompatActivity {
     private File photoFile = null, croppedFile= null;
 
     ViewPager pager;
-    android.support.v4.view.PagerAdapter pagerAdapter;
+    ManualRegistPagerAdapter pagerAdapter;
 
     // 원본 파일들 경로 리스트
-    ArrayList<String> pathList = new ArrayList<>();
+    String[] pathList = new String[10];
     // 넘어온 용
-    ArrayList<String> priorList = new ArrayList<>();
+    String[] priorList = new String[10];
+
+    private int position;
 
 
     @Override
@@ -74,15 +78,37 @@ public class ManualRegistActivity extends AppCompatActivity {
 
         text_plantName = (EditText) findViewById(R.id.text_manualRegist_plantName);
         btn_selectRepImage = (Button) findViewById(R.id.btn_selectRepImage);
-        btn_selectManualImages = (Button) findViewById(R.id.btn_selectManualImage);
         btn_registNewManual = (Button) findViewById(R.id.btn_regist);
+        btn_reset = (Button) findViewById(R.id.btn_reset_manual);
         img_repImage = (ImageView) findViewById(R.id.img_manual_rep);
 
         btn_selectRepImage.setOnClickListener(selectRepImageClickListener);
-        btn_selectManualImages.setOnClickListener(selectManualImagesClickListener);
         btn_registNewManual.setOnClickListener(registManualClickListener);
+        btn_reset.setOnClickListener(resetClickListener);
 
         pager = (ViewPager) findViewById(R.id.viewpager_manual);
+        //pager.setOffscreenPageLimit(priorList.size()-1);
+        pagerAdapter = new ManualRegistPagerAdapter();
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pagerAdapter.setCurrentPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        pager.setAdapter(pagerAdapter);
+        CircleIndicator indicator = (CircleIndicator)  findViewById(R.id.indicator_manualRegist);
+        indicator.setViewPager(pager);
     }
 
     /**
@@ -157,32 +183,14 @@ public class ManualRegistActivity extends AppCompatActivity {
     };
 
 
-    /* 매뉴얼 이미지 선택 버튼 클릭 리스너 */
-    View.OnClickListener selectManualImagesClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            // 앨범 호출
-            if(checkPermissions()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    try {
-                        // list 초기화
-                        priorList = new ArrayList<>();
-                        pathList = new ArrayList<>();
+    /* 매뉴얼 이미지 선택 버튼 클릭 */
+    public void selectManualImage(int current_position) {
+        position = current_position;
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_MANUAL_IMAGES);
+    }
 
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                        startActivityForResult(Intent.createChooser(intent, "여러 장을 선택하시려면 '포토'를 선택해주세요."), REQUEST_MANUAL_IMAGES);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                Toast.makeText(ManualRegistActivity.this, "권한 허용 해주셔야 이미지를 선택할 수 있어요ㅠ", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,29 +205,17 @@ public class ManualRegistActivity extends AppCompatActivity {
                 cropImage();
                 break;
             case REQUEST_MANUAL_IMAGES:
-                if(resultCode == Activity.RESULT_OK) {
-                    // 멀티 선택을 지원하지 않는 기기에서는 getClipdata()가 없음 => getData()로 접근해야 함
-                    if(data.getClipData() == null) {
-                        priorList.add(String.valueOf(data.getData()));
-                    } else {
-                        ClipData clipData = data.getClipData();
-                        if(clipData.getItemCount() > 10) {
-                            Toast.makeText(ManualRegistActivity.this, "사진은 10개까지 선택가능 합니다.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        else if(clipData.getItemCount() == 1) { // 하나만 선택했을 경우
-                            String dataStr = String.valueOf(clipData.getItemAt(0).getUri());
-                            priorList.add(dataStr);
-                        } else if(clipData.getItemCount() > 1 && clipData.getItemCount() < 10) {
-                            for(int i=0; i<clipData.getItemCount(); i++) {
-                                priorList.add(String.valueOf(clipData.getItemAt(i).getUri()));
-                            }
-                        }
-                    }
-                    selectImage();
-                } else {
-                    Toast.makeText(ManualRegistActivity.this, "사진 선택을 취소하였습니다.", Toast.LENGTH_SHORT).show();
+                if (data == null) {
+                    return;
                 }
+
+                priorList[position] = data.getData().toString();
+                String path = priorList[position].replace("file://","");
+                pathList[position] = path;
+
+                pager.setAdapter(pagerAdapter);
+                pager.setCurrentItem(position);
+
                 break;
             case CROP_FROM_CAMERA:
                 img_repImage.setImageURI(null);
@@ -310,99 +306,16 @@ public class ManualRegistActivity extends AppCompatActivity {
         return image;
     }
 
-    private void selectImage() {
-        pager.setAdapter(null);
-        String flag = priorList.get(0).substring(0,7);
-
-        // pathList에 원본 넣어둠
-        for(int i=0; i<priorList.size(); i++) {
-            if(flag.equals("content")) {
-                // content:// -> /storage... (포토)
-                String path = getRealPathFromURI(Uri.parse(priorList.get(i)));
-                pathList.add(path);
-            } else {
-                // 갤러리: 파일 절대 경로 리턴함(변환은 필요없고, file://를 빼줘야 업로드시 new File에서 이용)
-                String path = priorList.get(i).replace("file://","");
-                pathList.add(path);
-            }
-        }
-
-        pager.setOffscreenPageLimit(priorList.size()-1);
-        pagerAdapter = new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return priorList.size();
-            }
-
-            // 뷰페이저가 열릴 때 초기화하는 함수
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                View manualView = getLayoutInflater().inflate(R.layout.viewpager_manual_regist, null);
-                final ImageView manualImgView = (ImageView) manualView.findViewById(R.id.img_manual_regist);
-
-                Uri uri = Uri.parse(pathList.get(position));
-                final String path = uri.getPath();
-
-                // Async
-                LoadBitmap loadBitmap = new LoadBitmap(manualImgView);
-                loadBitmap.execute(path);
-
-                // 컨테이너에 일단 이미지뷰를 갖고 있는 manualView 레이아웃을 넣어두고, 작업 후 onPostExecute에서 setImageBitmap
-                container.addView(manualView);
-
-                return manualView;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView((View) object);
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                //return false;
-                return view == object;
-            }
-        };
-
-        pager.setAdapter(pagerAdapter);
-    }
-
-    public String getRealPathFromURI(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if(cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
-    class LoadBitmap extends AsyncTask<String, String, Bitmap> {
-        ImageView targetView;
-
-        LoadBitmap(ImageView imageView) {
-            targetView = imageView;
-        }
+    View.OnClickListener resetClickListener = new View.OnClickListener() {
 
         @Override
-        protected Bitmap doInBackground(String[] params) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
-            Bitmap bitmap = BitmapFactory.decodeFile(params[0], options);
-            return bitmap;
+        public void onClick(View v) {
+            priorList = new String[10];
+            pathList = new String[10];
+            pager.setAdapter(pagerAdapter);
+            pager.setCurrentItem(0);
         }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            targetView.setImageBitmap(bitmap);
-        }
-    }
+    };
 
 
     /* 완료 버튼 클릭 리스너 */
@@ -419,7 +332,7 @@ public class ManualRegistActivity extends AppCompatActivity {
                 Toast.makeText(ManualRegistActivity.this, "식물의 대표 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(priorList.size() == 0) {
+            if(priorList[0] == null) {
                 Toast.makeText(ManualRegistActivity.this, "매뉴얼로 등록할 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -433,6 +346,9 @@ public class ManualRegistActivity extends AppCompatActivity {
                 /* 디비에 업로드 */
                 uploadDB();
 
+                /* 초기화 */
+                priorList = new String[10];
+                pathList = new String[10];
             } else {    // 중복 된 경우
                 Toast.makeText(ManualRegistActivity.this, "이미 등록되어 있는 식물 이름입니다.", Toast.LENGTH_SHORT).show();
                 text_plantName.setText("");
@@ -448,7 +364,6 @@ public class ManualRegistActivity extends AppCompatActivity {
         /* 대표 이미지 업로드 */
         String url = "http://fungdu0624.phps.kr/biocube/uploadRepImageForManual.php";
         String attachmentName = "uploadfile_repimage";
-        //String attachmentFileName = plant_name + ".jpg";
         String attachmentFileName = croppedFile.getName();
         String uploadImgPath = "manual/";
 
@@ -488,4 +403,50 @@ public class ManualRegistActivity extends AppCompatActivity {
     }
 
 
+
+    public class ManualRegistPagerAdapter extends PagerAdapter {
+        private int current_position;
+        ImageButton manualImgBtn;
+
+        @Override
+        public int getCount() {
+            return 10;
+        }
+
+        // 뷰페이저가 열릴 때 초기화하는 함수
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View manualView = getLayoutInflater().inflate(R.layout.viewpager_manual_regist, null);
+            manualImgBtn = (ImageButton) manualView.findViewById(R.id.imgbtn_manual_regist);
+
+            if(pathList[position] != null) {
+                manualImgBtn.setImageURI(Uri.parse(pathList[position]));
+            }
+            manualImgBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectManualImage(current_position);
+                }
+            });
+
+            // 컨테이너에 일단 이미지뷰를 갖고 있는 manualView 레이아웃을 넣어두고, 작업 후 onPostExecute에서 setImageBitmap
+            container.addView(manualView);
+
+            return manualView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return (view == object);
+        }
+
+        public void setCurrentPosition(int position) {
+            this.current_position = position;
+        }
+    }
 }

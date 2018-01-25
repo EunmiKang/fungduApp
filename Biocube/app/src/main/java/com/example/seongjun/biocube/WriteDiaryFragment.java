@@ -436,7 +436,6 @@ public class WriteDiaryFragment extends Fragment {
         } else if (requestCode == PICK_FROM_CAMERA) {
             cropImage();
 
-
             // 갤러리에 나타나게
             MediaScannerConnection.scanFile(getContext(),
                     new String[]{mImageCaptureUri.getPath()}, null,
