@@ -1,8 +1,6 @@
 package com.example.seongjun.biocube;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -30,10 +29,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -210,7 +218,8 @@ public class ManualRegistActivity extends AppCompatActivity {
                 }
 
                 priorList[position] = data.getData().toString();
-                String path = priorList[position].replace("file://","");
+                String path = getRealPathFromURI(Uri.parse(priorList[position]));
+                //String path = priorList[position].replace("file://","");
                 pathList[position] = path;
 
                 pager.setAdapter(pagerAdapter);
@@ -225,6 +234,21 @@ public class ManualRegistActivity extends AppCompatActivity {
                     photoFile.delete(); // 임시 파일 삭제
                 }
                 break;
+        }
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -339,7 +363,15 @@ public class ManualRegistActivity extends AppCompatActivity {
 
 
             /* 식물 이름 중복 검사 */
-            if(true) {  // 중복 X
+            boolean duplecheck = false;
+            try {
+                duplecheck = new PlantNameDupleCheck().execute(plant_name).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            if(!duplecheck) {  // 중복 X
                 /* 서버에 이미지 업로드 */
                 uploadImages(plant_name);
 
@@ -357,7 +389,56 @@ public class ManualRegistActivity extends AppCompatActivity {
     };
 
     /* 식물 이름 중복 검사 쓰레드 */
+    public class PlantNameDupleCheck extends AsyncTask<String,Object,Boolean> {
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String plant_name = params[0];
+            try{
+                plant_name = URLEncoder.encode(plant_name,"UTF-8");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            boolean result = true;
+            try {
+                /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/checkDuplePlantName.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
+                /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("plant_name").append("=").append(plant_name);
+
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+                /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String readLine = reader.readLine();
+                if(readLine.equals("not_duple")) {
+                    result = false;
+                }
+
+                inStream.close();
+                http.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+    }
 
     /* 서버에 이미지 업로드 */
     public void uploadImages(String plant_name) {
@@ -388,12 +469,55 @@ public class ManualRegistActivity extends AppCompatActivity {
                 croppedFile.delete();
             } else {
                 Toast.makeText(ManualRegistActivity.this, "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
+                return;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+
+        /* 매뉴얼 이미지 업로드 */
+        url = "http://fungdu0624.phps.kr/biocube/uploadImageForManual.php";
+        attachmentName = "uploadfile_for_manual";
+        uploadImgPath = "manual/"+plant_name+"/";
+        for(int i=0; i<pathList.length; i++) {
+            if(pathList[i] != null) {
+                attachmentFileName = pathList[i];
+
+                // 용량 줄이기
+                src = BitmapFactory.decodeFile(pathList[i], option);
+                try {
+                    FileOutputStream out = new FileOutputStream(pathList[i]);
+                    src.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // 서버에 이미지 업로드
+                try {
+                    if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath, plant_name).get()) {
+                        Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                        croppedFile.delete();
+                    } else {
+                        Toast.makeText(ManualRegistActivity.this, "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                break;
+            }
+        }
+
+
     }
 
     /* 다이어리 작성 내용 디비에 저장하기 */
