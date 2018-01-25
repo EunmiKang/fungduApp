@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="dark">#000000</color>
+    <color name="biocube">#529b4b</color>
+    <color name="highlight">#006622</color>
 </resources>

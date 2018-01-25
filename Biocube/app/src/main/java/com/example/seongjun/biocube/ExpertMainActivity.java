@@ -52,7 +52,7 @@ public class ExpertMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         backPressCloseHandler.onBackPressed();
     }
 }
