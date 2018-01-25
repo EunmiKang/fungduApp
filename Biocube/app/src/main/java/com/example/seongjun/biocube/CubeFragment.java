@@ -259,7 +259,7 @@ public class CubeFragment extends Fragment {
 
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-
+                buffer.append("user_id").append("=").append(((UserMainActivity) getActivity()).userID).append("&");//나중에 고쳐야함. 어드민은 안돼.
                 buffer.append("cubename").append("=").append(params[0].toString());
 
 
