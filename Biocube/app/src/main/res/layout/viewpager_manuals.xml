@@ -8,6 +8,7 @@
         android:id="@+id/img_manuals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitCenter"
+        android:background="#ffffff"/>
 
 </LinearLayout>

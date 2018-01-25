@@ -8,14 +8,16 @@
         android:id="@+id/img_manualitem"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/text_manualitem"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp"/>
 
 
 
