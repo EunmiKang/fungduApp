@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -120,7 +121,7 @@ public class ManualManageActivity extends AppCompatActivity {
                     plantName = manualList[i];
 
                     /* 이미지 처리 */
-                    String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + plantName + ".jpg";
+                    String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(plantName, "euc-kr") + ".jpg";
                     url = new URL(readURL);
                     http = (HttpURLConnection) url.openConnection();
                     http.connect();

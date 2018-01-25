@@ -2,7 +2,6 @@ package com.example.seongjun.biocube;
 
 import android.Manifest;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -372,15 +371,30 @@ public class ManualRegistActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             if(!duplecheck) {  // 중복 X
-                /* 서버에 이미지 업로드 */
-                uploadImages(plant_name);
-
-                /* 디비에 업로드 */
-                uploadDB();
-
-                /* 초기화 */
-                priorList = new String[10];
-                pathList = new String[10];
+                /* 서버에 이미지 업로드하고, 디비 업데이트 */
+                if(uploadImages(plant_name)) {
+                    boolean updateDB = false;
+                    try {
+                        updateDB = new UpdateDB().execute(plant_name).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    if(updateDB) {
+                        /* 초기화 */
+                        priorList = new String[10];
+                        pathList = new String[10];
+                        mCurrentPhotoPath = null;
+                        mImageCaptureUri = null;
+                        img_repImage.setImageDrawable(null);
+                        text_plantName.setText("");
+                        pager.setAdapter(pagerAdapter);
+                    }
+                    else {
+                        Toast.makeText(ManualRegistActivity.this, "DB 업데이트 실패", Toast.LENGTH_SHORT).show();
+                    }
+                }
             } else {    // 중복 된 경우
                 Toast.makeText(ManualRegistActivity.this, "이미 등록되어 있는 식물 이름입니다.", Toast.LENGTH_SHORT).show();
                 text_plantName.setText("");
@@ -441,7 +455,7 @@ public class ManualRegistActivity extends AppCompatActivity {
     }
 
     /* 서버에 이미지 업로드 */
-    public void uploadImages(String plant_name) {
+    public boolean uploadImages(String plant_name) {
         /* 대표 이미지 업로드 */
         String url = "http://fungdu0624.phps.kr/biocube/uploadRepImageForManual.php";
         String attachmentName = "uploadfile_repimage";
@@ -469,7 +483,7 @@ public class ManualRegistActivity extends AppCompatActivity {
                 croppedFile.delete();
             } else {
                 Toast.makeText(ManualRegistActivity.this, "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
-                return;
+                return false;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -484,28 +498,16 @@ public class ManualRegistActivity extends AppCompatActivity {
         uploadImgPath = "manual/"+plant_name+"/";
         for(int i=0; i<pathList.length; i++) {
             if(pathList[i] != null) {
-                attachmentFileName = pathList[i];
-
-                // 용량 줄이기
-                src = BitmapFactory.decodeFile(pathList[i], option);
-                try {
-                    FileOutputStream out = new FileOutputStream(pathList[i]);
-                    src.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                attachmentFileName = pathList[i].substring(pathList[i].lastIndexOf("/")+1);
 
                 // 서버에 이미지 업로드
                 try {
-                    if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath, plant_name).get()) {
-                        Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                    if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, pathList[i], plant_name).get()) {
+                        //Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
                         croppedFile.delete();
                     } else {
-                        Toast.makeText(ManualRegistActivity.this, "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
-                        return;
+                        Toast.makeText(ManualRegistActivity.this, "매뉴얼 등록 실패", Toast.LENGTH_SHORT).show();
+                        return false;
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -516,16 +518,62 @@ public class ManualRegistActivity extends AppCompatActivity {
                 break;
             }
         }
-
-
+        return true;
     }
 
-    /* 다이어리 작성 내용 디비에 저장하기 */
-    public void uploadDB() {
+    /* 다이어리 작성 내용 디비에 업데이트용 쓰레드 */
+    public class UpdateDB extends AsyncTask<String,Object,Boolean>{
+        @Override
+        protected Boolean doInBackground(String... params) {
+            boolean result = false;
+            try {
+             /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/updateManual.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
-        // 디비에 업로드
+            /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버로 값 전송 */
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("plant_name").append("=").append("'" + URLEncoder.encode(params[0], "UTF-8") + "'").append("&");
+                for(int i=0; i<pathList.length; i++) {
+                    if(pathList[i] != null) {
+                        buffer.append("manual_" + (i+1)).append("=").append("'" + URLEncoder.encode(pathList[i].substring(pathList[i].lastIndexOf("/") + 1), "UTF-8") + "'");
+                    } else {
+                        buffer.append("manual_" + (i+1)).append("=").append("NULL");
+                    }
+                    if(i<(pathList.length-1)) {
+                        buffer.append("&");
+                    }
+                }
+
+                OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
+                PrintWriter writer = new PrintWriter(outStream);
+                writer.write(buffer.toString());
+                writer.flush();
+                writer.close();
+
+            /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                String str = reader.readLine();
+
+                if (str.equals("success")) {  // 업로드 성공
+                    result = true;
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
     }
-
 
 
     public class ManualRegistPagerAdapter extends PagerAdapter {
