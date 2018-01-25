@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -107,7 +108,7 @@ public class PopManualActivity extends Activity {
             try {
              /* 각 URL에 접속하여 이미지 가져옴 */
                 for(int i=1; i<getData.length; i++) {
-                    String readUrl = "http://fungdu0624.phps.kr/biocube/manual/" + getData[0] + "/" + getData[i];
+                    String readUrl = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(getData[0], "euc-kr") + "/" + URLEncoder.encode(getData[i], "euc-kr");
                     URL url = new URL(readUrl);
                     HttpURLConnection http = (HttpURLConnection) url.openConnection();
 

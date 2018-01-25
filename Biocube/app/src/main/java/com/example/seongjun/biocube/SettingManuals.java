@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -69,7 +70,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
                 String[] manualArray = token[i].split(" "); //ex) rose 1.jpg 2.jpg 3.jpg
 
                 /* 매뉴얼 대표 이미지 setting */
-                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + manualArray[0] + ".jpg";
+                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(manualArray[0], "euc-kr") + ".jpg";
                 url = new URL(readURL);
                 http = (HttpURLConnection) url.openConnection();
                 http.connect();
