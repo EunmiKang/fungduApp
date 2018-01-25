@@ -62,7 +62,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:text="연결" />
+                android:text="연결"
+                android:textSize="15sp"
+                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
 
         <LinearLayout
@@ -130,7 +132,6 @@
                             android:layout_height="0dp"
                             android:layout_weight="0.3"
                             android:gravity="center"
-                            android:text="몇 도"
                             android:textSize="20sp" />
                     </LinearLayout>
 
@@ -163,7 +164,6 @@
                             android:layout_height="0dp"
                             android:layout_weight="0.3"
                             android:gravity="center"
-                            android:text="몇 도"
                             android:textSize="20sp" />
                     </LinearLayout>
 
@@ -197,7 +197,6 @@
                             android:layout_height="0dp"
                             android:layout_weight="0.3"
                             android:gravity="center"
-                            android:text="몇 도"
                             android:textSize="20sp" />
                     </LinearLayout>
                 </LinearLayout>
