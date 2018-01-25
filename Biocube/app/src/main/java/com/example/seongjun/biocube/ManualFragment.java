@@ -64,8 +64,7 @@ public class ManualFragment extends Fragment  {
         //actionBar.setDisplayShowTitleEnabled(false);
 
         pager = (ViewPager) view.findViewById(R.id.pager_manual);
-        adapter = new
-                ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+        adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
         CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 

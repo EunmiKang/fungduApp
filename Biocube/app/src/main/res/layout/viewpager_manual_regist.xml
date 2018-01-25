@@ -3,9 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_manual_regist"
+    <ImageButton
+        android:id="@+id/imgbtn_manual_regist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"/>
 
 </LinearLayout>

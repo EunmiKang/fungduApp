@@ -41,19 +41,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="11"
         android:layout_margin="5dp"
-        android:background="#f2f2f2">
+        android:background="#f2f2f2"
+        android:orientation="vertical"
+        android:weightSum="11.5">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="5"
             android:layout_margin="3dp"
-            android:background="#ffffff">
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:weightSum="5">
 
             <TextView
                 android:layout_width="0dp"
@@ -74,11 +74,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:weightSum="6"
-            android:orientation="vertical"
             android:layout_margin="3dp"
-            android:background="#ffffff">
+            android:layout_weight="5"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:weightSum="6">
 
             <Button
                 android:id="@+id/btn_selectRepImage"
@@ -91,31 +91,70 @@
                 android:id="@+id/img_manual_rep"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="5"/>
+                android:layout_weight="5" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="5"
-            android:weightSum="6"
             android:layout_margin="3dp"
-            android:background="#ffffff">
+            android:layout_weight="5.5"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-            <Button
-                android:id="@+id/btn_selectManualImage"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="업로드 할 매뉴얼 이미지 선택 (10장까지 가능)" />
+                android:orientation="vertical"
+                android:weightSum="4">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewpager_manual"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="5"
-                android:background="#ffffff"/>
+                <TextView
+                    android:id="@+id/btn_selectManualImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="업로드 할\n매뉴얼 이미지\n선택\n\n(순서대로\n채워주세요.)" />
+
+                <Button
+                    android:id="@+id/btn_reset_manual"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="reset"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:gravity="top|center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager_manual"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:background="#ffffff" />
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator_manualRegist"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    app:ci_height="8dp"
+                    app:ci_margin="5dp"
+                    app:ci_width="8dp"
+                    app:ci_drawable="@drawable/flower">
+                </me.relex.circleindicator.CircleIndicator>
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
