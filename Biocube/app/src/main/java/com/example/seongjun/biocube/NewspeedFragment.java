@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -190,12 +191,12 @@ public class NewspeedFragment extends Fragment {
 
     class GetDataJSON extends AsyncTask<String, Void, List<DiaryItem>> {
 
+        ProgressDialog asyncDialog = new ProgressDialog(getContext());
         @Override
         protected List<DiaryItem> doInBackground(String... params) {
 
             String uri = params[0];
             List<DiaryItem> diarylist = new ArrayList<DiaryItem>();
-
 
             try {
                 URL url = new URL(uri);
@@ -280,8 +281,18 @@ public class NewspeedFragment extends Fragment {
         }
 
         @Override
+        protected void onPreExecute() {
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            asyncDialog.setMessage("로딩중입니다..");
+
+            // show dialog
+            asyncDialog.show();
+            super.onPreExecute();
+        }
+        @Override
         protected void onPostExecute(List<DiaryItem> result){
             list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), nickname, result, authority, id));
+            asyncDialog.dismiss();
         }
     }
 }
