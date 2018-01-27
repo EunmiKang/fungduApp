@@ -141,6 +141,7 @@ public class CubeFragment extends Fragment {
         });
 
         String[] cubeList;
+
         try {
             String[] getList = new ReturnCubeList().execute(id).get();
             cubeList = new String[getList.length-1];
@@ -155,7 +156,6 @@ public class CubeFragment extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         return view;
     }
 

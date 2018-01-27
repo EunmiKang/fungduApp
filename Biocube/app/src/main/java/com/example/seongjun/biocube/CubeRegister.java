@@ -167,7 +167,7 @@ public class CubeRegister extends AppCompatActivity {
                     mOnPopupClick(device);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
                 }
                 //데이터 보내는부분
                 if(!mBluetooth.sendData("check")){
