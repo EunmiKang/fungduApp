@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,16 @@ public class ExpertMainActivity extends AppCompatActivity {
 
     String expertID;
 
+    PagerAdapter mExpertPagerAdapter;
+
+    public static Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expert_main);
+
+        mContext = this;
 
         backPressCloseHandler = new BackPressCloseHandler(this);
 
@@ -30,7 +37,7 @@ public class ExpertMainActivity extends AppCompatActivity {
         }
 
         /* 뷰페이저 연결 */
-        PagerAdapter mExpertPagerAdapter = new PagerAdapter(
+        mExpertPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
 

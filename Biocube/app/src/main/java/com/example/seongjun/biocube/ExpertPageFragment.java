@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -79,18 +80,17 @@ public class ExpertPageFragment extends Fragment {
         text_expert_nickname = (TextView)view.findViewById(R.id.text_expert_nickname);
         text_commentNum = (TextView) view.findViewById(R.id.text_commentNum);
 
+        /* 기본 정보 설정 */
+        String[] userInfo = new String[0];
         try {
-            String[] userInfo = new GetUserInfo().execute(helper).get();
-            nickname = userInfo[0];
-            text_expert_nickname.setText(nickname);
-
+            userInfo = new GetUserInfo().execute(helper).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
-        new getCommentNum().execute();
+        nickname = userInfo[0];
+        settingPage(nickname);
 
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_expert_page);
@@ -186,10 +186,16 @@ public class ExpertPageFragment extends Fragment {
     };
 
 
-    public class getCommentNum extends AsyncTask<Object,Object,Integer> {
+    public class getCommentNum extends AsyncTask<String,Object,Integer> {
         // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
         @Override
-        public Integer doInBackground(Object... params) {
+        public Integer doInBackground(String... params) {
+            String nickname = params[0];
+            try{
+                nickname = URLEncoder.encode(nickname,"UTF-8");
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
             try {
              /* URL 설정하고 접속 */
                 URL url = new URL("http://fungdu0624.phps.kr/biocube/getcommentnum.php");
@@ -236,5 +242,12 @@ public class ExpertPageFragment extends Fragment {
             // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
             text_commentNum.setText(result.toString());
         }
+    }
+
+
+    /* 기본 정보 설정 */
+    public void settingPage(String nickname) {
+        text_expert_nickname.setText(nickname);
+        new getCommentNum().execute(nickname);
     }
 }

@@ -90,17 +90,8 @@ public class UserPageFragment extends Fragment {
         text_cubeNum = (TextView)view.findViewById(R.id.text_cubeNum);
         text_diaryNum = (TextView)view.findViewById(R.id.text_diaryNum);
 
-        try {
-            String[] userInfo = new GetUserInfo().execute(helper).get();
-            nickname = userInfo[0];
-            text_user_nickname.setText(nickname);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
+        /* 기본 정보 설정 */
+        settingNickname();
 
         try {
             String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
@@ -264,4 +255,17 @@ public class UserPageFragment extends Fragment {
             startActivity(intent);
         }
     };
+
+    public void settingNickname() {
+        try {
+            String[] userInfo = new GetUserInfo().execute(helper).get();
+            nickname = userInfo[0];
+            text_user_nickname.setText(nickname);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 }

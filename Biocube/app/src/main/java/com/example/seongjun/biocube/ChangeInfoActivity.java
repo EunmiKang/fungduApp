@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.UserManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +44,7 @@ public class ChangeInfoActivity extends Activity {
     String nickname;
     String setData = "";
     String id;
-    String changenickname;
+    String changenickname = "";
     private TokenDBHelper helper = new TokenDBHelper(this);
     Spinner spinner_filter;
     List filterItems;
@@ -171,6 +173,7 @@ public class ChangeInfoActivity extends Activity {
             setData = setData.substring(0, setData.length() - 1);
         }
     }
+
     public class changeInfoTask extends AsyncTask<Object,Object,Integer>{
 
         @Override
@@ -186,9 +189,16 @@ public class ChangeInfoActivity extends Activity {
                 http.setRequestMethod("POST");
                 http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
+                try{
+                    nickname = URLEncoder.encode(nickname,"UTF-8");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("userID").append("=").append(id).append("&");
-                buffer.append("nickname").append("=").append(changenickname).append("&");
+                buffer.append("nickname").append("=").append(nickname).append("&");
+                buffer.append("changeNickname").append("=").append(changenickname).append("&");
                 buffer.append("setData").append("=").append(setData);
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
@@ -223,6 +233,18 @@ public class ChangeInfoActivity extends Activity {
 
             if(result == 1 ){
                 Toast.makeText(getApplicationContext(), "변경에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                if(!changenickname.equals("")) {
+                    if(authority == 2) {
+                        try {
+                            changenickname = URLDecoder.decode(changenickname, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        ((ExpertPageFragment) ((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(2)).settingPage(changenickname);
+                    } else if(authority == 1) {
+                        ((UserPageFragment) ((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingNickname();
+                    }
+                }
                 finish();
             }
             else{
