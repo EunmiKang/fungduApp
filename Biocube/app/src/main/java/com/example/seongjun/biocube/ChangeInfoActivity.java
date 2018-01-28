@@ -1,10 +1,12 @@
 package com.example.seongjun.biocube;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.UserManager;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +32,7 @@ import java.util.concurrent.ExecutionException;
  * Created by Seongjun on 2017. 11. 28..
  */
 
-public class ChangeInfoActivity extends AppCompatActivity {
+public class ChangeInfoActivity extends Activity {
 
     TextView textNick;
     EditText changeNick;
@@ -41,7 +44,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
     String nickname;
     String setData = "";
     String id;
-    String changenickname;
+    String changenickname = "";
     private TokenDBHelper helper = new TokenDBHelper(this);
     Spinner spinner_filter;
     List filterItems;
@@ -53,6 +56,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_change_info);
 
         id = getIntent().getStringExtra("id");
@@ -169,6 +173,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
             setData = setData.substring(0, setData.length() - 1);
         }
     }
+
     public class changeInfoTask extends AsyncTask<Object,Object,Integer>{
 
         @Override
@@ -184,9 +189,16 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 http.setRequestMethod("POST");
                 http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
+                try{
+                    nickname = URLEncoder.encode(nickname,"UTF-8");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("userID").append("=").append(id).append("&");
-                buffer.append("nickname").append("=").append(changenickname).append("&");
+                buffer.append("nickname").append("=").append(nickname).append("&");
+                buffer.append("changeNickname").append("=").append(changenickname).append("&");
                 buffer.append("setData").append("=").append(setData);
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
@@ -221,6 +233,18 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
             if(result == 1 ){
                 Toast.makeText(getApplicationContext(), "변경에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                if(!changenickname.equals("")) {
+                    if(authority == 2) {
+                        try {
+                            changenickname = URLDecoder.decode(changenickname, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        ((ExpertPageFragment) ((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(2)).settingPage(changenickname);
+                    } else if(authority == 1) {
+                        ((UserPageFragment) ((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingNickname();
+                    }
+                }
                 finish();
             }
             else{

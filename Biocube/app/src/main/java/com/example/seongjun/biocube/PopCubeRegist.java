@@ -74,17 +74,19 @@ public class PopCubeRegist extends Activity {
 //    }
     public void mOnClose(View v){
         cubeName = edit_cubeName.getText().toString();
+        plantName = spinner_plantName.getSelectedItem().toString();
         try{
             cubeName = URLEncoder.encode(cubeName,"UTF-8");
+            plantName = URLEncoder.encode(plantName,"UTF-8");
         } catch(Exception e) {
             e.printStackTrace();
         }
         try {
             cubeName = new String(cubeName.getBytes("UTF-8"));
+            plantName = new String(plantName.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
 
         }
-        plantName = spinner_plantName.getSelectedItem().toString();
         new PopCubeRegist.cubeUpTask().execute(cubeName,MAC_ADDRESS,plantName);
         //액티비티(팝업) 닫기
         finish();
@@ -155,6 +157,7 @@ public class PopCubeRegist extends Activity {
 
     String dbUpResult;
     private TokenDBHelper helper = new TokenDBHelper(this);
+
     public class cubeUpTask extends AsyncTask<String,Object,Integer>{
         @Override
         protected Integer doInBackground(String... params) {

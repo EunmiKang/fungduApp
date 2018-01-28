@@ -138,7 +138,7 @@ public class CubeRegister extends AppCompatActivity {
                 }
             }
             else {
-                Toast.makeText(CubeRegister.this, "들어옴", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CubeRegister.this, "들어옴", Toast.LENGTH_SHORT).show();
             }
         }
 
