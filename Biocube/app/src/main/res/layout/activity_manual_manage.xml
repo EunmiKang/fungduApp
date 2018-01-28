@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_expert_page"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#52B94B"

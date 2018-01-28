@@ -75,7 +75,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
         Intent intent = getIntent();
         cubename = intent.getExtras().getString("cubename");
         text_diary_cubename = (TextView) findViewById(R.id.text_diary_cubename);
-        text_diary_cubename.setText(cubename);
+        text_diary_cubename.setText(cubename + " 일지");
         try{
             cubename = URLEncoder.encode(cubename,"UTF-8");
         } catch(Exception e) {

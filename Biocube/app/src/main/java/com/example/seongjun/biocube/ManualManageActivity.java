@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -50,6 +52,7 @@ public class ManualManageActivity extends AppCompatActivity {
         }
         GridView gridView = (GridView) findViewById(R.id.grid_manual);
         gridView.setAdapter(new ManualManageAdapter(this, manualList));
+        gridView.setOnItemLongClickListener(manualItemClickListener);
     }
 
     Button.OnClickListener registManualClickListener = new Button.OnClickListener() {
@@ -71,6 +74,7 @@ public class ManualManageActivity extends AppCompatActivity {
         public Bitmap getPlantImg() {
             return plantImg;
         }
+
         public void setPlantImg(Bitmap plantImg) {
             this.plantImg = plantImg;
         }
@@ -78,6 +82,7 @@ public class ManualManageActivity extends AppCompatActivity {
         public String getPlantName() {
             return plantName;
         }
+
         public void setPlantName(String plantName) {
             this.plantName = plantName;
         }
@@ -106,7 +111,7 @@ public class ManualManageActivity extends AppCompatActivity {
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String readResult = reader.readLine();
-                if(readResult != null) {
+                if (readResult != null) {
                     manualList = readResult.split(",");
                 } else {
                     manualList = new String[0];
@@ -117,7 +122,7 @@ public class ManualManageActivity extends AppCompatActivity {
                 /* 리턴할 리스트에 읽어들인 것으로 처리 */
                 String plantName;
                 Bitmap plantImg;
-                for(int i=1; i<manualList.length; i++) {
+                for (int i = 1; i < manualList.length; i++) {
                     plantName = manualList[i];
 
                     /* 이미지 처리 */
@@ -134,9 +139,9 @@ public class ManualManageActivity extends AppCompatActivity {
                     returnList.add(new ManualItem(plantImg, plantName));
                 }
 
-            } catch(MalformedURLException e) {
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -194,4 +199,12 @@ public class ManualManageActivity extends AppCompatActivity {
             TextView plantNameView;
         }
     }
+
+    GridView.OnItemLongClickListener manualItemClickListener = new GridView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+            return false;
+        }
+    };
 }
