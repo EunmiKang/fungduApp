@@ -1,6 +1,7 @@
 
 package com.example.seongjun.biocube;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,14 @@ public class AdminMainActivity extends AppCompatActivity {
 
     String adminID;
     Bluetooth mBluetooth = new Bluetooth();
+    PagerAdapter mAdminPagerAdapter;
 
+    public static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
-
+        context = this;
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         /* Id 가져오기 */
@@ -31,7 +34,7 @@ public class AdminMainActivity extends AppCompatActivity {
         }
 
         /* 뷰페이저 연결 */
-        PagerAdapter mAdminPagerAdapter = new PagerAdapter(
+        mAdminPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
 

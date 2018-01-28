@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,16 +131,32 @@ public class CubeFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(false);
 
         Button registCube = (Button) view.findViewById(R.id.btn_cube_regist);
-
         registCube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent;
                 intent = new Intent(v.getContext(), CubeRegister.class);
+//                if(id.equals("admin")){
+//                    intent.putExtra("adapter",((AdminMainActivity)getActivity()).mAdminPagerAdapter);
+//                }
+//                else{
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("adapter", ((UserMainActivity)getActivity()).mUserPagerAdapter);
+//                    intent.putExtras(bundle);
+//                }
+
                 startActivity(intent);
             }
         });
 
+        String[] cubeList;
+
+        setSpinner();
+
+        return view;
+    }
+    public void setSpinner(){
         String[] cubeList;
 
         try {
@@ -156,7 +173,6 @@ public class CubeFragment extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return view;
     }
 
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때

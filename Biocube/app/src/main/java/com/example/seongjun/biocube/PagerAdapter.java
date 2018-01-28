@@ -4,14 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Seongjun on 2018. 1. 1..
  */
-
-public class PagerAdapter extends FragmentPagerAdapter {
+@SuppressWarnings("serial")
+public class PagerAdapter extends FragmentPagerAdapter implements Serializable {
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);
