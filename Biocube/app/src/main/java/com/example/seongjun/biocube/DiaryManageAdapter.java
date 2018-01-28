@@ -140,10 +140,16 @@ public class DiaryManageAdapter extends BaseAdapter{
                     if(result.equals("comment_success")) {
                         Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                         edit_comment.setText("");
-                        if(authority == 2){//expert
+                        if(authority == 0){//admin
                             ((NewspeedFragment)(((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
-                }
-            }
+                        }
+                        else if(authority == 1){//user
+                            ((NewspeedFragment)(((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                        }
+                        else{//expert
+                            ((NewspeedFragment)(((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                        }
+                    }
                     else{
                         Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         edit_comment.setText("");
@@ -228,6 +234,17 @@ public class DiaryManageAdapter extends BaseAdapter{
         protected void onPostExecute(String result){
             if(result.equals("success")) {
                 Toast.makeText(context, "성공적으로 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+                try {
+                    if (authority == 0) {//admin
+                        ((NewspeedFragment) (((AdminMainActivity) AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                    } else if (authority == 1) {//user
+                        ((NewspeedFragment) (((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                    } else {//expert
+                        ((NewspeedFragment) (((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             else{
                 Toast.makeText(context, "삭제를 실패하였습니다.", Toast.LENGTH_SHORT).show();
