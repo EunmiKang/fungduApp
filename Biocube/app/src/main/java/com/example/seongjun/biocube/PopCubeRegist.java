@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -36,7 +36,7 @@ import java.util.concurrent.ExecutionException;
  * Created by Seongjun on 2017. 11. 23..
  */
 
-public class PopCubeRegist extends AppCompatActivity {
+public class PopCubeRegist extends Activity {
 
     Spinner spinner_plantName;
     Context ctx = this;
