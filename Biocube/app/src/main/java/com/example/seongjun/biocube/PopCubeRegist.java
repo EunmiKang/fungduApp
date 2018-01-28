@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -44,6 +45,8 @@ public class PopCubeRegist extends Activity {
     String plantName;
     EditText edit_cubeName;
     BluetoothDevice device;
+    String user_id;
+    PagerAdapter mPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,7 @@ public class PopCubeRegist extends Activity {
         device = intent.getExtras().getParcelable("bluetoothDevice");
         MAC_ADDRESS = device.getAddress();
         new PopCubeRegist.settingSpinner().execute();
+//        mPagerAdapter = (PagerAdapter)intent.getSerializableExtra("adapter");
 
 
     }
@@ -184,7 +188,7 @@ public class PopCubeRegist extends Activity {
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String str = reader.readLine();
-
+                user_id = str;
                 inStream.close();
                 http.disconnect();
 
@@ -234,11 +238,18 @@ public class PopCubeRegist extends Activity {
             try {
                 if(dbUpResult.equals("1")){
                     Toast.makeText(getApplicationContext(), "성공" , Toast.LENGTH_SHORT).show();
-
+                    if(user_id.equals("admin")){
+                        ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).setSpinner();
+                    }
+                    else{
+                        ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).setSpinner();
+                        ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2)).setSpinner();
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "실패" , Toast.LENGTH_SHORT).show();
                 }
+                ((CubeRegister)CubeRegister.mcontext).mBluetooth.mSocket.close();
                 //선택한 디바이스 페어링 요청
                 Method method = device.getClass().getMethod("createBond", (Class[]) null);
                 method.invoke(device, (Object[]) null);

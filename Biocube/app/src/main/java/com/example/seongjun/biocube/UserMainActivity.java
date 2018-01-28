@@ -2,6 +2,7 @@ package com.example.seongjun.biocube;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.app.Fragment;
@@ -24,11 +25,13 @@ public class UserMainActivity extends AppCompatActivity {
     private static final String TAG = "CUBEFRAGEMENT";
     CubeFragment mCubeFragment;
     Fragment fragment;
+    PagerAdapter mUserPagerAdapter;
+    public static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
-
+        context = this;
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         /* Id 가져오기 */
@@ -41,7 +44,7 @@ public class UserMainActivity extends AppCompatActivity {
         }
 
         /* 뷰페이저 연결 */
-        final PagerAdapter mUserPagerAdapter = new PagerAdapter(
+        mUserPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
         mUserPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());

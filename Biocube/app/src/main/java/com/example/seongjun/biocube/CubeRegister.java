@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class CubeRegister extends AppCompatActivity {
     Set<BluetoothDevice> mDevices;
     // 폰의 블루투스 모듈을 사용하기 위한 오브젝트.
     BluetoothAdapter mBluetoothAdapter;
+    PagerAdapter mPagerAdapter;
     /**
      BluetoothDevice 로 기기의 장치정보를 알아낼 수 있는 자세한 메소드 및 상태값을 알아낼 수 있다.
      연결하고자 하는 다른 블루투스 기기의 이름, 주소, 연결 상태 등의 정보를 조회할 수 있는 클래스.
@@ -86,6 +88,7 @@ public class CubeRegister extends AppCompatActivity {
     Thread mWorkerThread = null;
     byte[] readBuffer;
     int readBufferPosition;
+    public static Context mcontext;
 //    CubeFragment mCubeFragment = new CubeFragment();
 
     String stateMotor = "";
@@ -99,7 +102,9 @@ public class CubeRegister extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgist_cube);
-
+        mcontext = this;
+//        Intent intent = getIntent();
+//        mPagerAdapter = (PagerAdapter) intent.getSerializableExtra("adapter");
         //UI
         btnSearch = (Button) findViewById(R.id.btnSearch);
         listDevice = (ListView) findViewById(R.id.listDevice);
@@ -201,6 +206,9 @@ public class CubeRegister extends AppCompatActivity {
         //데이터 담아서 팝업(액티비티) 호출
         popUpIntent = new Intent(this, PopCheckCube.class);
         popUpIntent.putExtra("bluetoothDevice", device);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("adapter", mPagerAdapter);
+//        popUpIntent.putExtras(bundle);
         startActivity(popUpIntent);
     }
 
@@ -333,5 +341,12 @@ public class CubeRegister extends AppCompatActivity {
         mBluetoothAdapter.startDiscovery();
     }
 
+//    public void stopSocket(){
+//        try {
+//            mBluetooth.mSocket.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
     //새로운 소스적용 끝
 }

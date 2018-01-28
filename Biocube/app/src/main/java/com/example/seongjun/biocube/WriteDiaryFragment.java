@@ -114,6 +114,8 @@ public class WriteDiaryFragment extends Fragment {
     BluetoothAdapter mBluetoothAdapter;
     int mPariedDeviceCount = 0;
 
+
+
     public WriteDiaryFragment() {
         // Required empty public constructor
     }
@@ -155,22 +157,22 @@ public class WriteDiaryFragment extends Fragment {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         /* 큐브, 필터 spinner 설정 */
-        String[] cubeList, filterList;
-
+        String[] filterList;
         cubeSpinner = view.findViewById(R.id.spinner_cube);
-        try {
-            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
-            cubeList = new String[getList.length-1];
-            for(int i=0; i<getList.length-1; i++) {
-                cubeList[i] = getList[i+1];
-            }
-            ArrayAdapter<String> cubeAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, cubeList);
-            cubeSpinner.setAdapter(cubeAdapter);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        setSpinner();
+//        try {
+//            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+//            cubeList = new String[getList.length-1];
+//            for(int i=0; i<getList.length-1; i++) {
+//                cubeList[i] = getList[i+1];
+//            }
+//            ArrayAdapter<String> cubeAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, cubeList);
+//            cubeSpinner.setAdapter(cubeAdapter);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 
         filterSpinner = view.findViewById(R.id.spinner_filter);
         try {
@@ -245,6 +247,23 @@ public class WriteDiaryFragment extends Fragment {
         registerBtn.setOnClickListener(diaryRegisterListener);
 
         return view;
+    }
+
+    public void setSpinner(){
+        String[] cubeList;
+        try {
+            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+            cubeList = new String[getList.length-1];
+            for(int i=0; i<getList.length-1; i++) {
+                cubeList[i] = getList[i+1];
+            }
+            ArrayAdapter<String> cubeAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, cubeList);
+            cubeSpinner.setAdapter(cubeAdapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
