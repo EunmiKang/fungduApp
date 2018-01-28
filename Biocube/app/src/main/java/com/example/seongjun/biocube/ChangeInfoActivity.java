@@ -1,10 +1,11 @@
 package com.example.seongjun.biocube;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +30,7 @@ import java.util.concurrent.ExecutionException;
  * Created by Seongjun on 2017. 11. 28..
  */
 
-public class ChangeInfoActivity extends AppCompatActivity {
+public class ChangeInfoActivity extends Activity {
 
     TextView textNick;
     EditText changeNick;
@@ -53,6 +54,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_change_info);
 
         id = getIntent().getStringExtra("id");

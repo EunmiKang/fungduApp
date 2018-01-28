@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    >
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_commentlist"
+    android:background="#eeeeee">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#52B94B"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" >
+        android:layout_height="wrap_content"
+        android:background="#52b94b"
+        android:padding="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="회원정보 변경"
             android:textColor="#ffffff"
             android:textSize="30sp"/>
-    </android.support.v7.widget.Toolbar>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:padding="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="5dp">
 
             <TextView
                 android:id="@+id/text_nickname"
@@ -42,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:textColor="#000000"/>
 
         </LinearLayout>
 
@@ -51,14 +52,14 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <EditText
                 android:id="@+id/edit_changeNickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
                 android:ems="10"
                 android:hint="닉네임"
                 android:inputType="textPersonName" />
@@ -68,7 +69,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
                 android:digits="@string/myAlphaNumeric"
                 android:ems="10"
                 android:hint="비밀번호"
@@ -80,7 +80,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
                 android:ems="10"
                 android:hint="직업"
                 android:inputType="textPersonName"
@@ -110,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="변경" />
+                android:text="변경"
+                android:textSize="15sp"/>
 
         </LinearLayout>
 
@@ -119,48 +119,53 @@
 
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="1">
 
         <EditText
             android:id="@+id/edit_addFilter"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.7"
             android:ems="10"
-            android:hint="필터추가"
+            android:hint="추가할 필터"
             android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/btn_addFilter"
-            android:layout_width="76dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="필터추가" />
+            android:layout_weight="0.3"
+            android:text="필터 추가" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="1"
-        android:layout_gravity="center">
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <Spinner
             android:id="@+id/spinner_filter"
-            android:layout_width="220dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"/>
 
         <Button
             android:id="@+id/btn_deleteFilter"
-            android:layout_width="76dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="필터삭제"
-            android:layout_marginTop="10dp"/>
+            android:layout_weight="0.3"
+            android:text="필터 삭제"/>
     </LinearLayout>
 
 </LinearLayout>

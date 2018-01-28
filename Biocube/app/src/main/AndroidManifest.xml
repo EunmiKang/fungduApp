@@ -39,10 +39,14 @@
             android:name=".ExpertMainActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".CubeRegister" />
-        <activity android:name=".PopCubeRegist" />
+        <activity
+            android:name=".PopCubeRegist"
+            android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".CubeListActivity" />
         <activity android:name=".DiaryAsCubeName" />
-        <activity android:name=".ChangeInfoActivity" />
+        <activity
+            android:name=".ChangeInfoActivity"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".PopQuestion"
             android:theme="@android:style/Theme.Dialog" />
