@@ -140,7 +140,10 @@ public class DiaryManageAdapter extends BaseAdapter{
                     if(result.equals("comment_success")) {
                         Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                         edit_comment.setText("");
-                    }
+                        if(authority == 2){//expert
+                            ((NewspeedFragment)(((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                }
+            }
                     else{
                         Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         edit_comment.setText("");
