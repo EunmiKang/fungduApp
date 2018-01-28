@@ -1,5 +1,6 @@
 package com.example.seongjun.biocube;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -112,6 +113,8 @@ public class DiaryAsCubeName extends AppCompatActivity{
     public void getData(String url){
         class GetDataJSON extends AsyncTask<String, Void, List<DiaryItem>> {
 
+            ProgressDialog asyncDialog = new ProgressDialog(DiaryAsCubeName.this);
+
             @Override
             protected List<DiaryItem> doInBackground(String... params) {
 
@@ -195,9 +198,18 @@ public class DiaryAsCubeName extends AppCompatActivity{
             }
 
             @Override
+            protected void onPreExecute() {
+                asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                asyncDialog.setMessage("로딩중입니다..");
+
+                // show dialog
+                asyncDialog.show();
+                super.onPreExecute();
+            }
+            @Override
             protected void onPostExecute(List<DiaryItem> result){
                 list_diary_cubename.setAdapter(new DiaryManageAdapter(DiaryAsCubeName.this, result, authority, id));
-
+                asyncDialog.dismiss();
             }
         }
         GetDataJSON g = new GetDataJSON();
