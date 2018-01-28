@@ -1,6 +1,7 @@
 package com.example.seongjun.biocube;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +68,7 @@ public class NewspeedFragment extends Fragment {
     List filterItems;
     String id;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     public NewspeedFragment() {
         // Required empty public constructor
@@ -97,6 +100,21 @@ public class NewspeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_newspeed, container, false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                try {
+                    new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                // 새로고침 완료
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_newspeed);
@@ -293,6 +311,15 @@ public class NewspeedFragment extends Fragment {
         protected void onPostExecute(List<DiaryItem> result){
             list_newspeed.setAdapter(new DiaryManageAdapter(getContext(), nickname, result, authority, id));
             asyncDialog.dismiss();
+        }
+    }
+    public void reset(){
+        try {
+            new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 }
