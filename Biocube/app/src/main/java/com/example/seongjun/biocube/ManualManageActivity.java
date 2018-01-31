@@ -18,6 +18,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +47,12 @@ public class ManualManageActivity extends AppCompatActivity {
 
         /* 매뉴얼 보이게 하기 */
         List<ManualItem> manualList = null;
+        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
+        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
+        for(int i=0; i<plantNameArray.length; i++) {
+            manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
+        }
+        /*
         try {
             manualList = new GetManualList().execute().get();
         } catch (InterruptedException e) {
@@ -50,6 +60,7 @@ public class ManualManageActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        */
         GridView gridView = (GridView) findViewById(R.id.grid_manual);
         gridView.setAdapter(new ManualManageAdapter(this, manualList));
         gridView.setOnItemLongClickListener(manualItemClickListener);
@@ -74,7 +85,6 @@ public class ManualManageActivity extends AppCompatActivity {
         public Bitmap getPlantImg() {
             return plantImg;
         }
-
         public void setPlantImg(Bitmap plantImg) {
             this.plantImg = plantImg;
         }
@@ -82,7 +92,6 @@ public class ManualManageActivity extends AppCompatActivity {
         public String getPlantName() {
             return plantName;
         }
-
         public void setPlantName(String plantName) {
             this.plantName = plantName;
         }
@@ -94,56 +103,7 @@ public class ManualManageActivity extends AppCompatActivity {
         protected List<ManualItem> doInBackground(Object[] objects) {
             List<ManualItem> returnList = new ArrayList<ManualItem>();
 
-            try {
-                /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/returnManualList.php");
-                HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
-                /* 전송모드 설정 */
-                http.setDefaultUseCaches(false);
-                http.setDoInput(true);  //서버에서 읽기 모드로 지정
-                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-                http.setRequestMethod("POST");
-                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-
-                /* 서버에서 전송 받기 */
-                String[] manualList;
-                InputStream inStream = http.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                String readResult = reader.readLine();
-                if (readResult != null) {
-                    manualList = readResult.split(",");
-                } else {
-                    manualList = new String[0];
-                }
-                inStream.close();
-                http.disconnect();
-
-                /* 리턴할 리스트에 읽어들인 것으로 처리 */
-                String plantName;
-                Bitmap plantImg;
-                for (int i = 1; i < manualList.length; i++) {
-                    plantName = manualList[i];
-
-                    /* 이미지 처리 */
-                    String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(plantName, "euc-kr") + ".jpg";
-                    url = new URL(readURL);
-                    http = (HttpURLConnection) url.openConnection();
-                    http.connect();
-                    //스트림생성
-                    inStream = http.getInputStream();
-                    //스트림에서 받은 데이터를 비트맵 변환
-                    plantImg = BitmapFactory.decodeStream(inStream);
-
-                    /* 리턴 리스트에 추가 */
-                    returnList.add(new ManualItem(plantImg, plantName));
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             return returnList;
         }

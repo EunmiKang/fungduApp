@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +43,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             indicator = (CircleIndicator) params[2];
 
              /* URL 설정하고 접속 */
-            URL url = new URL("http://fungdu0624.phps.kr/biocube/manuals.php");
+            URL url = new URL("http://fungdu0624.phps.kr/biocube/returnManualList.php");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
             /* 전송모드 설정 */
@@ -52,42 +56,67 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             /* 서버에서 전송 받기 */
             InputStream inStream = http.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-            String str = reader.readLine();
+            //String str = reader.readLine();
+            StringBuilder sb = new StringBuilder();
 
-            inStream.close();
-            http.disconnect();
-
-            String[] token = str.split(",");
-
-            /* 매뉴얼 수 setting */
-            adapter.setManualNum(Integer.parseInt(token[0]));
-            Bitmap[] manualInitArray = new Bitmap[Integer.parseInt(token[0])];
-
-            ArrayList<String []> manualList = new ArrayList<>();
-
-            /* 매뉴얼 종류별로 정리 */
-            for(int i=1; i<=Integer.parseInt(token[0]); i++) {
-                String[] manualArray = token[i].split(" "); //ex) rose 1.jpg 2.jpg 3.jpg
-
-                /* 매뉴얼 대표 이미지 setting */
-                String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(manualArray[0], "euc-kr") + ".jpg";
-                url = new URL(readURL);
-                http = (HttpURLConnection) url.openConnection();
-                http.connect();
-                //스트림생성
-                inStream = http.getInputStream();
-                //스트림에서 받은 데이터를 비트맵 변환
-                //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
-                Bitmap readImg = BitmapFactory.decodeStream(inStream);
-                manualInitArray[(i-1)] = readImg;
-
-                /* 매뉴얼 설명 이미지들 리스트에 저장 */
-                manualList.add(manualArray);
+            String json;
+            while((json = reader.readLine())!= null){
+                sb.append(json+"\n");
             }
+
             inStream.close();
             http.disconnect();
-            adapter.setManualInitImg(manualInitArray);
-            adapter.setManualList(manualList);
+
+            try {
+                JSONObject jsonObj = new JSONObject(sb.toString().trim());
+                JSONArray manualArray = jsonObj.getJSONArray("manual_array");
+
+                /* 매뉴얼 수대로 setting */
+                adapter.setManualNum(manualArray.length());
+                String[] plantNameArray = new String[manualArray.length()];
+                Bitmap[] manualInitArray = new Bitmap[manualArray.length()];
+                ArrayList<ArrayList<String>> manualImageList = new ArrayList<>();
+
+                /* 매뉴얼별로 정리 */
+                for (int i=0; i < manualArray.length(); i++) {
+                    JSONObject manualObject = manualArray.getJSONObject(i);
+
+                    String plant_name = manualObject.getString("plantName");
+                    plantNameArray[i] = plant_name;
+
+                    ArrayList<String> imageNameList = new ArrayList<String>();
+                    for(int j=1; j<=10; j++) {
+                        String imageName = manualObject.getString("image"+j);
+                        if(!imageName.equals("null")) {
+                            imageNameList.add(imageName);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    /* 매뉴얼 대표 이미지 setting */
+                    String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(plant_name, "euc-kr") + ".jpg";
+                    url = new URL(readURL);
+                    http = (HttpURLConnection) url.openConnection();
+                    http.connect();
+                    inStream = http.getInputStream();   //스트림생성
+                    //스트림에서 받은 데이터를 비트맵 변환
+                    //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
+                    Bitmap readImg = BitmapFactory.decodeStream(inStream);
+                    manualInitArray[(i-1)] = readImg;
+
+                    /* 매뉴얼 설명 이미지들 리스트에 저장 */
+                    manualImageList.add(imageNameList);
+                }
+                inStream.close();
+                http.disconnect();
+
+                adapter.setPlantNameArray(plantNameArray);
+                adapter.setManualInitImg(manualInitArray);
+                adapter.setManualList(manualImageList);
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch(MalformedURLException e) {
             e.printStackTrace();
         } catch(IOException e) {

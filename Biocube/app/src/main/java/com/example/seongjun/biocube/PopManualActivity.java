@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -30,7 +31,8 @@ public class PopManualActivity extends Activity {
     ShowManualPagerAdapter pagerAdapter;
     CircleIndicator indicator;
 
-    String[] getData;
+    String plantName;
+    ArrayList<String> manualImgList;
     Bitmap[] manualArray;
 
     @Override
@@ -40,12 +42,13 @@ public class PopManualActivity extends Activity {
         setContentView(R.layout.activity_pop_manual);
 
         Intent intent = getIntent();
-        getData = (String[]) intent.getExtras().get("manual");
+        plantName = (String) intent.getExtras().get("plantName");
+        manualImgList = (ArrayList<String>) intent.getExtras().get("manual");
 
         TextView textView = (TextView) findViewById(R.id.text_plantName);
-        textView.setText(getData[0]);   // 식물 이름
+        textView.setText(plantName);   // 식물 이름
 
-        manualArray  = new Bitmap[(getData.length - 1)];
+        manualArray  = new Bitmap[manualImgList.size()];
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_showManual);
         pagerAdapter = new ShowManualPagerAdapter();
@@ -60,7 +63,7 @@ public class PopManualActivity extends Activity {
 
         @Override
         public int getCount() {
-            return (getData.length - 1);
+            return manualImgList.size();
         }
 
         @Override
@@ -107,8 +110,8 @@ public class PopManualActivity extends Activity {
         public Integer doInBackground(Object... params) {
             try {
              /* 각 URL에 접속하여 이미지 가져옴 */
-                for(int i=1; i<getData.length; i++) {
-                    String readUrl = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(getData[0], "euc-kr") + "/" + URLEncoder.encode(getData[i], "euc-kr");
+                for(int i=0; i<manualImgList.size(); i++) {
+                    String readUrl = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(plantName, "euc-kr") + "/" + URLEncoder.encode(manualImgList.get(i), "euc-kr");
                     URL url = new URL(readUrl);
                     HttpURLConnection http = (HttpURLConnection) url.openConnection();
 

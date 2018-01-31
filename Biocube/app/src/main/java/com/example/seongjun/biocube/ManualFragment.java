@@ -23,7 +23,7 @@ import me.relex.circleindicator.CircleIndicator;
  */
 public class ManualFragment extends Fragment  {
     private ViewPager pager;
-    private ManualsAdapter adapter;
+    public ManualsAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 

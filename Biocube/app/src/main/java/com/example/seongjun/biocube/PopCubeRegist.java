@@ -47,11 +47,20 @@ public class PopCubeRegist extends Activity {
     BluetoothDevice device;
     String user_id;
     PagerAdapter mPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.popup_regist_cube);
+
+        try {
+            user_id = new GetId().execute(this).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         //UI 객체생성
         edit_cubeName = (EditText) findViewById(R.id.edit_cubeName);
@@ -59,7 +68,16 @@ public class PopCubeRegist extends Activity {
         Intent intent = getIntent();
         device = intent.getExtras().getParcelable("bluetoothDevice");
         MAC_ADDRESS = device.getAddress();
-        new PopCubeRegist.settingSpinner().execute();
+        String[] plantNameArray = null;
+        if(user_id.equals("admin")) {
+            plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
+        } else {
+            plantNameArray = ((ManualFragment)((UserMainActivity)AdminMainActivity.context).mUserPagerAdapter.getItem(0)).adapter.plantNameArray;
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_item, plantNameArray);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_plantName.setAdapter(dataAdapter);
+        //new PopCubeRegist.settingSpinner().execute();
 //        mPagerAdapter = (PagerAdapter)intent.getSerializableExtra("adapter");
 
 
@@ -100,7 +118,7 @@ public class PopCubeRegist extends Activity {
         public Integer doInBackground(Object... params) {
             try {
              /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/manuals.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/returnManualList.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
             /* 전송모드 설정 */
@@ -120,8 +138,8 @@ public class PopCubeRegist extends Activity {
                     String[] tmp = token[i].split(" ");
                     plant[i-1] = tmp[0];
                 }
-                /* 매뉴얼 수 setting */
 
+                /* 매뉴얼 수 setting */
                 for(int i=0; i<plant.length; i++){
                     plantList.add(plant[i]);
                 }
@@ -155,22 +173,13 @@ public class PopCubeRegist extends Activity {
         }
     }
 
-    String dbUpResult;
-    private TokenDBHelper helper = new TokenDBHelper(this);
-
     public class cubeUpTask extends AsyncTask<String,Object,Integer>{
+        String dbUpResult;
+
         @Override
         protected Integer doInBackground(String... params) {
             try {
-                SQLiteDatabase db = helper.getReadableDatabase();
-                Cursor cursor;  //여러 개의 데이터가 있을 때 순서대로 접근할 수 있는 포인터
-                //select 구문을 실행하고 결과를 cursor에서 접근하도록 설정
-                cursor = db.rawQuery("SELECT * FROM TOKEN", null);
-                int count = cursor.getCount();
-                cursor.moveToFirst();
-                String jwt = cursor.getString(0);
-
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/getuserid.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/registcube.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
                 http.setDefaultUseCaches(false);
@@ -179,48 +188,23 @@ public class PopCubeRegist extends Activity {
                 http.setRequestMethod("POST");
                 http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
+            /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("jwt").append("=").append(jwt);
+
+                buffer.append("user_id").append("=").append(user_id).append("&");
+                buffer.append("cubename").append("=").append(params[0].toString()).append("&");
+                buffer.append("device").append("=").append(params[1].toString()).append("&");
+                buffer.append("kindOf").append("=").append(params[2].toString());
+
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
                 writer.write(buffer.toString());
                 writer.flush();
                 writer.close();
 
-                /* 서버에서 전송 받기 */
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                String str = reader.readLine();
-                user_id = str;
-                inStream.close();
-                http.disconnect();
-
-                url = new URL("http://fungdu0624.phps.kr/biocube/registcube.php");
-                http = (HttpURLConnection) url.openConnection();
-
-                http.setDefaultUseCaches(false);
-                http.setDoInput(true);  //서버에서 읽기 모드로 지정
-                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
-                http.setRequestMethod("POST");
-                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
-
-            /* 서버로 값 전송 */
-                StringBuffer buffer2 = new StringBuffer();
-
-                buffer2.append("user_id").append("=").append(str).append("&");
-                buffer2.append("cubename").append("=").append(params[0].toString()).append("&");
-                buffer2.append("device").append("=").append(params[1].toString()).append("&");
-                buffer2.append("kindOf").append("=").append(params[2].toString());
-
-                OutputStreamWriter outStream2 = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
-                PrintWriter writer2 = new PrintWriter(outStream2);
-                writer2.write(buffer2.toString());
-                writer2.flush();
-                writer2.close();
-
-                InputStream inStream2 = http.getInputStream();
-                BufferedReader reader2 = new BufferedReader(new InputStreamReader(inStream2, "UTF-8"));
-                dbUpResult = reader2.readLine();
+                dbUpResult = reader.readLine();
 
                 inStream.close();
                 http.disconnect();

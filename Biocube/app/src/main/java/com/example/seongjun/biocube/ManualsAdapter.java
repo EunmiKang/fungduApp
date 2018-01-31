@@ -18,8 +18,9 @@ import java.util.ArrayList;
 public class ManualsAdapter extends PagerAdapter {
     LayoutInflater inflater;
     int manualNum;
-    Bitmap[] manualInitImg;
-    ArrayList<String []> manualList;
+    String[] plantNameArray;
+    Bitmap[] manualInitImgArray;
+    ArrayList<ArrayList<String>> manualList;
     Context context;
     int position;
 
@@ -31,14 +32,19 @@ public class ManualsAdapter extends PagerAdapter {
 
     public void setManualNum(int manualNum) {
         this.manualNum = manualNum;
-        manualInitImg = new Bitmap[manualNum];
+        plantNameArray = new String[manualNum];
+        manualInitImgArray = new Bitmap[manualNum];
+    }
+
+    public void setPlantNameArray(String[] plantNameArray) {
+        this.plantNameArray = plantNameArray;
     }
 
     public void setManualInitImg(Bitmap[] manualInitImg) {
-        this.manualInitImg = manualInitImg;
+        this.manualInitImgArray = manualInitImg;
     }
 
-    public void setManualList(ArrayList<String[]> manualList) {
+    public void setManualList(ArrayList<ArrayList<String>> manualList) {
         this.manualList = manualList;
     }
 
@@ -68,7 +74,7 @@ public class ManualsAdapter extends PagerAdapter {
         //ImageView에 현재 position 번째에 해당하는 이미지를 보여주기 위한 작업
         //현재 position에 해당하는 이미지를 setting
         //img.setImageResource(R.drawable.plant_0+position);
-        img.setImageBitmap(manualInitImg[position]);
+        img.setImageBitmap(manualInitImgArray[position]);
         img.setOnClickListener(showManualClickListener);
 
         container.addView(view);
@@ -96,6 +102,7 @@ public class ManualsAdapter extends PagerAdapter {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(context, PopManualActivity.class);
+            intent.putExtra("plantName", plantNameArray[position]);
             intent.putExtra("manual", manualList.get(position));
             context.startActivity(intent);
         }

@@ -77,7 +77,7 @@ public class CommentListActivity extends AppCompatActivity {
                 String row = reader.readLine();
                 while(row != null) {
                     String[] rowArray = row.split(",");
-                    listAdapter.addItem(rowArray[0], rowArray[1]);
+                    listAdapter.addItem(rowArray[0], rowArray[1], rowArray[2]);
                     row = reader.readLine();
                 }
 
@@ -131,13 +131,15 @@ public class CommentListActivity extends AppCompatActivity {
             // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
             TextView nicknameTextView = (TextView) convertView.findViewById(R.id.text_comment_nick) ;
             TextView plantTextView = (TextView) convertView.findViewById(R.id.text_comment_plant) ;
+            TextView commentTextView = (TextView) convertView.findViewById(R.id.text_comment_comment);
 
             // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
             ListViewItem listViewItem = listViewItemList.get(position);
 
             // 아이템 내 각 위젯에 데이터 반영
-            nicknameTextView.setText(listViewItem.getNickname());
-            plantTextView.setText(listViewItem.getPlant());
+            nicknameTextView.setText("일지 작성자 : " + listViewItem.getNickname());
+            plantTextView.setText("식물 종류 : " + listViewItem.getPlant());
+            commentTextView.setText(listViewItem.getComment());
 
             return convertView;
         }
@@ -155,8 +157,8 @@ public class CommentListActivity extends AppCompatActivity {
         }
 
         // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-        public void addItem(String nickname, String plant) {
-            ListViewItem item = new ListViewItem(nickname, plant);
+        public void addItem(String nickname, String plant, String comment) {
+            ListViewItem item = new ListViewItem(nickname, plant, comment);
 
             listViewItemList.add(item);
         }
@@ -165,10 +167,12 @@ public class CommentListActivity extends AppCompatActivity {
     public class ListViewItem {
         private String nickname ;
         private String plant ;
+        private String comment;
 
-        public ListViewItem(String nickname, String plant) {
+        public ListViewItem(String nickname, String plant, String comment) {
             this.nickname = nickname;
             this.plant = plant;
+            this.comment = comment;
         }
 
         public void setNickname(String nickname) {
@@ -177,6 +181,7 @@ public class CommentListActivity extends AppCompatActivity {
         public void setPlant(String plant) {
             this.plant = plant ;
         }
+        public void setComment(String comment) { this.comment = comment; }
 
         public String getNickname() {
             return this.nickname ;
@@ -184,6 +189,7 @@ public class CommentListActivity extends AppCompatActivity {
         public String getPlant() {
             return this.plant ;
         }
+        public String getComment() { return this.comment ; }
     }
 
 }
