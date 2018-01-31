@@ -350,6 +350,11 @@ public class ManualRegistActivity extends AppCompatActivity {
             if(plant_name.equals("")) {
                 Toast.makeText(ManualRegistActivity.this, "식물 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 return;
+            } else {
+                if(plant_name.contains(" ")) {
+                    Toast.makeText(ManualRegistActivity.this, "식물 이름에는 띄어쓰기를 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
             if(croppedFile == null) {
                 Toast.makeText(ManualRegistActivity.this, "식물의 대표 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();

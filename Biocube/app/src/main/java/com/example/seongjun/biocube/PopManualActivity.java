@@ -126,7 +126,7 @@ public class PopManualActivity extends Activity {
                     /* 서버에서 전송 받기 */
                     InputStream inStream = http.getInputStream();
                     Bitmap readImg = BitmapFactory.decodeStream(inStream);
-                    manualArray[(i - 1)] = readImg;
+                    manualArray[i] = readImg;
 
                     inStream.close();
                     http.disconnect();

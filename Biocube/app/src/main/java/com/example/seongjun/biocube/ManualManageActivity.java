@@ -46,7 +46,7 @@ public class ManualManageActivity extends AppCompatActivity {
         registManualBtn.setOnClickListener(registManualClickListener);
 
         /* 매뉴얼 보이게 하기 */
-        List<ManualItem> manualList = null;
+        List<ManualItem> manualList = new ArrayList<ManualItem>();
         String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
         Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
         for(int i=0; i<plantNameArray.length; i++) {
