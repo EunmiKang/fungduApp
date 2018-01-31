@@ -353,10 +353,9 @@ public class WriteDiaryFragment extends Fragment {
     }
 
     private void selectImage(View view) {
-        final CharSequence[] mArrayItem = {"사진 촬영", "앨범에서 선택"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("업로드 할 이미지 선택");
+        final CharSequence[] mArrayItem = {"사진 촬영", "앨범에서 선택"};
         builder.setSingleChoiceItems(mArrayItem, 0, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 mChoicedArrayItem = whichButton;

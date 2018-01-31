@@ -2,6 +2,7 @@ package com.example.seongjun.biocube;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +65,7 @@ public class ManualManageActivity extends AppCompatActivity {
         */
         GridView gridView = (GridView) findViewById(R.id.grid_manual);
         gridView.setAdapter(new ManualManageAdapter(this, manualList));
-        gridView.setOnItemLongClickListener(manualItemClickListener);
+        gridView.setOnItemClickListener(manualItemClickListener);
     }
 
     Button.OnClickListener registManualClickListener = new Button.OnClickListener() {
@@ -160,11 +162,55 @@ public class ManualManageActivity extends AppCompatActivity {
         }
     }
 
-    GridView.OnItemLongClickListener manualItemClickListener = new GridView.OnItemLongClickListener() {
+    GridView.OnItemClickListener manualItemClickListener = new GridView.OnItemClickListener() {
+        int mChoicedArrayItem;
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String plant_name = ((TextView) view.findViewById(R.id.text_manualitem)).getText().toString();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ManualManageActivity.this);
+            alertDialogBuilder.setTitle(plant_name);
+            CharSequence[] mArrayItem = {"매뉴얼 보기", "매뉴얼 삭제"};
 
-            return false;
+            alertDialogBuilder.setSingleChoiceItems(mArrayItem, 0, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    mChoicedArrayItem = whichButton;
+                }
+            });
+            alertDialogBuilder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    if (mChoicedArrayItem == 0) {   // 매뉴얼 보기
+                        Toast.makeText(ManualManageActivity.this, "매뉴얼 보기", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else if (mChoicedArrayItem == 1) {    // 매뉴얼 삭제
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ManualManageActivity.this)
+                                .setMessage("매뉴얼을 삭제하시겠습니까?")
+                                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(ManualManageActivity.this, "매뉴얼 삭제", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog deleteDialog = builder.create();  //알림창 객체 생성
+                        deleteDialog.show();  //알림창 띄우기
+                    }
+                }
+            });
+            alertDialogBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = alertDialogBuilder.create();  //알림창 객체 생성
+            dialog.show();  //알림창 띄우기
         }
     };
 }
