@@ -2,6 +2,7 @@ package com.example.seongjun.biocube;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,34 +38,21 @@ import java.util.concurrent.ExecutionException;
 
 public class ManualManageActivity extends AppCompatActivity {
 
+    public static Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_manage);
+
+        mContext = this;
 
         /* 매뉴얼 등록 버튼 */
         Button registManualBtn = (Button) findViewById(R.id.btn_manual_regist);
         registManualBtn.setOnClickListener(registManualClickListener);
 
         /* 매뉴얼 보이게 하기 */
-        List<ManualItem> manualList = null;
-        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
-        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
-        for(int i=0; i<plantNameArray.length; i++) {
-            manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
-        }
-        /*
-        try {
-            manualList = new GetManualList().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        */
-        GridView gridView = (GridView) findViewById(R.id.grid_manual);
-        gridView.setAdapter(new ManualManageAdapter(this, manualList));
-        gridView.setOnItemLongClickListener(manualItemClickListener);
+        showManuals();
     }
 
     Button.OnClickListener registManualClickListener = new Button.OnClickListener() {
@@ -72,6 +61,19 @@ public class ManualManageActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    public void showManuals() {
+        List<ManualItem> manualList = new ArrayList<ManualItem>();
+        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
+        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
+        for(int i=0; i<plantNameArray.length; i++) {
+            manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
+        }
+
+        GridView gridView = (GridView) findViewById(R.id.grid_manual);
+        gridView.setAdapter(new ManualManageAdapter(this, manualList));
+        gridView.setOnItemClickListener(manualItemClickListener);
+    }
 
     public class ManualItem {
         private Bitmap plantImg;
@@ -94,18 +96,6 @@ public class ManualManageActivity extends AppCompatActivity {
         }
         public void setPlantName(String plantName) {
             this.plantName = plantName;
-        }
-    }
-
-    public class GetManualList extends AsyncTask<Object, Object, List<ManualItem>> {
-
-        @Override
-        protected List<ManualItem> doInBackground(Object[] objects) {
-            List<ManualItem> returnList = new ArrayList<ManualItem>();
-
-
-
-            return returnList;
         }
     }
 
@@ -160,11 +150,55 @@ public class ManualManageActivity extends AppCompatActivity {
         }
     }
 
-    GridView.OnItemLongClickListener manualItemClickListener = new GridView.OnItemLongClickListener() {
+    GridView.OnItemClickListener manualItemClickListener = new GridView.OnItemClickListener() {
+        int mChoicedArrayItem;
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String plant_name = ((TextView) view.findViewById(R.id.text_manualitem)).getText().toString();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ManualManageActivity.this);
+            alertDialogBuilder.setTitle(plant_name);
+            CharSequence[] mArrayItem = {"매뉴얼 보기", "매뉴얼 삭제"};
 
-            return false;
+            alertDialogBuilder.setSingleChoiceItems(mArrayItem, 0, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    mChoicedArrayItem = whichButton;
+                }
+            });
+            alertDialogBuilder.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    if (mChoicedArrayItem == 0) {   // 매뉴얼 보기
+                        Toast.makeText(ManualManageActivity.this, "매뉴얼 보기", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else if (mChoicedArrayItem == 1) {    // 매뉴얼 삭제
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ManualManageActivity.this)
+                                .setMessage("매뉴얼을 삭제하시겠습니까?")
+                                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(ManualManageActivity.this, "매뉴얼 삭제", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog deleteDialog = builder.create();  //알림창 객체 생성
+                        deleteDialog.show();  //알림창 띄우기
+                    }
+                }
+            });
+            alertDialogBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = alertDialogBuilder.create();  //알림창 객체 생성
+            dialog.show();  //알림창 띄우기
         }
     };
 }

@@ -130,7 +130,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
     public void onPostExecute(Integer result) {
         super.onPostExecute(result);
         // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-        adapter.registerDataSetObserver(indicator.getDataSetObserver());
+        //adapter.registerDataSetObserver(indicator.getDataSetObserver());
         pager.setAdapter(adapter);
         indicator.setViewPager(pager);
     }
