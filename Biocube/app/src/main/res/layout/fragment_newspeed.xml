@@ -30,11 +30,12 @@
             android:layout_width="33dp"
             android:layout_height="31dp"
             android:layout_gravity="right"
+            android:layout_marginRight="10dp"
             android:background="#52B94B"
-            android:src="@drawable/filter"
-            android:layout_marginRight="10dp"/>
+            android:src="@drawable/filter" />
 
     </android.support.v7.widget.Toolbar>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

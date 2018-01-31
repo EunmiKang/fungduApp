@@ -1,6 +1,7 @@
 package com.example.seongjun.biocube;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class DiaryManageAdapter extends BaseAdapter{
     Context context;
     Button btn_registComment;
     EditText cmt_edit;
+    TextView text_commentCount;
     View views;
     String id;
 
@@ -95,6 +97,7 @@ public class DiaryManageAdapter extends BaseAdapter{
             holder.cmtNicknameView = (TextView) view.findViewById(R.id.text_cmtNick);
             deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
             btn_registComment = (Button) view.findViewById(R.id.btn_registComment);
+            text_commentCount = (TextView) view.findViewById(R.id.cmtCount_text);
 
             cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
             view.setTag(holder);
@@ -113,6 +116,23 @@ public class DiaryManageAdapter extends BaseAdapter{
         holder.commentCountView.setText("등 "+diaryItem.getCountComment()+"개");
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
         cmt_edit.setTag(hiddenNo);
+
+        text_commentCount.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                View v_grandParent = (View) v.getParent().getParent();
+                TextView textDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
+                TextView textContent = (TextView) v_grandParent.findViewById(R.id.content_text);
+                String content = textContent.getText().toString();
+                String diaryNo = textDiaryNo.getText().toString();
+                Intent intent = new Intent(context,CommentAsDiaryActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("diaryNo", diaryNo);
+                intent.putExtra("content",content);
+                context.startActivity(intent);
+            }
+        });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {//삭제버튼 눌렀을 때
             @Override
