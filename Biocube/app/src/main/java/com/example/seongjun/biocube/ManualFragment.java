@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.concurrent.ExecutionException;
+
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -22,8 +24,9 @@ import me.relex.circleindicator.CircleIndicator;
  * create an instance of this fragment.
  */
 public class ManualFragment extends Fragment  {
-    private ViewPager pager;
+    public ViewPager pager;
     public ManualsAdapter adapter;
+    public CircleIndicator indicator;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +68,7 @@ public class ManualFragment extends Fragment  {
 
         pager = (ViewPager) view.findViewById(R.id.pager_manual);
         adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
-        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);
+        indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -84,7 +87,13 @@ public class ManualFragment extends Fragment  {
             }
         });
 
-        new SettingManuals().execute(pager, adapter, indicator);
+        try {
+            new SettingManuals().execute(pager, adapter, indicator).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }

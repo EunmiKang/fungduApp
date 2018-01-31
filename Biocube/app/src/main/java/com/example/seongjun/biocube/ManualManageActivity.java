@@ -38,34 +38,21 @@ import java.util.concurrent.ExecutionException;
 
 public class ManualManageActivity extends AppCompatActivity {
 
+    public static Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_manage);
+
+        mContext = this;
 
         /* 매뉴얼 등록 버튼 */
         Button registManualBtn = (Button) findViewById(R.id.btn_manual_regist);
         registManualBtn.setOnClickListener(registManualClickListener);
 
         /* 매뉴얼 보이게 하기 */
-        List<ManualItem> manualList = new ArrayList<ManualItem>();
-        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
-        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
-        for(int i=0; i<plantNameArray.length; i++) {
-            manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
-        }
-        /*
-        try {
-            manualList = new GetManualList().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        */
-        GridView gridView = (GridView) findViewById(R.id.grid_manual);
-        gridView.setAdapter(new ManualManageAdapter(this, manualList));
-        gridView.setOnItemClickListener(manualItemClickListener);
+        showManuals();
     }
 
     Button.OnClickListener registManualClickListener = new Button.OnClickListener() {
@@ -74,6 +61,19 @@ public class ManualManageActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    public void showManuals() {
+        List<ManualItem> manualList = new ArrayList<ManualItem>();
+        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
+        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
+        for(int i=0; i<plantNameArray.length; i++) {
+            manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
+        }
+
+        GridView gridView = (GridView) findViewById(R.id.grid_manual);
+        gridView.setAdapter(new ManualManageAdapter(this, manualList));
+        gridView.setOnItemClickListener(manualItemClickListener);
+    }
 
     public class ManualItem {
         private Bitmap plantImg;
@@ -96,18 +96,6 @@ public class ManualManageActivity extends AppCompatActivity {
         }
         public void setPlantName(String plantName) {
             this.plantName = plantName;
-        }
-    }
-
-    public class GetManualList extends AsyncTask<Object, Object, List<ManualItem>> {
-
-        @Override
-        protected List<ManualItem> doInBackground(Object[] objects) {
-            List<ManualItem> returnList = new ArrayList<ManualItem>();
-
-
-
-            return returnList;
         }
     }
 

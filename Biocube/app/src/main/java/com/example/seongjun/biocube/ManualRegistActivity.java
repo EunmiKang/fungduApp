@@ -388,6 +388,7 @@ public class ManualRegistActivity extends AppCompatActivity {
                     }
                     if(updateDB) {
                         Toast.makeText(ManualRegistActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
+
                         /* 초기화 */
                         priorList = new String[10];
                         pathList = new String[10];
@@ -396,6 +397,16 @@ public class ManualRegistActivity extends AppCompatActivity {
                         img_repImage.setImageDrawable(null);
                         text_plantName.setText("");
                         pager.setAdapter(pagerAdapter);
+
+                        /* 매뉴얼 관리 페이지 업데이트 */
+                        try {
+                            new SettingManuals().execute(((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pager, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).indicator).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        ((ManualManageActivity)ManualManageActivity.mContext).showManuals();
                     }
                     else {
                         Toast.makeText(ManualRegistActivity.this, "DB 업데이트 실패", Toast.LENGTH_SHORT).show();
@@ -485,7 +496,7 @@ public class ManualRegistActivity extends AppCompatActivity {
         // 서버에 이미지 업로드
         try {
             if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath, plant_name).get()) {
-                Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
                 croppedFile.delete();
             } else {
                 Toast.makeText(ManualRegistActivity.this, "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
@@ -510,7 +521,6 @@ public class ManualRegistActivity extends AppCompatActivity {
                 try {
                     if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, pathList[i], plant_name).get()) {
                         //Toast.makeText(ManualRegistActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
-                        croppedFile.delete();
                     } else {
                         Toast.makeText(ManualRegistActivity.this, "매뉴얼 등록 실패", Toast.LENGTH_SHORT).show();
                         return false;
