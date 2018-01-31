@@ -6,4 +6,5 @@
     <color name="dark">#000000</color>
     <color name="biocube">#529b4b</color>
     <color name="highlight">#006622</color>
+    <color name="white">#FFFFFF</color>
 </resources>

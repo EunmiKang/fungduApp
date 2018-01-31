@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:weightSum="1">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -22,17 +23,20 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <Button
-        android:id="@+id/btnSearch"
-        android:text="검색"
-        android:textSize="28dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="mOnBluetoothSearch" />
-
     <ListView
         android:id="@+id/listDevice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="0.9" />
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:onClick="mOnBluetoothSearch"
+        android:text="검색"
+        android:textSize="28dp"
+        android:theme="@style/BioCubeButton" />
 
 </LinearLayout>
