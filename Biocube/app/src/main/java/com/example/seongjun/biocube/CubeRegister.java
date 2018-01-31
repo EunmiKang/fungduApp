@@ -97,6 +97,12 @@ public class CubeRegister extends AppCompatActivity {
         btnSearch = (Button) findViewById(R.id.btnSearch);
         listDevice = (ListView) findViewById(R.id.listDevice);
 
+        Button.OnClickListener searchOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnBluetoothSearch();
+            }
+        };
         //Adapter
         dataDevice = new ArrayList<>();
         bluetoothDevices = new ArrayList<>();
@@ -169,7 +175,15 @@ public class CubeRegister extends AppCompatActivity {
                 }
             }
         });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnBluetoothSearch();
+            }
+        });
     }
+
 
 
     @Override
@@ -317,7 +331,7 @@ public class CubeRegister extends AppCompatActivity {
 
 
     //블루투스 검색 버튼 클릭
-    public void mOnBluetoothSearch(View v){
+    public void mOnBluetoothSearch(){
         //검색버튼 비활성화
         btnSearch.setEnabled(false);
         //mBluetoothAdapter.isDiscovering() : 블루투스 검색중인지 여부 확인
