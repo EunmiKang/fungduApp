@@ -103,7 +103,7 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
                     //스트림에서 받은 데이터를 비트맵 변환
                     //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
                     Bitmap readImg = BitmapFactory.decodeStream(inStream);
-                    manualInitArray[(i-1)] = readImg;
+                    manualInitArray[i] = readImg;
 
                     /* 매뉴얼 설명 이미지들 리스트에 저장 */
                     manualImageList.add(imageNameList);
