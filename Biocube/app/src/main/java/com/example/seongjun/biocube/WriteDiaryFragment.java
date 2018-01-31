@@ -670,6 +670,7 @@ public class WriteDiaryFragment extends Fragment {
                 dateBtn.setText(getTodayDate());
                 filterSpinner.setSelection(0);
                 contentText.setText("");
+                ((NewspeedFragment)(((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php");
             } else {    // 업로드 실패
                 Toast.makeText(getContext(), "일지 작성 실패", Toast.LENGTH_SHORT).show();
             }
