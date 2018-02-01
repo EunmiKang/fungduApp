@@ -36,7 +36,7 @@ import java.util.Set;
  */
 
 public class CubeRegister extends AppCompatActivity {
-    Intent popUpIntent = new Intent(this, PopCubeRegist.class);
+    Intent popUpIntent;
 
     //블루투스 요청 액티비티 코드
     final static int BLUETOOTH_REQUEST_CODE = 100;
@@ -69,6 +69,8 @@ public class CubeRegister extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgist_cube);
         mcontext = this;
+
+        popUpIntent = new Intent(this, PopCubeRegist.class);
 
         //UI
         btnSearch = (Button) findViewById(R.id.btnSearch);
@@ -126,6 +128,7 @@ public class CubeRegister extends AppCompatActivity {
                 else{//블루투스 연결 실패시,
 //                    Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
                 }
+
                 //데이터 보내는부분
                 if(!mBluetooth.sendData("check")){//디바이스에 시그널을 보내는데 실패한 경우
                     Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
