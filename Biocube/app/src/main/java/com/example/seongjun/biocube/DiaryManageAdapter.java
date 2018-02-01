@@ -117,6 +117,20 @@ public class DiaryManageAdapter extends BaseAdapter{
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
         cmt_edit.setTag(hiddenNo);
 
+//        if(authority ==2 || (!nickname.equals("adminNick")&&!nickname.equals(diaryItem.getNickname()))){
+//            deleteButton.setVisibility(View.GONE);//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
+//        }else{
+//            deleteButton.setVisibility(View.VISIBLE);
+//        }
+        if(authority == 2 || authority == 1){
+            deleteButton.setVisibility(View.GONE);
+        }
+        if(authority == 1){
+            btn_registComment.setVisibility(View.GONE);
+        }
+//        holder.deleteButtonView.setId(diaryItem.getDiaryNo());
+        holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
+        holder.contentView.setText(diaryItem.getContent());
         text_commentCount.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -183,16 +197,6 @@ public class DiaryManageAdapter extends BaseAdapter{
                 }
             }
         });
-
-        if(authority ==2 || (!nickname.equals("adminNick")&&!nickname.equals(diaryItem.getNickname()))){
-            deleteButton.setVisibility(View.GONE);
-        }//전문가 이거나 자기자신의 글이 아니면 삭제버튼이 보이지 않음.
-        if(authority == 1){
-            btn_registComment.setVisibility(View.GONE);
-        }
-//        holder.deleteButtonView.setId(diaryItem.getDiaryNo());
-        holder.plantImgView.setImageBitmap(diaryItem.getPlantImg());
-        holder.contentView.setText(diaryItem.getContent());
 
         return view;
     }
