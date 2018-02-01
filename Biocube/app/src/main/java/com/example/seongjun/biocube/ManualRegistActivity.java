@@ -387,8 +387,6 @@ public class ManualRegistActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     if(updateDB) {
-                        Toast.makeText(ManualRegistActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
-
                         /* 초기화 */
                         priorList = new String[10];
                         pathList = new String[10];
@@ -407,6 +405,8 @@ public class ManualRegistActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         ((ManualManageActivity)ManualManageActivity.mContext).showManuals();
+
+                        Toast.makeText(ManualRegistActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Toast.makeText(ManualRegistActivity.this, "DB 업데이트 실패", Toast.LENGTH_SHORT).show();
