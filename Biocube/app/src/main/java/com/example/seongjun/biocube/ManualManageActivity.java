@@ -298,21 +298,42 @@ public class ManualManageActivity extends AppCompatActivity {
 
 
     public void deleteManual(String plant_name) {
-        /* 디비에서 삭제 */
-
-        /* 서버에서 삭제 */
+        /* 디비, 서버에서 삭제 */
+        Boolean result = false;
+        try {
+            result = new deleteManual().execute(plant_name).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        if(result) {
+            /* 매뉴얼 관리 페이지 업데이트 */
+            try {
+                new SettingManuals().execute(((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pager, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).indicator).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            showManuals();
+            Toast.makeText(ManualManageActivity.this, plant_name + " 매뉴얼이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(ManualManageActivity.this, "매뉴얼 삭제를 실패하였습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public class deleteManualOfDB extends AsyncTask<String, Object, ArrayList<String>> {
+    public class deleteManual extends AsyncTask<String, Object, Boolean> {
         @Override
-        public ArrayList<String> doInBackground(String... params) {
+        public Boolean doInBackground(String... params) {
+            String result = "-1";
             ArrayList<String> imageNameList = new ArrayList<>();
             try {
             /* parameter로 받은 것들 저장 */
                 String plant_name = URLEncoder.encode(params[0],"utf-8");
 
              /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/getManualListByPlant.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/deleteManual.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
             /* 전송모드 설정 */
@@ -334,46 +355,19 @@ public class ManualManageActivity extends AppCompatActivity {
             /* 서버에서 전송 받기 */
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                //String str = reader.readLine();
-                StringBuilder sb = new StringBuilder();
+                result = reader.readLine();
 
-                String json;
-                while ((json = reader.readLine()) != null) {
-                    sb.append(json + "\n");
-                }
-
-                inStream.close();
-                http.disconnect();
-
-                try {
-                    JSONObject jsonObj = new JSONObject(sb.toString().trim());
-                    JSONArray manualArray = jsonObj.getJSONArray("manual_array");
-
-                /* 매뉴얼 리스트 저장 */
-                    for (int i = 0; i < manualArray.length(); i++) {
-                        JSONObject manualObject = manualArray.getJSONObject(i);
-
-                        for (int j = 1; j <= 10; j++) {
-                            String imageName = manualObject.getString("image" + j);
-                            if (!imageName.equals("null")) {
-                                imageNameList.add(imageName);
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                    inStream.close();
-                    http.disconnect();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return imageNameList;
+            if(result.equals("1")) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

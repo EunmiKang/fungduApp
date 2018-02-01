@@ -56,7 +56,6 @@ public class SettingManuals extends AsyncTask<Object, Object, Integer> {
             /* 서버에서 전송 받기 */
             InputStream inStream = http.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-            //String str = reader.readLine();
             StringBuilder sb = new StringBuilder();
 
             String json;

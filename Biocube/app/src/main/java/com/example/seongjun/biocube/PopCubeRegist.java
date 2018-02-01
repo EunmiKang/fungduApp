@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,16 +74,7 @@ public class PopCubeRegist extends Activity {
         Intent intent = getIntent();
         device = intent.getExtras().getParcelable("bluetoothDevice");
         MAC_ADDRESS = device.getAddress();
-        String[] plantNameArray = null;
-        if(user_id.equals("admin")) {
-            plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
-        } else {
-            plantNameArray = ((ManualFragment)((UserMainActivity)AdminMainActivity.context).mUserPagerAdapter.getItem(0)).adapter.plantNameArray;
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_item, plantNameArray);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_plantName.setAdapter(dataAdapter);
-        //new PopCubeRegist.settingSpinner().execute();
+        new PopCubeRegist.settingSpinner().execute();
 //        mPagerAdapter = (PagerAdapter)intent.getSerializableExtra("adapter");
 
 
@@ -131,17 +128,30 @@ public class PopCubeRegist extends Activity {
             /* 서버에서 전송 받기 */
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                String str = reader.readLine();
-                String[] token = str.split(",");
-                String[] plant = new String[Integer.parseInt(token[0])];
-                for(int i = 1; i <token.length; i++){
-                    String[] tmp = token[i].split(" ");
-                    plant[i-1] = tmp[0];
+                StringBuilder sb = new StringBuilder();
+
+                String json;
+                while((json = reader.readLine())!= null){
+                    sb.append(json+"\n");
                 }
 
-                /* 매뉴얼 수 setting */
-                for(int i=0; i<plant.length; i++){
-                    plantList.add(plant[i]);
+                inStream.close();
+                http.disconnect();
+
+                try {
+                    JSONObject jsonObj = new JSONObject(sb.toString().trim());
+                    JSONArray manualArray = jsonObj.getJSONArray("manual_array");
+
+                    for (int i=0; i < manualArray.length(); i++) {
+                        JSONObject manualObject = manualArray.getJSONObject(i);
+
+                        String plant_name = manualObject.getString("plantName");
+                        plantList.add(plant_name);
+                    }
+                    inStream.close();
+                    http.disconnect();
+                }catch (JSONException e) {
+                    e.printStackTrace();
                 }
                 inStream.close();
                 http.disconnect();
@@ -162,14 +172,6 @@ public class PopCubeRegist extends Activity {
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_item, plantList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner_plantName.setAdapter(dataAdapter);
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
-
-        }
-
-        @Override
-        protected void onProgressUpdate(Object[] values) {
-            super.onProgressUpdate(values);
-            // Todo: publishProgress() 메소드 호출시 처리할 작업..
         }
     }
 
