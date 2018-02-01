@@ -3,7 +3,6 @@ package com.example.seongjun.biocube;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +31,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -51,9 +47,7 @@ import java.util.concurrent.ExecutionException;
 public class CubeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    String id;
-    Spinner spinner_cubeName;
-//    CubeRegister mCubeRegister = new CubeRegister();
+    String id;//로그인된 id를 받을 것.
     Bluetooth mBluetooth = new Bluetooth();
     Set<BluetoothDevice> mDevices;
     BluetoothAdapter mBluetoothAdapter;
@@ -64,15 +58,13 @@ public class CubeFragment extends Fragment {
     TextView text_humi_soil;
     TextView text_motor;
     TextView text_led;
-    int state_motor = 0;
+    Spinner spinner_cubeName;
 
     private int readBufferPosition;
     byte[] readBuffer;
     Thread mWorkerThread = null;
     InputStream mInputStream = null;
     char mCharDelimiter =  '\n';
-//    int state_led = 0;
-    String stateMotor = "";
 
     public CubeFragment() {
         // Required empty public constructor
@@ -113,9 +105,9 @@ public class CubeFragment extends Fragment {
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
         text_motor = (TextView) view.findViewById(R.id.text_motor);
         text_led = (TextView) view.findViewById(R.id.text_led);
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
-        try {
+        try {//로그인된 아이디 불러옴
             id = new GetId().execute(getActivity()).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -131,43 +123,30 @@ public class CubeFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(false);
 
         Button registCube = (Button) view.findViewById(R.id.btn_cube_regist);
-        registCube.setOnClickListener(new View.OnClickListener() {
+        registCube.setOnClickListener(new View.OnClickListener() {//등록 버튼 누를시
             @Override
             public void onClick(View v) {
                 Intent intent;
-                intent = new Intent(v.getContext(), CubeRegister.class);
-//                if(id.equals("admin")){
-//                    intent.putExtra("adapter",((AdminMainActivity)getActivity()).mAdminPagerAdapter);
-//                }
-//                else{
-//
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("adapter", ((UserMainActivity)getActivity()).mUserPagerAdapter);
-//                    intent.putExtras(bundle);
-//                }
-
+                intent = new Intent(v.getContext(), CubeRegister.class);//큐브등록을 위해 검색창으로 이동
                 startActivity(intent);
             }
         });
-
-        String[] cubeList;
-
-        setSpinner();
-
+        setSpinner();//스피너를 셋팅.
         return view;
     }
-    public void setSpinner(){
+
+    public void setSpinner(){//큐브 목록을 spinner에 설정하는 메소드
         String[] cubeList;
 
         try {
-            String[] getList = new ReturnCubeList().execute(id).get();
+            String[] getList = new ReturnCubeList().execute(id).get();//자신의 큐브 목록을 불러옴
             cubeList = new String[getList.length-1];
             for(int i=0; i<getList.length-1; i++) {
                 cubeList[i] = getList[i+1].toString();
             }
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, cubeList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner_cubeName.setAdapter(dataAdapter);
+            spinner_cubeName.setAdapter(dataAdapter);//adapter를 통해 spinner에 셋팅
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -184,10 +163,11 @@ public class CubeFragment extends Fragment {
             else{
                 ((AdminMainActivity) getActivity()).mBluetooth.sendData("led");
             }
+            //권한에 맞는 블루투스 객체를 가져와서 'led'라는 신호를 device에 보냄.
         }
     };
 
-    ImageButton.OnClickListener setPumpClickListener = new ImageButton.OnClickListener(){
+    ImageButton.OnClickListener setPumpClickListener = new ImageButton.OnClickListener(){//Pump 버튼 눌렀을 때,
 
         @Override
         public void onClick(View v) {
@@ -197,11 +177,12 @@ public class CubeFragment extends Fragment {
             else{
                 ((AdminMainActivity) getActivity()).mBluetooth.sendData("pump");
             }
+            //권한에 맞는 블루투스 객체를 가져와서 'pump'라는 신호를 보냄.
         }
     };
 
     Button.OnClickListener setLedTimeClickListener = new Button.OnClickListener(){
-
+        //led 시간세팅하는 부분 구현X
         @Override
         public void onClick(View v) {
 
@@ -209,26 +190,24 @@ public class CubeFragment extends Fragment {
     };
 
     Button.OnClickListener setPumpTimeClickListener = new Button.OnClickListener(){
-
+        //pump 시간세팅하는 부분 구현X
         @Override
         public void onClick(View v) {
 
         }
     };
 
-    Button.OnClickListener connectClickListener= new Button.OnClickListener(){
+    Button.OnClickListener connectClickListener= new Button.OnClickListener(){//연결 버튼 눌렀을 때,
         @Override
         public void onClick(View v) {
-            String selectedCube = spinner_cubeName.getSelectedItem().toString();
+            String selectedCube = spinner_cubeName.getSelectedItem().toString();//spinner에 선택된 큐브를 가져옴.
             try{
-//                ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
-//                ((WriteDiaryFragment)getTargetFragment()).mBluetooth.mSocket.close();//다이어리에 소켓 끊음.
-                selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
+                selectedCube = URLEncoder.encode(selectedCube,"UTF-8");//한글 에러 막기 위해 인코딩
             } catch(Exception e) {
                 e.printStackTrace();
             }
 
-            new GetDevice().execute(selectedCube);
+            new GetDevice().execute(selectedCube);//선택한 큐브에 대한 device를 얻어와서 블루투스 연결.
         }
     };
 
@@ -262,15 +241,13 @@ public class CubeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    class GetDevice extends AsyncTask<String, Void, String> {
-
+    class GetDevice extends AsyncTask<String, Void, String> {//디바이스를 찾아 연결시키는 쓰레드.
         @Override
         protected String doInBackground(String... params) {
-
             String device= "";
             try {
          /* URL 설정하고 접속 */
-                URL url = new URL("http://fungdu0624.phps.kr/biocube/getdevice.php");
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/getdevice.php");//php 파일 연결.
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
         /* 전송모드 설정 */
@@ -278,13 +255,13 @@ public class CubeFragment extends Fragment {
                 http.setDoInput(true);  //서버에서 읽기 모드로 지정
                 http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
                 http.setRequestMethod("POST");
-                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");
+                //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
         /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("user_id").append("=").append(id).append("&");//나중에 고쳐야함. 어드민은 안돼.
+                buffer.append("user_id").append("=").append(id).append("&");//사용자 아이디와 큐브이름을 php파일에 넘김.
                 buffer.append("cubename").append("=").append(params[0].toString());
-
 
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
@@ -295,9 +272,7 @@ public class CubeFragment extends Fragment {
         /* 서버에서 전송 받기 */
                 InputStream inStream = http.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
-                device = reader.readLine();
-
-
+                device = reader.readLine();//php결과로 선택한 큐브에 매칭되는 device의 mac 주소를 가져옴
             } catch(MalformedURLException e) {
                 e.printStackTrace();
             } catch(IOException e) {
@@ -307,9 +282,9 @@ public class CubeFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String result){
+        protected void onPostExecute(String result){//가져온 디바이스 넘버를 통해 블루투스 연결.
             String deviceNum = result;
-            if(!id.equals("admin")) {
+            if(!id.equals("admin")) {//권한이 admin일 때,
                 switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
                     case 0:
                         Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
@@ -330,7 +305,7 @@ public class CubeFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
                 }
-            } else{
+            } else{//권한이 일반 user일 때,
                 switch (((AdminMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
                     case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
                         break;
@@ -349,18 +324,6 @@ public class CubeFragment extends Fragment {
                     Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
                 }
             }
-
-
-//            Intent intent = new Intent();
-//            if(mCubeRegister.connectToSelectedDevice(deviceNum, 1)){
-//                intent.setAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-//            }
-//            else{
-//                intent.setAction("connectfail");
-//            }
-//            mCubeRegister.mBluetoothStateReceiver.onReceive(getContext(),intent);
-//            mCubeRegister.beginListenForData();
-//            mCubeRegister.mWorkerThread.start();
         }
     }
 
@@ -415,7 +378,7 @@ public class CubeFragment extends Fragment {
                                         public void run() {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
-                                            String[] datas = data.split(",");
+                                            String[] datas = data.split(",");//보낸 신호에 응답한 신호에 따라 각각에 맞게 설정
                                             if(datas[0].equals("LEDON")) {
                                                 text_led.setText("ON");
                                             }
@@ -449,16 +412,16 @@ public class CubeFragment extends Fragment {
                 }
             }
         });
-        mWorkerThread.start();
+        mWorkerThread.start();//수신 쓰레드 시작.
 
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy() {//앱 종료시,
         try{
             mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
             mInputStream.close();
-            ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
+            ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();//소켓 종료
             ((AdminMainActivity)getActivity()).mBluetooth.mSocket.close();
         }catch(Exception e){}
         super.onDestroy();
