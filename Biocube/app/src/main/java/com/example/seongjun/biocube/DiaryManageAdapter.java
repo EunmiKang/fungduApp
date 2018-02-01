@@ -197,7 +197,6 @@ public class DiaryManageAdapter extends BaseAdapter{
                 }
             }
         });
-
         return view;
     }
 
@@ -257,7 +256,6 @@ public class DiaryManageAdapter extends BaseAdapter{
         @Override
         protected void onPostExecute(String result){
             if(result.equals("success")) {
-                Toast.makeText(context, "성공적으로 삭제하였습니다.", Toast.LENGTH_SHORT).show();
                 try {
                     if (authority == 0) {//admin
                         ((NewspeedFragment) (((AdminMainActivity) AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
@@ -269,6 +267,7 @@ public class DiaryManageAdapter extends BaseAdapter{
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                Toast.makeText(context, "성공적으로 삭제하였습니다.", Toast.LENGTH_SHORT).show();
             }
             else{
                 Toast.makeText(context, "삭제를 실패하였습니다.", Toast.LENGTH_SHORT).show();
