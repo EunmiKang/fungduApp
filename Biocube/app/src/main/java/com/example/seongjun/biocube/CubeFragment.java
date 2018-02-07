@@ -1,13 +1,18 @@
 package com.example.seongjun.biocube;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,7 +57,7 @@ public class CubeFragment extends Fragment {
     Set<BluetoothDevice> mDevices;
     BluetoothAdapter mBluetoothAdapter;
     int mPariedDeviceCount = 0;
-
+    final static int BLUETOOTH_REQUEST_CODE = 100;
     TextView text_temper;
     TextView text_humi_air;
     TextView text_humi_soil;
@@ -132,6 +137,20 @@ public class CubeFragment extends Fragment {
             }
         });
         setSpinner();//스피너를 셋팅.
+
+        // 블루투스 권한 요청(마쉬멜로우 버전 이상)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                } else {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, BLUETOOTH_REQUEST_CODE);
+                }
+            }
+            else {
+
+            }
+        }
         return view;
     }
 
@@ -206,8 +225,55 @@ public class CubeFragment extends Fragment {
             } catch(Exception e) {
                 e.printStackTrace();
             }
+            try {
+               String deviceNum = new GetDevice().execute(selectedCube).get();//선택한 큐브에 대한 device를 얻어와서 블루투스 연결.
+                if(!id.equals("admin")) {//권한이 user일 때,
+                    switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
+                        case 0:
+                            Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                            break;
+                        case 1:
+                            Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                            break;
+                        case 2:
+                            mDevices = mBluetoothAdapter.getBondedDevices();
+                            mPariedDeviceCount = mDevices.size();
+                    }
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                    if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                        beginListenForData_1();
+                        ((UserMainActivity) getActivity()).mBluetooth.sendData("connect");
+                    } else {
+                        Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                    }
+                } else{//권한이 일반 admin일 때,
+                    switch (((AdminMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
+                        case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                            break;
+                        case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                            break;
+                        case 2: mDevices = mBluetoothAdapter.getBondedDevices();
+                            mPariedDeviceCount = mDevices.size();
+                    }
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                    if(((AdminMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+                        beginListenForData_1();
+                        ((AdminMainActivity)getActivity()).mBluetooth.sendData("connect");
+                    }else{
+                        Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
-            new GetDevice().execute(selectedCube);//선택한 큐브에 대한 device를 얻어와서 블루투스 연결.
+
         }
     };
 
@@ -279,51 +345,6 @@ public class CubeFragment extends Fragment {
                 e.printStackTrace();
             }
             return device;
-        }
-
-        @Override
-        protected void onPostExecute(String result){//가져온 디바이스 넘버를 통해 블루투스 연결.
-            String deviceNum = result;
-            if(!id.equals("admin")) {//권한이 admin일 때,
-                switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
-                    case 0:
-                        Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-                        break;
-                    case 1:
-                        Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
-                        break;
-                    case 2:
-                        mDevices = mBluetoothAdapter.getBondedDevices();
-                        mPariedDeviceCount = mDevices.size();
-                }
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
-                    beginListenForData_1();
-                    ((UserMainActivity) getActivity()).mBluetooth.sendData("connect");
-                } else {
-                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-                }
-            } else{//권한이 일반 user일 때,
-                switch (((AdminMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
-                    case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-                        break;
-                    case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
-                        break;
-                    case 2: mDevices = mBluetoothAdapter.getBondedDevices();
-                        mPariedDeviceCount = mDevices.size();
-                }
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                if(((AdminMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
-                    beginListenForData_1();
-                    ((AdminMainActivity)getActivity()).mBluetooth.sendData("connect");
-                }else{
-                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-                }
-            }
         }
     }
 
@@ -414,6 +435,20 @@ public class CubeFragment extends Fragment {
         });
         mWorkerThread.start();//수신 쓰레드 시작.
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {//블루투스 권한 요청
+        switch (requestCode) {
+            case BLUETOOTH_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Toast.makeText(getContext(), "권한 요청에 동의 해주셔야 큐브 기능 사용이 가능합니다. :)", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                }
+                return;
+            }
+        }
     }
 
     @Override
