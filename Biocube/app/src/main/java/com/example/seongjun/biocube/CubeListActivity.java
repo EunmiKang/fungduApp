@@ -32,9 +32,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -120,11 +122,12 @@ public class CubeListActivity extends AppCompatActivity {
             list_cube.setSelector(R.color.white);
         }
     }
-    public class DeleteCube extends AsyncTask<Object,Object,Integer> {
+    public class DeleteCube extends AsyncTask<Object,Object,String> {
         // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
         @Override
-        public Integer doInBackground(Object... params) {
+        public String doInBackground(Object... params) {
             try {
+                String cubename = "";
              /* URL 설정하고 접속 */
                 URL url = new URL("http://fungdu0624.phps.kr/biocube/deletecube.php");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -136,10 +139,15 @@ public class CubeListActivity extends AppCompatActivity {
                 http.setRequestMethod("POST");
                 http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
 
+                try {
+                    cubename = URLEncoder.encode(params[0].toString(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("user_id").append("=").append(user_id).append("&");
-                buffer.append("cubename").append("=").append(params[0].toString());
+                buffer.append("cubename").append("=").append(cubename);
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
                 writer.write(buffer.toString());
@@ -151,7 +159,7 @@ public class CubeListActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
                 String result = reader.readLine();
 
-                return Integer.parseInt(result);
+                return result;
 
             } catch(MalformedURLException e) {
                 e.printStackTrace();
@@ -159,13 +167,13 @@ public class CubeListActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //publishProgress(params);    // 중간 중간에 진행 상태 UI 를 업데이트 하기 위해 사용..
-            return -1;
+            return null;
         }
 
         @Override
-        public void onPostExecute(Integer result) {
+        public void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(result == 0 ){
+            if(result.equals("false") ){
                 Toast.makeText(CubeListActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
             }
             else{
