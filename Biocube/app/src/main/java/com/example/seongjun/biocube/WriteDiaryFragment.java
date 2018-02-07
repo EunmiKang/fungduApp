@@ -542,66 +542,70 @@ public class WriteDiaryFragment extends Fragment {
     View.OnClickListener diaryRegisterListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (!((croppedFile == null) && contentText.getText().toString().equals(""))) {
 
             /* 서버에 이미지 올리기 */
-            if(croppedFile != null) {
-                String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
-                String attachmentName = "uploadfile_for_diary";
-                String attachmentFileName = croppedFile.getName();
-                String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
+                if (croppedFile != null) {
+                    String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
+                    String attachmentName = "uploadfile_for_diary";
+                    String attachmentFileName = croppedFile.getName();
+                    String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
 
-                // 용량 줄이기
-                BitmapFactory.Options option = new BitmapFactory.Options();
-                option.inSampleSize = 2;    // 1/2만큼 줄임
-                Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
-                try {
-                    FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
-                    src.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    // 용량 줄이기
+                    BitmapFactory.Options option = new BitmapFactory.Options();
+                    option.inSampleSize = 2;    // 1/2만큼 줄임
+                    Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
+                    try {
+                        FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
+                        src.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                        out.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // 서버에 이미지 업로드
+                    try {
+                        if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
+                            //Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
 
-                // 서버에 이미지 업로드
+            /* 다이어리 작성 내용 디비에 저장하기 */
+                String cube_name = cubeSpinner.getSelectedItem().toString();
+                String image_path = "NULL";
+                if (croppedFile != null) {
+                    image_path = croppedFile.getName();
+                }
+                String date = dateBtn.getText().toString();
+                String filter = filterSpinner.getSelectedItem().toString();
+                String content = contentText.getText().toString();
                 try {
-                    if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
-                        //Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
-                    }
+                    cube_name = URLEncoder.encode(cube_name, "UTF-8");
+                    date = URLEncoder.encode(date, "UTF-8");
+                    filter = URLEncoder.encode(filter, "UTF-8");
+                    content = URLEncoder.encode(content, "UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // 디비에 업로드
+                try {
+                    new UploadDiary().execute(cube_name, image_path, date, filter, content).get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-            }
-
-            /* 다이어리 작성 내용 디비에 저장하기 */
-            String cube_name = cubeSpinner.getSelectedItem().toString();
-            String image_path = "NULL";
-            if(croppedFile != null) {
-                image_path = croppedFile.getName();
-            }
-            String date = dateBtn.getText().toString();
-            String filter = filterSpinner.getSelectedItem().toString();
-            String content = contentText.getText().toString();
-            try{
-                cube_name = URLEncoder.encode(cube_name,"UTF-8");
-                date = URLEncoder.encode(date, "UTF-8");
-                filter = URLEncoder.encode(filter, "UTF-8");
-                content = URLEncoder.encode(content, "UTF-8");
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-            // 디비에 업로드
-            try {
-                new UploadDiary().execute(cube_name, image_path, date, filter, content).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            } else {
+                Toast.makeText(getContext(), "이미지를 선택해주시거나 내용을 작성해주세요.", Toast.LENGTH_SHORT).show();
             }
         }
     };
