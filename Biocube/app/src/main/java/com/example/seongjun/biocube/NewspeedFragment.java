@@ -252,39 +252,39 @@ public class NewspeedFragment extends Fragment {
                     JSONObject jsonObj = new JSONObject(sb.toString().trim());
                     diary = jsonObj.getJSONArray(TAG_DIARY);
                     Bitmap plantImg;
-
-
+                    
                     for (int i = 0; i < diary.length(); i++) {
                         JSONObject c = diary.getJSONObject(i);
-                        String nickname = c.getString(TAG_NICKNAME);
-                        String img = c.getString(TAG_IMG);
-                        String content = c.getString(TAG_CONTENT);
                         String id = c.getString(TAG_ID);
-                        int diaryNo = c.getInt(TAG_DIARYNO);
-                        String lastComment = c.getString(TAG_LASTCOMMENT);
-                        int countComment = c.getInt(TAG_COUNTCOMMENT);
-                        String lastCmtNick = c.getString(TAG_LASTCOMMENTNICK);
-                        if(lastComment.equals("null")){
-                            lastComment = "댓글이 없습니다.";
-                            lastCmtNick = "";
-                        }
-                        if(!img.equals("null")) {
-                            String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
-                            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-                            url = new URL(readURL);
-                            http = (HttpURLConnection) url.openConnection();
-                            http.connect();
-                            //스트림생성
-                            InputStream inStream2 = http.getInputStream();
-                            //스트림에서 받은 데이터를 비트맵 변환
-                            BitmapFactory.Options option = new BitmapFactory.Options();
-                            option.inSampleSize = 2;
-                            plantImg = BitmapFactory.decodeStream(inStream2,null,option);
-                            diarylist.add(new DiaryItem(diaryNo, nickname, plantImg ,content, lastComment, countComment, lastCmtNick));
-                        }
-                        else{
-                            plantImg = null;
-                            diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content,lastComment,countComment, lastCmtNick));
+                        if(!id.equals("")) {
+                            String nickname = c.getString(TAG_NICKNAME);
+                            String img = c.getString(TAG_IMG);
+                            String content = c.getString(TAG_CONTENT);
+                            int diaryNo = c.getInt(TAG_DIARYNO);
+                            String lastComment = c.getString(TAG_LASTCOMMENT);
+                            int countComment = c.getInt(TAG_COUNTCOMMENT);
+                            String lastCmtNick = c.getString(TAG_LASTCOMMENTNICK);
+                            if (lastComment.equals("null")) {
+                                lastComment = "댓글이 없습니다.";
+                                lastCmtNick = "";
+                            }
+                            if (!img.equals("null") || (img.equals(""))) {
+                                String readURL = "http://fungdu0624.phps.kr/biocube/users/" + id + "/" + img;
+                                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+                                url = new URL(readURL);
+                                http = (HttpURLConnection) url.openConnection();
+                                http.connect();
+                                //스트림생성
+                                InputStream inStream2 = http.getInputStream();
+                                //스트림에서 받은 데이터를 비트맵 변환
+                                BitmapFactory.Options option = new BitmapFactory.Options();
+                                option.inSampleSize = 2;
+                                plantImg = BitmapFactory.decodeStream(inStream2, null, option);
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick));
+                            } else {
+                                plantImg = null;
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick));
+                            }
                         }
 
                     }
