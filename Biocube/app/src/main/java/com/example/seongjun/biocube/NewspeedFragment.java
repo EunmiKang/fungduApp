@@ -58,6 +58,7 @@ public class NewspeedFragment extends Fragment {
     private static final String TAG_LASTCOMMENT = "lastComment";
     private static final String TAG_COUNTCOMMENT = "countComment";
     private static final String TAG_LASTCOMMENTNICK = "lastCmtNick";
+    private static final String TAG_DAY = "day";
 
     JSONArray diary = null;
     int authority;
@@ -252,7 +253,7 @@ public class NewspeedFragment extends Fragment {
                     JSONObject jsonObj = new JSONObject(sb.toString().trim());
                     diary = jsonObj.getJSONArray(TAG_DIARY);
                     Bitmap plantImg;
-                    
+
                     for (int i = 0; i < diary.length(); i++) {
                         JSONObject c = diary.getJSONObject(i);
                         String id = c.getString(TAG_ID);
@@ -264,6 +265,7 @@ public class NewspeedFragment extends Fragment {
                             String lastComment = c.getString(TAG_LASTCOMMENT);
                             int countComment = c.getInt(TAG_COUNTCOMMENT);
                             String lastCmtNick = c.getString(TAG_LASTCOMMENTNICK);
+                            String day = c.getString(TAG_DAY);
                             if (lastComment.equals("null")) {
                                 lastComment = "댓글이 없습니다.";
                                 lastCmtNick = "";
@@ -280,10 +282,10 @@ public class NewspeedFragment extends Fragment {
                                 BitmapFactory.Options option = new BitmapFactory.Options();
                                 option.inSampleSize = 2;
                                 plantImg = BitmapFactory.decodeStream(inStream2, null, option);
-                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick));
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick, day));
                             } else {
                                 plantImg = null;
-                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick));
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick, day));
                             }
                         }
 

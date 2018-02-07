@@ -95,9 +95,11 @@ public class DiaryManageAdapter extends BaseAdapter{
             holder.commentView = (TextView) view.findViewById(R.id.comment_text);
             holder.commentCountView = (TextView) view.findViewById(R.id.cmtCount_text);
             holder.cmtNicknameView = (TextView) view.findViewById(R.id.text_cmtNick);
+            holder.dayView = (TextView) view.findViewById(R.id.text_day);
             deleteButton = (ImageButton) view.findViewById(R.id.btn_deleteDiary);
             btn_registComment = (Button) view.findViewById(R.id.btn_registComment);
             text_commentCount = (TextView) view.findViewById(R.id.cmtCount_text);
+
 
             cmt_edit = (EditText) view.findViewById(R.id.cmt_edit);
             view.setTag(holder);
@@ -113,6 +115,7 @@ public class DiaryManageAdapter extends BaseAdapter{
         holder.hiddenDiaryNo.setText(String.valueOf(diaryItem.getDiaryNo()));
         holder.cmtNicknameView.setText(diaryItem.getLastCmtNick());
         holder.commentView.setText(diaryItem.getLastComment());
+        holder.dayView.setText(diaryItem.getDay());
         holder.commentCountView.setText("등 "+diaryItem.getCountComment()+"개");
         final String hiddenNo = holder.hiddenDiaryNo.getText().toString();
         cmt_edit.setTag(hiddenNo);
@@ -210,7 +213,9 @@ public class DiaryManageAdapter extends BaseAdapter{
         TextView commentView;
         TextView commentCountView;
         TextView cmtNicknameView;
+        TextView dayView;
     }
+
     class DeleteDiary extends AsyncTask<String, Void, String> {
 
         @Override

@@ -59,6 +59,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
     private static final String TAG_LASTCOMMENT = "lastComment";
     private static final String TAG_COUNTCOMMENT = "countComment";
     private static final String TAG_LASTCOMMENTNICK = "lastCmtNick";
+    private static final String TAG_DAY = "day";
 
 
     JSONArray diary = null;
@@ -163,6 +164,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
                             String lastComment = c.getString(TAG_LASTCOMMENT);
                             int countComment = c.getInt(TAG_COUNTCOMMENT);
                             String lastCmtNick = c.getString(TAG_LASTCOMMENTNICK);
+                            String day = c.getString(TAG_DAY);
 
                             if(lastComment.equals("null")){
                                 lastComment = "댓글이 없습니다.";
@@ -180,11 +182,11 @@ public class DiaryAsCubeName extends AppCompatActivity{
                                 BitmapFactory.Options option = new BitmapFactory.Options();
                                 option.inSampleSize = 2;
                                 plantImg = BitmapFactory.decodeStream(inStream,null,option);
-                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick));
+                                diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick, day));
                             }
                             else{
                                 plantImg = null;
-                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content, lastComment, countComment, lastCmtNick));
+                                diarylist.add(new DiaryItem(diaryNo, nickname,plantImg,content, lastComment, countComment, lastCmtNick, day));
                             }
                         }
                     }catch (JSONException e) {

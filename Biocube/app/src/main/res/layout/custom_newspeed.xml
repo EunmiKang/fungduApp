@@ -39,6 +39,14 @@
             app:srcCompat="@android:drawable/ic_menu_delete" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:textSize="12sp"/>
+
     <ImageView
         android:id="@+id/diaryimg_image"
         android:layout_width="match_parent"
