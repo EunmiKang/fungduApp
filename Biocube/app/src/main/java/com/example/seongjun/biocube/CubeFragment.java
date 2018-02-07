@@ -241,12 +241,14 @@ public class CubeFragment extends Fragment {
                             mDevices = mBluetoothAdapter.getBondedDevices();
                             mPariedDeviceCount = mDevices.size();
                     }
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                    if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
-                        beginListenForData_1();
-                        ((UserMainActivity) getActivity()).mBluetooth.sendData("connect");
-                    } else {
-                        Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                    if(mDevices != null) {
+                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                        if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                            beginListenForData_1();
+                            ((UserMainActivity) getActivity()).mBluetooth.sendData("connect");
+                        } else {
+                            Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else{//권한이 일반 admin일 때,
                     switch (((AdminMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
@@ -259,12 +261,14 @@ public class CubeFragment extends Fragment {
                         case 2: mDevices = mBluetoothAdapter.getBondedDevices();
                             mPariedDeviceCount = mDevices.size();
                     }
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                    if(((AdminMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
-                        beginListenForData_1();
-                        ((AdminMainActivity)getActivity()).mBluetooth.sendData("connect");
-                    }else{
-                        Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                    if(mDevices != null) {
+                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                        if (((AdminMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                            beginListenForData_1();
+                            ((AdminMainActivity) getActivity()).mBluetooth.sendData("connect");
+                        } else {
+                            Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             } catch (InterruptedException e) {
@@ -272,7 +276,6 @@ public class CubeFragment extends Fragment {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
 
         }
     };
@@ -346,6 +349,9 @@ public class CubeFragment extends Fragment {
             }
             return device;
         }
+//        @Override
+//        public void onPostExecute(String result) {
+//        }
     }
 
     //데이터 수신
