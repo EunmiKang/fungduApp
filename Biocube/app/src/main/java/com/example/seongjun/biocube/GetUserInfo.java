@@ -1,10 +1,8 @@
 package com.example.seongjun.biocube;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;

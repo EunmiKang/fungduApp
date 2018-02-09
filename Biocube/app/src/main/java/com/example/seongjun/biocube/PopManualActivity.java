@@ -8,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.*;
 import android.support.v4.view.PagerAdapter;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;

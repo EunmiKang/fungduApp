@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Created by Eunmi on 2017-12-06.
