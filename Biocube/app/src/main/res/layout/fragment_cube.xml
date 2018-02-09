@@ -313,7 +313,8 @@
                                     android:background="#FFFFFF"
                                     android:padding="5dp"
                                     android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
+                                    android:src="@drawable/circle_yellow"
+                                    android:onClick=""/>
 
                                 <ImageButton
                                     android:id="@+id/led_time2"

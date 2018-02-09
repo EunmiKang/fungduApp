@@ -37,6 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -228,6 +230,11 @@ public class CubeFragment extends Fragment {
                 e.printStackTrace();
             }
             try {
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yy/MM/dd/HH/mm/ss");
+                String formatDate = sdfNow.format(date);
+
                String deviceNum = new GetDevice().execute(selectedCube).get();//선택한 큐브에 대한 device를 얻어와서 블루투스 연결.
                 if(!id.equals("admin")) {//권한이 user일 때,
                     switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
@@ -243,11 +250,12 @@ public class CubeFragment extends Fragment {
                             mDevices = mBluetoothAdapter.getBondedDevices();
                             mPariedDeviceCount = mDevices.size();
                     }
+
                     if(mDevices != null) {
                         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
                         if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
                             beginListenForData_1();
-                            ((UserMainActivity) getActivity()).mBluetooth.sendData("connect");
+                            ((UserMainActivity) getActivity()).mBluetooth.sendData("connect"+formatDate);
                         } else {
                             Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -267,7 +275,7 @@ public class CubeFragment extends Fragment {
                         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
                         if (((AdminMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
                             beginListenForData_1();
-                            ((AdminMainActivity) getActivity()).mBluetooth.sendData("connect");
+                            ((AdminMainActivity) getActivity()).mBluetooth.sendData("connect"+formatDate);
                         } else {
                             Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
                         }
