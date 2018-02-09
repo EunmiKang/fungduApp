@@ -826,7 +826,7 @@ public class WriteDiaryFragment extends Fragment {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
                                             String[] datas = data.split(",");
-                                            contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] +"\n" +contentText.getText().toString());
+                                            contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] + "토양습도 : "+datas[3] + "\n" +contentText.getText().toString());
                                             try{
                                                 ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
                                             }catch (Exception e){
