@@ -1,19 +1,12 @@
 package com.example.seongjun.biocube;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 
@@ -23,8 +16,6 @@ public class UserMainActivity extends AppCompatActivity {
     String userID;
     Bluetooth mBluetooth = new Bluetooth();
     private static final String TAG = "CUBEFRAGEMENT";
-    CubeFragment mCubeFragment;
-    Fragment fragment;
     PagerAdapter mUserPagerAdapter;
     public static Context context;
     @Override
@@ -109,8 +100,4 @@ public class UserMainActivity extends AppCompatActivity {
 //        super.onBackPressed();
         backPressCloseHandler.onBackPressed();
     }
-//    public void stopThread(){
-//        mCubeFragment.mWorkerThread.interrupt();
-//    }
-
 }

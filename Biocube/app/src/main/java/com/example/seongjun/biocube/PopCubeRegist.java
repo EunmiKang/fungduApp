@@ -79,14 +79,7 @@ public class PopCubeRegist extends Activity {
 
 
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-//        switch (requestCode){
-//            case 1:
-//                finish();
-//                break;
-//        }
-//    }
+
     public void mOnClose(View v){
         cubeName = edit_cubeName.getText().toString();
         plantName = spinner_plantName.getSelectedItem().toString();

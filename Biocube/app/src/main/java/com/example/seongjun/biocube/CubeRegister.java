@@ -1,6 +1,7 @@
 package com.example.seongjun.biocube;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,12 +59,8 @@ public class CubeRegister extends AppCompatActivity {
     static final int REQUEST_ENABLE_BT = 10;
     int mPariedDeviceCount = 0;//페어링된 디바이스 수.
     Set<BluetoothDevice> mDevices;
-    BluetoothSocket mSocket = null;
-    InputStream mInputStream = null;
-    Thread mWorkerThread = null;
     public static Context mcontext;
-
-
+    ProgressDialog dialog;
 
     Bluetooth mBluetooth = new Bluetooth();
     @Override
@@ -81,6 +80,8 @@ public class CubeRegister extends AppCompatActivity {
         adapterDevice = new
                 SimpleAdapter(this, dataDevice, android.R.layout.simple_list_item_2, new String[]{"name", "address"}, new int[]{android.R.id.text1, android.R.id.text2});
         listDevice.setAdapter(adapterDevice);
+
+        dialog = new ProgressDialog(CubeRegister.this);
 
         // 블루투스 권한 요청(마쉬멜로우 버전 이상)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -121,19 +122,7 @@ public class CubeRegister extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                BluetoothDevice device = bluetoothDevices.get(position);
-                if(mBluetooth.connectToSelectedDevice(device.getAddress(), mDevices, device)){//선택한 디바이스를 연결 성공했을 때
-                    mOnPopupClick(device);//등록을 위한 팝업창이 나타남.
-                }
-                else{//블루투스 연결 실패시,
-//                    Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-                }
-
-                //데이터 보내는부분
-                if(!mBluetooth.sendData("check")){//디바이스에 시그널을 보내는데 실패한 경우
-                    Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
-                    finish();  // App 종료
-                }
+                new ConnectTask().execute(position);
             }
         });
 
@@ -141,11 +130,13 @@ public class CubeRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mOnBluetoothSearch();//주변 블루투스 검색
-            }
+                 }
         });
     }
 
-
+    public void test(){
+        dialog = ProgressDialog.show(CubeRegister.this,"연결중","기다려주세요...");
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {//어떤 요청인지 구분지어 사용.
@@ -254,13 +245,10 @@ public class CubeRegister extends AppCompatActivity {
         unregisterReceiver(mBluetoothSearchReceiver);//리시버 해제.
         unregisterReceiver(mBluetooth.mBluetoothStateReceiver);
         try{
-            mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
-            mInputStream.close();
-            mSocket.close();
+            mBluetooth.mSocket.close();
         }catch(Exception e){}
         super.onDestroy();
     }
-
 
     //블루투스 검색 버튼 클릭
     public void mOnBluetoothSearch(){
@@ -275,4 +263,36 @@ public class CubeRegister extends AppCompatActivity {
         mBluetoothAdapter.startDiscovery();
     }
 
+    class ConnectTask extends AsyncTask<Integer, Void, String> {//디바이스를 찾아 연결시키는 쓰레드.
+        @Override
+        protected String doInBackground(Integer... params) {
+            BluetoothDevice device = bluetoothDevices.get(params[0]);
+            if(mBluetooth.connectToSelectedDevice(device.getAddress(), mDevices, device)){//선택한 디바이스를 연결 성공했을 때
+                mOnPopupClick(device);//등록을 위한 팝업창이 나타남.
+                //데이터 보내는부분
+                if(!mBluetooth.sendData("check")){//디바이스에 시그널을 보내는데 실패한 경우
+                    Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
+//                    finish();  // App 종료
+                }
+            }
+            else{//블루투스 연결 실패시,
+//                    Toast.makeText(getApplicationContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result){
+            dialog.dismiss();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("연결중입니다...");
+
+            // show dialog
+            dialog.show();
+            super.onPreExecute();
+        }
+    }
 }

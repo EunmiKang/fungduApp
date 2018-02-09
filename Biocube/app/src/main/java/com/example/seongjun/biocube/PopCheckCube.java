@@ -7,13 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 
+import java.io.IOException;
+
 /**
  * Created by Seongjun on 2018. 1. 4..
  */
 
 public class PopCheckCube extends Activity {
     BluetoothDevice device;
-    CubeRegister mCubeRegister = new CubeRegister();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +24,16 @@ public class PopCheckCube extends Activity {
 
         Intent intent = getIntent();
         device = intent.getExtras().getParcelable("bluetoothDevice");
-//        mCubeRegister.sendData("check");
     }
 
 
     public void mCheckNo(View v){
         //데이터 전달하기
+        try {
+            ((CubeRegister)CubeRegister.mcontext).mBluetooth.mSocket.close();//소켓 종료
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent();
         setResult(RESULT_CANCELED, intent);
 
