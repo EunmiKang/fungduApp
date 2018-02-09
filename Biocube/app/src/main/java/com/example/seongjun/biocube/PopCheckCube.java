@@ -30,6 +30,7 @@ public class PopCheckCube extends Activity {
     public void mCheckNo(View v){
         //데이터 전달하기
         try {
+            ((CubeRegister)CubeRegister.mcontext).mBluetooth.sendData("ok");
             ((CubeRegister)CubeRegister.mcontext).mBluetooth.mSocket.close();//소켓 종료
         } catch (IOException e) {
             e.printStackTrace();
