@@ -2,7 +2,6 @@ package com.example.seongjun.biocube;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +44,7 @@ public class DiaryManageAdapter extends BaseAdapter{
     TextView text_commentCount;
     View views;
     String id;
+    int flag = 100;
 
 //    TextView text_cmtNick;
     public DiaryManageAdapter(Context context, String nickname, List<DiaryItem> list, int authority, String id) {
@@ -61,6 +61,14 @@ public class DiaryManageAdapter extends BaseAdapter{
         this.authority = authority;
         this.context = context;
         this.id = id;
+    }
+    public DiaryManageAdapter(Context context, List<DiaryItem> list, int authority, String id, int flag) {
+        this.list = list;
+        layoutInflater = LayoutInflater.from(context);
+        this.authority = authority;
+        this.context = context;
+        this.id = id;
+        this.flag = flag;
     }
 
     @Override
@@ -125,7 +133,7 @@ public class DiaryManageAdapter extends BaseAdapter{
 //        }else{
 //            deleteButton.setVisibility(View.VISIBLE);
 //        }
-        if(authority == 2 || authority == 1){
+        if(authority == 2 || flag != 1){
             deleteButton.setVisibility(View.GONE);
         }
         if(authority == 1){

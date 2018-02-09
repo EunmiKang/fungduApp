@@ -1,30 +1,18 @@
 package com.example.seongjun.biocube;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -35,7 +23,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -196,7 +183,6 @@ public class DiaryAsCubeName extends AppCompatActivity{
                 }catch(Exception e){
                     return null;
                 }
-
             }
 
             @Override
@@ -210,7 +196,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
             }
             @Override
             protected void onPostExecute(List<DiaryItem> result){
-                list_diary_cubename.setAdapter(new DiaryManageAdapter(DiaryAsCubeName.this, result, authority, id));
+                list_diary_cubename.setAdapter(new DiaryManageAdapter(DiaryAsCubeName.this, result, authority, id, 1));
                 asyncDialog.dismiss();
             }
         }

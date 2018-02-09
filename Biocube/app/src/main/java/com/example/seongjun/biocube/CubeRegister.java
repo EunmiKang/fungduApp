@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,18 +20,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Seongjun on 2017. 11. 7..
@@ -60,6 +58,7 @@ public class CubeRegister extends AppCompatActivity {
     int mPariedDeviceCount = 0;//페어링된 디바이스 수.
     Set<BluetoothDevice> mDevices;
     public static Context mcontext;
+    String id;
     ProgressDialog dialog;
 
     Bluetooth mBluetooth = new Bluetooth();
@@ -94,6 +93,31 @@ public class CubeRegister extends AppCompatActivity {
             }
             else {
 
+            }
+        }
+        try {//로그인된 아이디 불러옴
+            id = new GetId().execute(getApplicationContext()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        if(id.equals("admin")){//admin일때,
+            if(((((AdminMainActivity)AdminMainActivity.context)).mBluetooth.mSocket != null)){
+                try {
+                    ((AdminMainActivity)AdminMainActivity.context).mBluetooth.mSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else{//user가 아닐때
+            if(((((UserMainActivity)UserMainActivity.context)).mBluetooth.mSocket != null)){
+                try {
+                    ((UserMainActivity)UserMainActivity.context).mBluetooth.mSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

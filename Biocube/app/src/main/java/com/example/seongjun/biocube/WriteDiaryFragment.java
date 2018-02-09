@@ -203,13 +203,31 @@ public class WriteDiaryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String selectedCube = cubeSpinner.getSelectedItem().toString();
+                String deviceNum = "";
                 try{
-//                    ((CubeFragment)getTargetFragment()).mBluetooth.mSocket.close();//cubefragment의 연결 끊음.
                     selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
+                    deviceNum = new GetDevice().execute(selectedCube).get();
+                    ((UserMainActivity) getActivity()).mBluetooth.mSocket.close();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-                new GetDevice().execute(selectedCube);
+                switch (((UserMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
+                    case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, ((UserMainActivity)getActivity()).mBluetooth.REQUEST_ENABLE_BT);
+                        break;
+                    case 2: mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
+                        mPariedDeviceCount = mDevices.size();
+                }
+                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                if(((UserMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
+                    beginListenForData();
+                    ((UserMainActivity)getActivity()).mBluetooth.sendData("read_data");
+                }else{
+                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -757,31 +775,7 @@ public class WriteDiaryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result){
-            String deviceNum = result;
-            try {
-                ((UserMainActivity) getActivity()).mBluetooth.mSocket.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            switch (((UserMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
-                case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-                    break;
-                case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
-                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtIntent, ((UserMainActivity)getActivity()).mBluetooth.REQUEST_ENABLE_BT);
-                    break;
-                case 2: mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
-                    mPariedDeviceCount = mDevices.size();
-            }
-            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-            if(((UserMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
-//                ((UserMainActivity)getActivity()).stopThread();
-//                ((CubeFragment)getTargetFragment()).mWorkerThread.interrupt();
-                beginListenForData();
-                ((UserMainActivity)getActivity()).mBluetooth.sendData("read_data");
-            }else{
-                Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-            }
+
         }
     }
 
@@ -826,15 +820,13 @@ public class WriteDiaryFragment extends Fragment {
                                             // mStrDelimiter = '\n';
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
                                             String[] datas = data.split(",");
-                                            contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] + "토양습도 : "+datas[3] + "\n" +contentText.getText().toString());
+                                            contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] +"\n" +"토양습도 : "+datas[3] + "\n" +contentText.getText().toString());
                                             try{
                                                 ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
                                             }catch (Exception e){
                                                 e.printStackTrace();
                                             }
                                             mWorkerThread.interrupt();
-
-
                                         }
 
                                     });

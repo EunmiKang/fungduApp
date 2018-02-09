@@ -3,6 +3,7 @@ package com.example.seongjun.biocube;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -53,7 +54,7 @@ public class CubeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     String id;//로그인된 id를 받을 것.
-    Bluetooth mBluetooth = new Bluetooth();
+//    Bluetooth mBluetooth = new Bluetooth();
     Set<BluetoothDevice> mDevices;
     BluetoothAdapter mBluetoothAdapter;
     int mPariedDeviceCount = 0;
@@ -70,7 +71,7 @@ public class CubeFragment extends Fragment {
     Thread mWorkerThread = null;
     InputStream mInputStream = null;
     char mCharDelimiter =  '\n';
-
+    Context mContext;
     public CubeFragment() {
         // Required empty public constructor
     }
@@ -92,6 +93,7 @@ public class CubeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getContext();
     }
 
     @Override
@@ -235,7 +237,7 @@ public class CubeFragment extends Fragment {
                         case 1:
                             Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
                             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                            startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                            startActivityForResult(enableBtIntent, ((UserMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
                             break;
                         case 2:
                             mDevices = mBluetoothAdapter.getBondedDevices();
@@ -256,7 +258,7 @@ public class CubeFragment extends Fragment {
                             break;
                         case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
                             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                            startActivityForResult(enableBtIntent, mBluetooth.REQUEST_ENABLE_BT);
+                            startActivityForResult(enableBtIntent, ((AdminMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
                             break;
                         case 2: mDevices = mBluetoothAdapter.getBondedDevices();
                             mPariedDeviceCount = mDevices.size();

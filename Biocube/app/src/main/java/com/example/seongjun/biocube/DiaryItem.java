@@ -1,7 +1,6 @@
 package com.example.seongjun.biocube;
 
 import android.graphics.Bitmap;
-import android.widget.ImageButton;
 
 /**
  * Created by Seongjun on 2017. 12. 21..
