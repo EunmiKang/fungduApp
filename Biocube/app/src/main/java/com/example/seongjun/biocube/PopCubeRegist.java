@@ -60,6 +60,11 @@ public class PopCubeRegist extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.popup_regist_cube);
 
+        if(!((CubeRegister)CubeRegister.mcontext).mBluetooth.sendData("ok")){//디바이스에 시그널을 보내는데 실패한 경우
+            Toast.makeText(getApplicationContext(), "데이터 전송중 오류가 발생", Toast.LENGTH_LONG).show();
+//                    finish();  // App 종료
+        }
+
         try {
             user_id = new GetId().execute(this).get();
         } catch (InterruptedException e) {

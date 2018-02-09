@@ -51,7 +51,8 @@
         android:id="@+id/diaryimg_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="3dp"/>
+        android:padding="3dp"
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/content_text"
