@@ -94,7 +94,7 @@
         <activity
             android:name=".CommentAsDiaryActivity"
             android:screenOrientation="portrait"/>
-        <activity 
+        <activity
             android:name=".PopLedTimeSet"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"/>
