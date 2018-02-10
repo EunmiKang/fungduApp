@@ -18,7 +18,7 @@
             tools:layout_editor_absoluteY="166dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_am"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AM"
@@ -26,7 +26,7 @@
             tools:layout_editor_absoluteY="58dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_pm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PM"
@@ -34,7 +34,7 @@
             tools:layout_editor_absoluteY="58dp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/am_11"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="11"
@@ -42,7 +42,7 @@
             tools:layout_editor_absoluteY="144dp" />
 
         <Button
-            android:id="@+id/button15"
+            android:id="@+id/am_10"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="10"
@@ -50,7 +50,7 @@
             tools:layout_editor_absoluteY="196dp" />
 
         <Button
-            android:id="@+id/button14"
+            android:id="@+id/am_09"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="09"
@@ -66,7 +66,7 @@
             tools:layout_editor_absoluteY="262dp" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/am_07"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="07"
@@ -74,7 +74,7 @@
             tools:layout_editor_absoluteY="381dp" />
 
         <Button
-            android:id="@+id/button12"
+            android:id="@+id/am_08"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="08"
@@ -82,7 +82,7 @@
             tools:layout_editor_absoluteY="326dp" />
 
         <Button
-            android:id="@+id/button13"
+            android:id="@+id/am_06"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="06"
@@ -90,7 +90,7 @@
             tools:layout_editor_absoluteY="400dp" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/am_05"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="05"
@@ -98,7 +98,7 @@
             tools:layout_editor_absoluteY="381dp" />
 
         <Button
-            android:id="@+id/button11"
+            android:id="@+id/am_04"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="04"
@@ -122,7 +122,7 @@
             tools:layout_editor_absoluteY="144dp" />
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/am_12"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="12"

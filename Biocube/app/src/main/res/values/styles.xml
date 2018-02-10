@@ -12,4 +12,14 @@
         <item name="colorControlHighlight">@color/highlight</item>
         <item name="colorButtonNormal">@color/biocube</item>
     </style>
+
+    <style name="timeAMButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/fleshy</item>
+        <item name="colorButtonNormal">@color/white</item>
+    </style>
+
+    <style name="timePMButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/darkGreen</item>
+        <item name="colorButtonNormal">@color/lightGreen</item>
+    </style>
 </resources>

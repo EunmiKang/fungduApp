@@ -7,4 +7,7 @@
     <color name="biocube">#529b4b</color>
     <color name="highlight">#006622</color>
     <color name="white">#FFFFFF</color>
+    <color name="fleshy">#ffffe6</color>
+    <color name="lightGreen">#55ff00</color>
+    <color name="darkGreen">#3bb300</color>
 </resources>
