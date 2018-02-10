@@ -21,7 +21,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="Biocube">
+            android:label="Biocube"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,29 +31,42 @@
         </activity>
         <activity
             android:name=".UserMainActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".JoinActivity" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JoinActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AdminMainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ExpertMainActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".CubeRegister" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CubeRegister"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PopCubeRegist"
-            android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".CubeListActivity" />
-        <activity android:name=".DiaryAsCubeName" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CubeListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DiaryAsCubeName"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ChangeInfoActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PopQuestion"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PopCheckCube"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -64,13 +78,21 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".CommentListActivity" />
-        <activity android:name=".ManualManageActivity" />
-        <activity android:name=".ManualRegistActivity" />
+        <activity
+            android:name=".CommentListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManualManageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManualRegistActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PopManualActivity"
-            android:theme="@android:style/Theme.Dialog"/>
-        <activity android:name=".CommentAsDiaryActivity"/>
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CommentAsDiaryActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
