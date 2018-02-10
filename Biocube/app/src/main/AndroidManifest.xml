@@ -71,6 +71,9 @@
             android:name=".PopManualActivity"
             android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".CommentAsDiaryActivity"/>
+        <activity android:name=".PopLedTimeSet" />
+        <activity android:name=".PopPumpTimeSet"
+            android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>

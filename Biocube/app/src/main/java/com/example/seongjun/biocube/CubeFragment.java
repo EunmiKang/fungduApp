@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,9 @@ public class CubeFragment extends Fragment {
     TextView text_motor;
     TextView text_led;
     Spinner spinner_cubeName;
+    LinearLayout layout_led;
+    LinearLayout layout_pump;
+    Button btn_ledTime;
 
     private int readBufferPosition;
     byte[] readBuffer;
@@ -114,8 +118,32 @@ public class CubeFragment extends Fragment {
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
         text_motor = (TextView) view.findViewById(R.id.text_motor);
         text_led = (TextView) view.findViewById(R.id.text_led);
+        layout_led = (LinearLayout) view.findViewById(R.id.layout_led);
+        layout_pump = (LinearLayout) view.findViewById(R.id.layout_pump);
+        btn_ledTime = (Button) view.findViewById(R.id.btn_ledTime);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
+        btn_ledTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PopLedTimeSet.class);
+                startActivity(intent);
+            }
+        });
+        layout_led.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PopLedTimeSet.class);
+                startActivity(intent);
+            }
+        });
+        layout_pump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PopPumpTimeSet.class);
+                startActivity(intent);
+            }
+        });
         try {//로그인된 아이디 불러옴
             id = new GetId().execute(getActivity()).get();
         } catch (InterruptedException e) {
