@@ -215,14 +215,15 @@ public class WriteDiaryFragment extends Fragment {
                     case 2: mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
                         mPariedDeviceCount = mDevices.size();
                 }
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                if(((UserMainActivity)getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)){
-                    beginListenForData();
-                    ((UserMainActivity)getActivity()).mBluetooth.sendData("read_data");
-                }else{
-                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                if(mDevices != null) {
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                    if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                        beginListenForData();
+                        ((UserMainActivity) getActivity()).mBluetooth.sendData("read_data");
+                    } else {
+                        Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                    }
                 }
-
             }
         });
 
@@ -766,11 +767,6 @@ public class WriteDiaryFragment extends Fragment {
             }
             return device;
         }
-
-        @Override
-        protected void onPostExecute(String result){
-
-        }
     }
 
     //데이터 수신
@@ -833,8 +829,6 @@ public class WriteDiaryFragment extends Fragment {
 
                     } catch (Exception e) {    // 데이터 수신 중 오류 발생.
                         e.printStackTrace();
-//                        Toast.makeText(getContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
-//                        getActivity().finish();            // App 종료.
                     }
                 }
             }
