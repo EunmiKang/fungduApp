@@ -2,163 +2,357 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/ledLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="31dp"
+            android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_am"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="AM"
+                    android:theme="@style/AMButton" />
+
+                <Button
+                    android:id="@+id/btn_pm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="PM"
+                    android:textColor="@color/white"
+                    android:theme="@style/PMButton" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/clock"
             android:layout_width="200dp"
             android:layout_height="180dp"
-            android:src="@drawable/clock"
-            tools:layout_editor_absoluteX="63dp"
-            tools:layout_editor_absoluteY="166dp"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:id="@+id/btn_am"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AM"
-            android:layout_marginBottom="24dp"
-            android:layout_above="@+id/am_12"
-            android:layout_toLeftOf="@+id/am_12"
-            android:layout_toStartOf="@+id/am_12" />
-
-        <Button
-            android:id="@+id/btn_pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PM"
-            android:layout_alignBaseline="@+id/btn_am"
-            android:layout_alignBottom="@+id/btn_am"
-            android:layout_toRightOf="@+id/am_12"
-            android:layout_toEndOf="@+id/am_12" />
+            android:src="@drawable/clock_modify"
+            tools:layout_editor_absoluteX="63dp"
+            tools:layout_editor_absoluteY="166dp" />
 
 
         <Button
             android:id="@+id/am_01"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="01"
             android:layout_above="@+id/clock"
+            android:layout_alignEnd="@+id/clock"
             android:layout_alignRight="@+id/clock"
-            android:layout_alignEnd="@+id/clock" />
+            android:tag="led1"
+            android:text="01"
+            android:theme="@style/noSetButton" />
 
         <Button
             android:id="@+id/am_02"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="02"
             android:layout_alignBaseline="@+id/am_10"
             android:layout_alignBottom="@+id/am_10"
-            android:layout_toRightOf="@+id/clock"
+            android:layout_marginBottom="12dp"
             android:layout_toEndOf="@+id/clock"
-            android:layout_marginBottom="12dp"/>
+            android:layout_toRightOf="@+id/clock"
+            android:tag="led2"
+            android:text="02"
+            android:theme="@style/noSetButton" />
 
         <Button
             android:id="@+id/am_03"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="03"
             android:layout_alignBaseline="@+id/am_09"
             android:layout_alignBottom="@+id/am_09"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="10dp"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:tag="led3"
+            android:text="03"
+            android:theme="@style/noSetButton" />
 
         <Button
             android:id="@+id/am_04"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="04"
-            tools:layout_editor_absoluteY="325dp"
-            tools:layout_editor_absoluteX="301dp"
             android:layout_below="@+id/am_09"
-            android:layout_toRightOf="@+id/clock"
+            android:layout_marginTop="12dp"
             android:layout_toEndOf="@+id/clock"
-            android:layout_marginTop="12dp" />
+            android:layout_toRightOf="@+id/clock"
+            android:tag="led4"
+            android:text="04"
+            android:theme="@style/noSetButton"
+            tools:layout_editor_absoluteX="301dp"
+            tools:layout_editor_absoluteY="325dp" />
 
         <Button
             android:id="@+id/am_05"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="05"
-            tools:layout_editor_absoluteY="379dp"
-            tools:layout_editor_absoluteX="247dp"
-            android:layout_below="@+id/clock"
+            android:layout_alignEnd="@+id/clock"
             android:layout_alignRight="@+id/clock"
-            android:layout_alignEnd="@+id/clock" />
+            android:layout_below="@+id/clock"
+            android:tag="led5"
+            android:text="05"
+            android:theme="@style/noSetButton"
+            tools:layout_editor_absoluteX="247dp"
+            tools:layout_editor_absoluteY="379dp" />
 
         <Button
             android:id="@+id/am_06"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="06"
-            android:layout_marginTop="27dp"
+            android:layout_alignLeft="@+id/am_00"
+            android:layout_alignStart="@+id/am_00"
             android:layout_below="@+id/clock"
-            android:layout_alignLeft="@+id/am_12"
-            android:layout_alignStart="@+id/am_12" />
+            android:layout_marginTop="27dp"
+            android:tag="led6"
+            android:text="06"
+            android:theme="@style/noSetButton" />
 
         <Button
             android:id="@+id/am_07"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="07"
-            android:layout_below="@+id/clock"
             android:layout_alignLeft="@+id/am_11"
-            android:layout_alignStart="@+id/am_11" />
+            android:layout_alignStart="@+id/am_11"
+            android:layout_below="@+id/clock"
+            android:tag="led7"
+            android:text="07"
+            android:theme="@style/noSetButton" />
 
         <Button
             android:id="@+id/am_08"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="08"
             android:layout_alignBaseline="@+id/am_04"
             android:layout_alignBottom="@+id/am_04"
+            android:layout_marginTop="12dp"
             android:layout_toLeftOf="@+id/clock"
             android:layout_toStartOf="@+id/clock"
-            android:layout_marginTop="12dp"/>
+            android:tag="led8"
+            android:text="08"
+            android:theme="@style/noSetButton" />
 
 
         <Button
             android:id="@+id/am_09"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="09"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp" />
+            android:layout_marginStart="10dp"
+            android:tag="led9"
+            android:text="09"
+            android:theme="@style/noSetButton" />
 
         <Button
             android:id="@+id/am_10"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="10"
-            tools:layout_editor_absoluteX="29dp"
-            tools:layout_editor_absoluteY="196dp"
-            android:layout_marginTop="11dp"
             android:layout_alignTop="@+id/clock"
+            android:layout_marginTop="11dp"
             android:layout_toLeftOf="@+id/clock"
-            android:layout_toStartOf="@+id/clock" />
+            android:layout_toStartOf="@+id/clock"
+            android:tag="led10"
+            android:text="10"
+            android:theme="@style/noSetButton"
+            tools:layout_editor_absoluteX="29dp"
+            tools:layout_editor_absoluteY="196dp" />
 
         <Button
             android:id="@+id/am_11"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="11"
             android:layout_above="@+id/clock"
             android:layout_alignLeft="@+id/clock"
-            android:layout_alignStart="@+id/clock" />
+            android:layout_alignStart="@+id/clock"
+            android:tag="led11"
+            android:text="11"
+            android:theme="@style/noSetButton" />
 
         <Button
-            android:id="@+id/am_12"
+            android:id="@+id/am_00"
             android:layout_width="54dp"
             android:layout_height="43dp"
-            android:text="12"
             android:layout_above="@+id/clock"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="27dp" />
+            android:layout_marginBottom="27dp"
+            android:tag="led0"
+            android:text="00"
+            android:theme="@style/noSetButton" />
+        <!-- pm -->
 
+
+        <Button
+            android:id="@+id/pm_13"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_above="@+id/clock"
+            android:layout_alignEnd="@+id/clock"
+            android:layout_alignRight="@+id/clock"
+            android:tag="led13"
+            android:text="13"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_14"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignBaseline="@+id/pm_22"
+            android:layout_alignBottom="@+id/pm_22"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@+id/clock"
+            android:layout_toRightOf="@+id/clock"
+            android:tag="led14"
+            android:text="14"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_15"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignBaseline="@+id/pm_21"
+            android:layout_alignBottom="@+id/pm_21"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:tag="led15"
+            android:text="15"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_16"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_below="@+id/pm_21"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@+id/clock"
+            android:layout_toRightOf="@+id/clock"
+            android:tag="led16"
+            android:text="16"
+            android:theme="@style/noSetButton"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="301dp"
+            tools:layout_editor_absoluteY="325dp" />
+
+        <Button
+            android:id="@+id/pm_17"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignEnd="@+id/clock"
+            android:layout_alignRight="@+id/clock"
+            android:layout_below="@+id/clock"
+            android:tag="led17"
+            android:text="17"
+            android:theme="@style/noSetButton"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="247dp"
+            tools:layout_editor_absoluteY="379dp" />
+
+        <Button
+            android:id="@+id/pm_18"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignLeft="@+id/pm_12"
+            android:layout_alignStart="@+id/pm_12"
+            android:layout_below="@+id/clock"
+            android:layout_marginTop="27dp"
+            android:tag="led18"
+            android:text="18"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_19"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignLeft="@+id/pm_23"
+            android:layout_alignStart="@+id/pm_23"
+            android:layout_below="@+id/clock"
+            android:tag="led19"
+            android:text="19"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_20"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignBaseline="@+id/pm_16"
+            android:layout_alignBottom="@+id/pm_16"
+            android:layout_marginTop="12dp"
+            android:layout_toLeftOf="@+id/clock"
+            android:layout_toStartOf="@+id/clock"
+            android:tag="led20"
+            android:text="20"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+
+        <Button
+            android:id="@+id/pm_21"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:tag="led21"
+            android:text="21"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_22"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_alignTop="@+id/clock"
+            android:layout_marginTop="11dp"
+            android:layout_toLeftOf="@+id/clock"
+            android:layout_toStartOf="@+id/clock"
+            android:tag="led22"
+            android:text="22"
+            android:theme="@style/noSetButton"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="29dp"
+            tools:layout_editor_absoluteY="196dp" />
+
+        <Button
+            android:id="@+id/pm_23"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_above="@+id/clock"
+            android:layout_alignLeft="@+id/clock"
+            android:layout_alignStart="@+id/clock"
+            android:tag="led23"
+            android:text="23"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/pm_12"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:layout_above="@+id/clock"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="27dp"
+            android:tag="led12"
+            android:text="12"
+            android:theme="@style/noSetButton"
+            android:visibility="gone" />
 
 </RelativeLayout>

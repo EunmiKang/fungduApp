@@ -10,4 +10,7 @@
     <color name="fleshy">#ffffe6</color>
     <color name="lightGreen">#55ff00</color>
     <color name="darkGreen">#3bb300</color>
+    <color name="lightYellow">#ffff99</color>
+    <color name="darkYellow">#ffff4d</color>
+    <color name="navy">#00004d</color>
 </resources>

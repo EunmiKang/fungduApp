@@ -68,9 +68,8 @@ public class CubeFragment extends Fragment {
     TextView text_motor;
     TextView text_led;
     Spinner spinner_cubeName;
-    LinearLayout layout_led;
-    LinearLayout layout_pump;
     Button btn_ledTime;
+    Button btn_pumpTime;
 
     private int readBufferPosition;
     byte[] readBuffer;
@@ -78,6 +77,9 @@ public class CubeFragment extends Fragment {
     InputStream mInputStream = null;
     char mCharDelimiter =  '\n';
     Context mContext;
+    int[] ledState = new int[24];
+    int[] pumpState = new int[24];
+
     public CubeFragment() {
         // Required empty public constructor
     }
@@ -118,9 +120,8 @@ public class CubeFragment extends Fragment {
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
         text_motor = (TextView) view.findViewById(R.id.text_motor);
         text_led = (TextView) view.findViewById(R.id.text_led);
-        layout_led = (LinearLayout) view.findViewById(R.id.layout_led);
-        layout_pump = (LinearLayout) view.findViewById(R.id.layout_pump);
         btn_ledTime = (Button) view.findViewById(R.id.btn_ledTime);
+        btn_pumpTime =(Button) view.findViewById(R.id.btn_pumpTime);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
         btn_ledTime.setOnClickListener(new View.OnClickListener() {
@@ -130,20 +131,14 @@ public class CubeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        layout_led.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PopLedTimeSet.class);
-                startActivity(intent);
-            }
-        });
-        layout_pump.setOnClickListener(new View.OnClickListener() {
+        btn_pumpTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PopPumpTimeSet.class);
                 startActivity(intent);
             }
         });
+
         try {//로그인된 아이디 불러옴
             id = new GetId().execute(getActivity()).get();
         } catch (InterruptedException e) {
@@ -460,6 +455,20 @@ public class CubeFragment extends Fragment {
                                                 text_temper.setText(datas[1]);
                                                 text_humi_air.setText(datas[2]);
                                                 text_humi_soil.setText(datas[3]);
+                                            }
+                                            else if(datas[0].equals("ONTIME")){
+                                                if(datas[1].length() > 1){//led
+                                                    String[] ledTime = datas[1].split(" ");
+                                                    for(int i = 1; i < ledTime.length; i++){
+                                                        ledState[Integer.parseInt(ledTime[i])] = 1;
+                                                    }
+                                                }
+                                                if(datas[2].length() > 1){//pump
+                                                    String[] pumpTime = datas[2].split(" ");
+                                                    for(int i = 1; i < pumpTime.length; i++){
+                                                        pumpState[Integer.parseInt(pumpTime[i])] = 1;
+                                                    }
+                                                }
                                             }
                                         }
 

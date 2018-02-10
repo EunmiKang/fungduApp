@@ -13,13 +13,33 @@
         <item name="colorButtonNormal">@color/biocube</item>
     </style>
 
-    <style name="timeAMButton" parent="Theme.AppCompat.Light">
+    <style name="noSetButton" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/fleshy</item>
         <item name="colorButtonNormal">@color/white</item>
     </style>
 
-    <style name="timePMButton" parent="Theme.AppCompat.Light">
+    <style name="setButton" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/darkGreen</item>
         <item name="colorButtonNormal">@color/lightGreen</item>
+    </style>
+
+    <style name="AMButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/darkYellow</item>
+        <item name="colorButtonNormal">@color/lightYellow</item>
+    </style>
+
+    <style name="PMButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/dark</item>
+        <item name="colorButtonNormal">@color/navy</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 </resources>
