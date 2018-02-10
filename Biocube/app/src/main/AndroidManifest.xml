@@ -94,13 +94,11 @@
         <activity
             android:name=".CommentAsDiaryActivity"
             android:screenOrientation="portrait"/>
-        <activity 
+        <activity
             android:name=".PopLedTimeSet"
-            android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".PopPumpTimeSet"
-            android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait"/>
     </application>
 
