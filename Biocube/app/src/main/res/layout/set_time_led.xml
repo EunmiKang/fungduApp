@@ -1,242 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="258dp"
-            android:layout_height="234dp"
+            android:id="@+id/clock"
+            android:layout_width="200dp"
+            android:layout_height="180dp"
             android:src="@drawable/clock"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="167dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintVertical_bias="1.0" />
+            tools:layout_editor_absoluteX="63dp"
+            tools:layout_editor_absoluteY="166dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/btn_am"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AM"
-            android:layout_marginBottom="38dp"
-            app:layout_constraintBottom_toTopOf="@+id/am_11"
-            app:layout_constraintRight_toLeftOf="@+id/btn_pm"
-            android:layout_marginRight="82dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintVertical_bias="1.0"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" />
+            android:layout_marginBottom="24dp"
+            android:layout_above="@+id/am_12"
+            android:layout_toLeftOf="@+id/am_12"
+            android:layout_toStartOf="@+id/am_12" />
 
         <Button
             android:id="@+id/btn_pm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PM"
-            android:layout_marginBottom="31dp"
-            app:layout_constraintBottom_toTopOf="@+id/am_01"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintVertical_bias="0.877"
-            android:layout_marginRight="63dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" />
+            android:layout_alignBaseline="@+id/btn_am"
+            android:layout_alignBottom="@+id/btn_am"
+            android:layout_toRightOf="@+id/am_12"
+            android:layout_toEndOf="@+id/am_12" />
 
-        <Button
-            android:id="@+id/am_11"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="11"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintHorizontal_bias="0.238"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.269"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <Button
-            android:id="@+id/am_10"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="10"
-            android:layout_marginLeft="29dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="196dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <Button
-            android:id="@+id/am_09"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="09"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" />
-
-        <Button
-            android:id="@+id/am_03"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="03"
-            android:layout_marginRight="16dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <Button
-            android:id="@+id/am_07"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="07"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="143dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/am_11"
-            app:layout_constraintVertical_bias="1.0"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.238" />
-
-        <Button
-            android:id="@+id/am_08"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="08"
-            android:layout_marginLeft="29dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintVertical_bias="0.654"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" />
-
-        <Button
-            android:id="@+id/am_06"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="06"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="124dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="1.0"
-            android:layout_marginRight="16dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <Button
-            android:id="@+id/am_05"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="05"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="143dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintHorizontal_bias="0.761"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/am_01"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <Button
-            android:id="@+id/am_04"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="04"
-            android:layout_marginRight="29dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/am_08"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintVertical_bias="0.654" />
-
-        <Button
-            android:id="@+id/am_02"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:text="02"
-            android:layout_marginRight="29dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/am_10"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.37"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
         <Button
             android:id="@+id/am_01"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="01"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintHorizontal_bias="0.761"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.269" />
+            android:layout_above="@+id/clock"
+            android:layout_alignRight="@+id/clock"
+            android:layout_alignEnd="@+id/clock" />
+
+        <Button
+            android:id="@+id/am_02"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="02"
+            android:layout_alignBaseline="@+id/am_10"
+            android:layout_alignBottom="@+id/am_10"
+            android:layout_toRightOf="@+id/clock"
+            android:layout_toEndOf="@+id/clock"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/am_03"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="03"
+            android:layout_alignBaseline="@+id/am_09"
+            android:layout_alignBottom="@+id/am_09"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/am_04"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="04"
+            tools:layout_editor_absoluteY="325dp"
+            tools:layout_editor_absoluteX="301dp"
+            android:layout_below="@+id/am_09"
+            android:layout_toRightOf="@+id/clock"
+            android:layout_toEndOf="@+id/clock"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/am_05"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="05"
+            tools:layout_editor_absoluteY="379dp"
+            tools:layout_editor_absoluteX="247dp"
+            android:layout_below="@+id/clock"
+            android:layout_alignRight="@+id/clock"
+            android:layout_alignEnd="@+id/clock" />
+
+        <Button
+            android:id="@+id/am_06"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="06"
+            android:layout_marginTop="27dp"
+            android:layout_below="@+id/clock"
+            android:layout_alignLeft="@+id/am_12"
+            android:layout_alignStart="@+id/am_12" />
+
+        <Button
+            android:id="@+id/am_07"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="07"
+            android:layout_below="@+id/clock"
+            android:layout_alignLeft="@+id/am_11"
+            android:layout_alignStart="@+id/am_11" />
+
+        <Button
+            android:id="@+id/am_08"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="08"
+            android:layout_alignBaseline="@+id/am_04"
+            android:layout_alignBottom="@+id/am_04"
+            android:layout_toLeftOf="@+id/clock"
+            android:layout_toStartOf="@+id/clock"
+            android:layout_marginTop="12dp"/>
+
+
+        <Button
+            android:id="@+id/am_09"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="09"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp" />
+
+        <Button
+            android:id="@+id/am_10"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="10"
+            tools:layout_editor_absoluteX="29dp"
+            tools:layout_editor_absoluteY="196dp"
+            android:layout_marginTop="11dp"
+            android:layout_alignTop="@+id/clock"
+            android:layout_toLeftOf="@+id/clock"
+            android:layout_toStartOf="@+id/clock" />
+
+        <Button
+            android:id="@+id/am_11"
+            android:layout_width="54dp"
+            android:layout_height="43dp"
+            android:text="11"
+            android:layout_above="@+id/clock"
+            android:layout_alignLeft="@+id/clock"
+            android:layout_alignStart="@+id/clock" />
 
         <Button
             android:id="@+id/am_12"
             android:layout_width="54dp"
             android:layout_height="43dp"
             android:text="12"
-            android:layout_marginRight="16dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintVertical_bias="1.0" />
-</android.support.constraint.ConstraintLayout>
+            android:layout_above="@+id/clock"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="27dp" />
+
+
+</RelativeLayout>
