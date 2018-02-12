@@ -170,7 +170,7 @@ public class UserPageFragment extends Fragment {
 
             /* 서버로 값 전송 */
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("userID").append("=").append(((UserMainActivity)getActivity()).userID);
+                buffer.append("userID").append("=").append(((UserMainActivity)UserMainActivity.context).userID);
                 OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "EUC-KR");
                 PrintWriter writer = new PrintWriter(outStream);
                 writer.write(buffer.toString());
@@ -260,7 +260,7 @@ public class UserPageFragment extends Fragment {
     public void settingCubeNum(){
         String[] getList = new String[0];
         try {
-            getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+            getList = new ReturnCubeList().execute((((UserMainActivity)UserMainActivity.context).userID)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

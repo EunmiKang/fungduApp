@@ -111,9 +111,9 @@ public class CubeListActivity extends AppCompatActivity {
                             }
                             list_cube.setAdapter(adapter);
                             ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).setSpinner();
-                            ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2)).setSpinner();
-                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingCubeNum();
-                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
+//                            ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2)).setSpinner();
+//                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingCubeNum();
+//                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -150,7 +150,7 @@ public class CubeListActivity extends AppCompatActivity {
                             }
                             list_cube.setAdapter(adapter);
                             ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).setSpinner();
-                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).new SettingAdminPage().execute();
+//                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).new SettingAdminPage().execute();
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {

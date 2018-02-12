@@ -107,8 +107,7 @@ public class WriteDiaryFragment extends Fragment {
     Set<BluetoothDevice> mDevices;
     BluetoothAdapter mBluetoothAdapter;
     int mPariedDeviceCount = 0;
-
-
+    String id;
 
     public WriteDiaryFragment() {
         // Required empty public constructor
@@ -141,6 +140,14 @@ public class WriteDiaryFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_write_diary, container, false);
 
+        try {//로그인된 아이디 불러옴
+            id = new GetId().execute(getActivity()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_diary);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -154,23 +161,10 @@ public class WriteDiaryFragment extends Fragment {
         String[] filterList;
         cubeSpinner = view.findViewById(R.id.spinner_cube);
         setSpinner();
-//        try {
-//            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
-//            cubeList = new String[getList.length-1];
-//            for(int i=0; i<getList.length-1; i++) {
-//                cubeList[i] = getList[i+1];
-//            }
-//            ArrayAdapter<String> cubeAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, cubeList);
-//            cubeSpinner.setAdapter(cubeAdapter);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
 
         filterSpinner = view.findViewById(R.id.spinner_filter);
         try {
-            String[] getList = new ReturnFilterList().execute(((UserMainActivity)getActivity()).userID).get();
+            String[] getList = new ReturnFilterList().execute(id).get();
             filterList = new String[getList.length];
             filterList[0] = "필터 없음";
             for(int i=1; i<getList.length; i++) {
@@ -265,7 +259,7 @@ public class WriteDiaryFragment extends Fragment {
     public void setSpinner(){
         String[] cubeList;
         try {
-            String[] getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+            String[] getList = new ReturnCubeList().execute(id).get();
             cubeList = new String[getList.length-1];
             for(int i=0; i<getList.length-1; i++) {
                 cubeList[i] = getList[i+1];
