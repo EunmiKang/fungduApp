@@ -221,7 +221,7 @@ public class PopCubeRegist extends Activity {
                 if(dbUpResult.equals("1")){
                     Toast.makeText(getApplicationContext(), "성공" , Toast.LENGTH_SHORT).show();
                     if(user_id.equals("admin")){
-                        ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).setSpinner();
+                        ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).setSpinner();
                     }
                     else{
                         ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).setSpinner();

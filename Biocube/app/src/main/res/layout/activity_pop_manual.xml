@@ -6,7 +6,7 @@
     android:layout_height="500dp"
     android:orientation="vertical"
     tools:context="com.example.seongjun.biocube.PopManualActivity"
-    android:background="#eeeeee">
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/text_plantName"
