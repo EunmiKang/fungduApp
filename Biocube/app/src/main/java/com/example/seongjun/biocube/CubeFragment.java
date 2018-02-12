@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -113,8 +116,8 @@ public class CubeFragment extends Fragment {
         view.findViewById(R.id.btn_connect).setOnClickListener(connectClickListener);
         view.findViewById(R.id.btn_led).setOnClickListener(setLedClickListener);
         view.findViewById(R.id.btn_pump).setOnClickListener(setPumpClickListener);
-        view.findViewById(R.id.btn_ledTime).setOnClickListener(setLedTimeClickListener);
-        view.findViewById(R.id.btn_pumpTime).setOnClickListener(setPumpTimeClickListener);
+        view.findViewById(R.id.btn_led).setOnTouchListener(setTouchListener);
+        view.findViewById(R.id.btn_pump).setOnTouchListener(setTouchListener);
         text_temper = (TextView) view.findViewById(R.id.text_temp);
         text_humi_air = (TextView) view.findViewById(R.id.text_humi_air);
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
@@ -122,6 +125,7 @@ public class CubeFragment extends Fragment {
         text_led = (TextView) view.findViewById(R.id.text_led);
         btn_ledTime = (Button) view.findViewById(R.id.btn_ledTime);
         btn_pumpTime =(Button) view.findViewById(R.id.btn_pumpTime);
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
         try {//로그인된 아이디 불러옴
@@ -131,13 +135,15 @@ public class CubeFragment extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         btn_ledTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(checkSocket()){
                     Intent intent = new Intent(getContext(), PopLedTimeSet.class);
                     startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -147,6 +153,9 @@ public class CubeFragment extends Fragment {
                 if(checkSocket()){
                     Intent intent = new Intent(getContext(), PopPumpTimeSet.class);
                     startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -203,17 +212,18 @@ public class CubeFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-            if(!id.equals("admin")) {
-                ((UserMainActivity) getActivity()).mBluetooth.sendData("led");
+            if(checkSocket()) {
+                if (!id.equals("admin")) {
+                    ((UserMainActivity) getActivity()).mBluetooth.sendData("led");
+                } else {
+                    ((AdminMainActivity) getActivity()).mBluetooth.sendData("led");
+                }//권한에 맞는 블루투스 객체를 가져와서 'led'라는 신호를 device에 보냄.
+            }else {
+                Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
             }
-            else{
-                ((AdminMainActivity) getActivity()).mBluetooth.sendData("led");
-            }
-            //권한에 맞는 블루투스 객체를 가져와서 'led'라는 신호를 device에 보냄.
         }
     };
 
@@ -221,29 +231,31 @@ public class CubeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if(!id.equals("admin")) {
-                ((UserMainActivity) getActivity()).mBluetooth.sendData("pump");
+            if(checkSocket()) {
+                if (!id.equals("admin")) {
+                    ((UserMainActivity) getActivity()).mBluetooth.sendData("pump");
+                } else {
+                    ((AdminMainActivity) getActivity()).mBluetooth.sendData("pump");
+                }//권한에 맞는 블루투스 객체를 가져와서 'pump'라는 신호를 보냄.
+            }else {
+                Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
             }
-            else{
-                ((AdminMainActivity) getActivity()).mBluetooth.sendData("pump");
-            }
-            //권한에 맞는 블루투스 객체를 가져와서 'pump'라는 신호를 보냄.
-        }
-    };
-
-    Button.OnClickListener setLedTimeClickListener = new Button.OnClickListener(){
-        //led 시간세팅하는 부분 구현X
-        @Override
-        public void onClick(View v) {
 
         }
     };
 
-    Button.OnClickListener setPumpTimeClickListener = new Button.OnClickListener(){
-        //pump 시간세팅하는 부분 구현X
+    ImageButton.OnTouchListener setTouchListener = new ImageButton.OnTouchListener() {
         @Override
-        public void onClick(View v) {
-
+        public boolean onTouch(View v, MotionEvent event) {
+            ImageButton image = (ImageButton)v;
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
+                ((LinearLayout)v.getParent()).setPadding(10,10,10,10);
+                image.setColorFilter(0xaa111111, PorterDuff.Mode.SRC_OVER);
+            }else if(event.getAction() == MotionEvent.ACTION_UP){
+                ((LinearLayout)v.getParent()).setPadding(0,0,0,0);
+                image.setColorFilter(0x00000000, PorterDuff.Mode.SRC_OVER);
+            }
+            return false;
         }
     };
 

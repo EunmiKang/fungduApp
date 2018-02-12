@@ -250,13 +250,20 @@
                             android:text="LED"
                             android:textSize="12sp" />
 
-                        <ImageButton
-                            android:id="@+id/btn_led"
+                        <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
-                            android:layout_weight="0.4"
-                            android:background="@drawable/control_light_set" />
+                            android:layout_weight="0.4">
+
+                            <ImageButton
+                                android:id="@+id/btn_led"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:background="@drawable/control_light_set"
+                                android:clickable="true" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/text_led"
@@ -264,8 +271,8 @@
                             android:layout_height="0dp"
                             android:layout_weight="0.15"
                             android:gravity="center"
-                            android:textSize="12sp"
-                            android:text="OFF"/>
+                            android:text="OFF"
+                            android:textSize="12sp" />
 
                         <Button
                             android:id="@+id/btn_ledTime"
@@ -276,7 +283,6 @@
                             android:text="시간 설정"
                             android:textColor="#FFFFFF"
                             android:theme="@style/BioCubeButton" />
-
 
 
                     </LinearLayout>
@@ -298,14 +304,21 @@
                             android:text="모터"
                             android:textSize="12sp" />
 
-                        <ImageButton
-                            android:id="@+id/btn_pump"
+                        <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.4"
                             android:layout_gravity="center"
-                            android:background="@drawable/control_motor" />
+                            android:layout_weight="0.4">
 
+                            <ImageButton
+                                android:id="@+id/btn_pump"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:background="@drawable/control_motor"
+                                android:clickable="true"/>
+
+                        </LinearLayout>
                         <TextView
                             android:id="@+id/text_motor"
                             android:layout_width="match_parent"
