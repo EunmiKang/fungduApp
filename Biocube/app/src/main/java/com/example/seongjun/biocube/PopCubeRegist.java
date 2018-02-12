@@ -230,7 +230,13 @@ public class PopCubeRegist extends Activity {
                         ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingCubeNum();
                     }
                 }
-                else{
+                else if(dbUpResult.equals("-2")){
+                    Toast.makeText(getApplicationContext(), "작성하신 큐브 이름이 이미 존재합니다." , Toast.LENGTH_SHORT).show();
+                }
+                else if(dbUpResult.equals("-3")) {
+                    Toast.makeText(getApplicationContext(), "이미 등록되어 있는 큐브입니다." , Toast.LENGTH_SHORT).show();
+                }
+                else {
                     Toast.makeText(getApplicationContext(), "실패" , Toast.LENGTH_SHORT).show();
                 }
                 ((CubeRegister)CubeRegister.mcontext).mBluetooth.mSocket.close();
