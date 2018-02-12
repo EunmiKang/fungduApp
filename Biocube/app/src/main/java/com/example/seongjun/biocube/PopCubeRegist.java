@@ -94,10 +94,13 @@ public class PopCubeRegist extends Activity {
             plantName = new String(plantName.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
 
+        }if(!cubeName.equals("")) {
+            new PopCubeRegist.cubeUpTask().execute(cubeName, MAC_ADDRESS, plantName);
+            finish();//액티비티(팝업) 닫기
         }
-        new PopCubeRegist.cubeUpTask().execute(cubeName,MAC_ADDRESS,plantName);
-        //액티비티(팝업) 닫기
-        finish();
+        else{
+            Toast.makeText(this, "큐브이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class settingSpinner extends AsyncTask<Object,Object,Integer> {
