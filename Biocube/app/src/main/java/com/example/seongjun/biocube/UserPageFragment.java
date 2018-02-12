@@ -257,4 +257,18 @@ public class UserPageFragment extends Fragment {
             e.printStackTrace();
         }
     }
+    public void settingCubeNum(){
+        String[] getList = new String[0];
+        try {
+            getList = new ReturnCubeList().execute(((UserMainActivity)getActivity()).userID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        text_cubeNum.setText(getList[0]);
+    }
+    public void settingDiaryNum(){
+        new getDiaryNum().execute();
+    }
 }
