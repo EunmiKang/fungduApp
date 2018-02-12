@@ -124,22 +124,6 @@ public class CubeFragment extends Fragment {
         btn_pumpTime =(Button) view.findViewById(R.id.btn_pumpTime);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
-        btn_ledTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getContext(), PopLedTimeSet.class);
-                startActivity(intent);
-            }
-        });
-        btn_pumpTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PopPumpTimeSet.class);
-                startActivity(intent);
-            }
-        });
-
         try {//로그인된 아이디 불러옴
             id = new GetId().execute(getActivity()).get();
         } catch (InterruptedException e) {
@@ -147,6 +131,25 @@ public class CubeFragment extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        btn_ledTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkSocket()){
+                    Intent intent = new Intent(getContext(), PopLedTimeSet.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        btn_pumpTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkSocket()){
+                    Intent intent = new Intent(getContext(), PopPumpTimeSet.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_cube);
@@ -489,6 +492,25 @@ public class CubeFragment extends Fragment {
         });
         mWorkerThread.start();//수신 쓰레드 시작.
 
+    }
+
+    public Boolean checkSocket(){//소켓이 연결되어 있는지 확인.
+        if(!id.equals("admin")) {
+            if(((UserMainActivity) getActivity()).mBluetooth.mSocket == null){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            if(((AdminMainActivity) getActivity()).mBluetooth.mSocket == null){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {//블루투스 권한 요청
