@@ -71,6 +71,10 @@ public class UserMainActivity extends AppCompatActivity {
                     if(position==2){
                         if(((CubeFragment)mUserPagerAdapter.getItem(3)).mWorkerThread != null){
                             ((CubeFragment)mUserPagerAdapter.getItem(3)).mWorkerThread.interrupt();
+                            ((CubeFragment)mUserPagerAdapter.getItem(3)).text_humi_air.setText("");
+                            ((CubeFragment)mUserPagerAdapter.getItem(3)).text_temper.setText("");
+                            ((CubeFragment)mUserPagerAdapter.getItem(3)).text_humi_soil.setText("");
+
                         }
 //                        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_user);
 //                        int id = viewPager.getCurrentItem();

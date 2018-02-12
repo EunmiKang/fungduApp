@@ -102,7 +102,21 @@ public class CubeListActivity extends AppCompatActivity {
                     builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            new DeleteCube().execute(cubename);
+                            try {
+                                new DeleteCube().execute(cubename).get();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                            list_cube.setAdapter(adapter);
+                            if(user_id.equals("admin")){
+                                ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).setSpinner();
+                            }
+                            else{
+                                ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).setSpinner();
+                                ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2)).setSpinner();
+                            }
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -118,8 +132,46 @@ public class CubeListActivity extends AppCompatActivity {
             });
         }
         else{
-            list_cube.setClickable(false);
+//            list_cube.setClickable(false);
             list_cube.setSelector(R.color.white);
+            list_cube.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CubeListActivity.this);
+                    final String cubename = (String) parent.getItemAtPosition(position);
+                    builder.setTitle("Cube 삭제 확인");
+                    builder.setMessage("해당 큐브를 삭제 하시겠습니까?");
+                    builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                new DeleteCube().execute(cubename).get();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                            list_cube.setAdapter(adapter);
+                            if(user_id.equals("admin")){
+                                ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).setSpinner();
+                            }
+                            else{
+                                ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).setSpinner();
+                                ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2)).setSpinner();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return true;
+                }
+            });
         }
     }
     public class DeleteCube extends AsyncTask<Object,Object,String> {
@@ -173,7 +225,7 @@ public class CubeListActivity extends AppCompatActivity {
         @Override
         public void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(result.equals("false") ){
+            if(result.equals("false")){
                 Toast.makeText(CubeListActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
             }
             else{
