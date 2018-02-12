@@ -1,8 +1,10 @@
 package com.example.seongjun.biocube;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +135,7 @@ public class DiaryManageAdapter extends BaseAdapter{
 //        }else{
 //            deleteButton.setVisibility(View.VISIBLE);
 //        }
-        if(authority == 2 || flag != 1){
+        if(authority == 2 || (flag != 1)&&!id.equals("admin")){
             deleteButton.setVisibility(View.GONE);
         }
         if(authority == 1){
@@ -162,10 +164,26 @@ public class DiaryManageAdapter extends BaseAdapter{
         deleteButton.setOnClickListener(new View.OnClickListener() {//삭제버튼 눌렀을 때
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 View v_grandParent = (View) v.getParent().getParent();
                 TextView hiddenDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
-                String hiddenNo = hiddenDiaryNo.getText().toString();
-                new DeleteDiary().execute(hiddenNo);
+                final String hiddenNo = hiddenDiaryNo.getText().toString();
+                builder.setTitle("Cube 삭제 확인");
+                builder.setMessage("해당 큐브를 삭제 하시겠습니까?");
+                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new DeleteDiary().execute(hiddenNo);
+                    }
+                });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -274,6 +292,7 @@ public class DiaryManageAdapter extends BaseAdapter{
                         ((NewspeedFragment) (((AdminMainActivity) AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                     } else if (authority == 1) {//user
                         ((NewspeedFragment) (((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                        ((DiaryAsCubeName)DiaryAsCubeName.mContext).getData("http://fungdu0624.phps.kr/biocube/getdiarycubename.php");
                     } else {//expert
                         ((NewspeedFragment) (((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                     }

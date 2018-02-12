@@ -1,6 +1,7 @@
 package com.example.seongjun.biocube;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
     String id;
     private TokenDBHelper helper = new TokenDBHelper(this);
     int authority;
+    public static Context mContext;
 
     private static final String TAG_DIARY="diaryinfo";
     private static final String TAG_NICKNAME = "nickname";
@@ -50,9 +52,6 @@ public class DiaryAsCubeName extends AppCompatActivity{
 
 
     JSONArray diary = null;
-
-
-
     ListView list_diary_cubename;
 
     @Override
@@ -60,6 +59,7 @@ public class DiaryAsCubeName extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_cubename);
 
+        mContext = this;
         Intent intent = getIntent();
         cubename = intent.getExtras().getString("cubename");
         text_diary_cubename = (TextView) findViewById(R.id.text_diary_cubename);
