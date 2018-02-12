@@ -511,6 +511,8 @@ public class WriteDiaryFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
             intent.putExtra("crop", "true");
+            intent.putExtra("outputX", 900);
+            intent.putExtra("outputY", 900);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
@@ -565,6 +567,7 @@ public class WriteDiaryFragment extends Fragment {
                     String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
 
                     // 용량 줄이기
+                    /*
                     BitmapFactory.Options option = new BitmapFactory.Options();
                     option.inSampleSize = 2;    // 1/2만큼 줄임
                     Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
@@ -577,6 +580,7 @@ public class WriteDiaryFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    */
 
                     // 서버에 이미지 업로드
                     try {

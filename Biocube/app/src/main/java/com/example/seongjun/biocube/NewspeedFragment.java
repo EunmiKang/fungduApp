@@ -278,9 +278,11 @@ public class NewspeedFragment extends Fragment {
                                 //스트림생성
                                 InputStream inStream2 = http.getInputStream();
                                 //스트림에서 받은 데이터를 비트맵 변환
+                                /*
                                 BitmapFactory.Options option = new BitmapFactory.Options();
                                 option.inSampleSize = 2;
-                                plantImg = BitmapFactory.decodeStream(inStream2, null, option);
+                                plantImg = BitmapFactory.decodeStream(inStream2, null, option);*/
+                                plantImg = BitmapFactory.decodeStream(inStream2);
                                 diarylist.add(new DiaryItem(diaryNo, nickname, plantImg, content, lastComment, countComment, lastCmtNick, day));
                             } else {
                                 plantImg = null;
