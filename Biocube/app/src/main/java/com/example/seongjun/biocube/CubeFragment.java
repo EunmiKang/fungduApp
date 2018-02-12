@@ -127,6 +127,7 @@ public class CubeFragment extends Fragment {
         btn_ledTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getContext(), PopLedTimeSet.class);
                 startActivity(intent);
             }

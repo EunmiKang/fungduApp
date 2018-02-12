@@ -75,12 +75,12 @@
             android:layout_weight="0.8"
             android:background="#f2f2f2"
             android:orientation="vertical"
-            android:weightSum="0.9">
+            android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.5"
                 android:orientation="vertical"
                 android:padding="5dp"
                 android:weightSum="1">
@@ -226,7 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_margin="5dp"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.8"
                     android:background="#ffffff"
                     android:orientation="horizontal"
                     android:weightSum="1">
@@ -234,430 +234,143 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.2"
+                        android:layout_margin="5dp"
+                        android:layout_weight="0.5"
+                        android:background="#ffffff"
                         android:orientation="vertical"
-                        android:padding="5dp"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:gravity="center"
-                            android:text="LED"
-                            android:textSize="12sp" />
-
-                        <ImageButton
-                            android:id="@+id/btn_led"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="5dp"
-                            android:layout_weight="0.6"
-                            android:background="@drawable/control_light_set" />
-
-                        <TextView
-                            android:id="@+id/text_led"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:gravity="center"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.8"
-                        android:orientation="horizontal"
                         android:weightSum="1">
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.2"
-                            android:orientation="vertical"
-                            android:weightSum="2">
-
-                            <Button
-                                android:id="@+id/btn_ledTime"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:text="AM"
-                                android:textColor="#FFFFFF"
-                                android:theme="@style/BioCubeButton" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/layout_led"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="0.8"
                             android:orientation="vertical"
-                            android:weightSum="2"
-                            android:clickable="true">
+                            android:padding="5dp"
+                            android:weightSum="1">
 
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_weight="1"
+                                android:layout_weight="0.2"
                                 android:gravity="center"
-                                android:weightSum="6">
+                                android:text="LED"
+                                android:textSize="12sp" />
 
-                                <ImageButton
-                                    android:id="@+id/led_time1"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:onClick=""
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
-
-                                <ImageButton
-                                    android:id="@+id/led_time2"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
-
-                                <ImageButton
-                                    android:id="@+id/led_time3"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
-
-                                <ImageButton
-                                    android:id="@+id/led_time4"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
-
-                                <ImageButton
-                                    android:id="@+id/led_time5"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
-
-                                <ImageButton
-                                    android:id="@+id/led_time6"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
+                            <ImageButton
+                                android:id="@+id/btn_led"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:weightSum="6">
+                                android:layout_margin="5dp"
+                                android:layout_weight="0.6"
+                                android:background="@drawable/control_light_set" />
 
-                                <ImageButton
-                                    android:id="@+id/led_time7"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
+                            <TextView
+                                android:id="@+id/text_led"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.2"
+                                android:gravity="center"
+                                android:textSize="12sp" />
 
-                                <ImageButton
-                                    android:id="@+id/led_time8"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
+                        </LinearLayout>
 
-                                <ImageButton
-                                    android:id="@+id/led_time9"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.2"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                                <ImageButton
-                                    android:id="@+id/led_time10"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.2"
+                                android:orientation="vertical"
+                                android:weightSum="2">
 
-                                <ImageButton
-                                    android:id="@+id/led_time11"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
+                                <Button
+                                    android:id="@+id/btn_ledTime"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:gravity="center"
+                                    android:text="AM"
+                                    android:textColor="#FFFFFF"
+                                    android:theme="@style/BioCubeButton" />
 
-                                <ImageButton
-                                    android:id="@+id/led_time12"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_yellow" />
                             </LinearLayout>
                         </LinearLayout>
 
                     </LinearLayout>
 
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_margin="5dp"
-                    android:layout_weight="0.4"
-                    android:background="#ffffff"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.2"
+                        android:layout_margin="5dp"
+                        android:layout_weight="0.5"
+                        android:background="#ffffff"
                         android:orientation="vertical"
-                        android:padding="5dp"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:gravity="center"
-                            android:text="모터"
-                            android:textSize="12sp" />
-
-                        <ImageButton
-                            android:id="@+id/btn_pump"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="5dp"
-                            android:layout_weight="0.6"
-                            android:background="@drawable/control_motor" />
-
-                        <TextView
-                            android:id="@+id/text_motor"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:gravity="center"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.8"
-                        android:orientation="horizontal"
                         android:weightSum="1">
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.2"
-                            android:orientation="vertical"
-                            android:weightSum="2">
-
-                            <Button
-                                android:id="@+id/btn_pumpTime"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:text="AM"
-                                android:textColor="#FFFFFF"
-                                android:theme="@style/BioCubeButton" />
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/layout_pump"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="0.8"
                             android:orientation="vertical"
-                            android:weightSum="2"
-                            android:clickable="true">
+                            android:padding="5dp"
+                            android:weightSum="1">
 
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_weight="1"
+                                android:layout_weight="0.2"
                                 android:gravity="center"
-                                android:weightSum="6">
+                                android:text="모터"
+                                android:textSize="12sp" />
 
-                                <ImageButton
-                                    android:id="@+id/pump_time1"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time2"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time3"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time4"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time5"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time6"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
+                            <ImageButton
+                                android:id="@+id/btn_pump"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:weightSum="6">
+                                android:layout_margin="5dp"
+                                android:layout_weight="0.6"
+                                android:background="@drawable/control_motor" />
 
-                                <ImageButton
-                                    android:id="@+id/pump_time7"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time8"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time9"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time10"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time11"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-
-                                <ImageButton
-                                    android:id="@+id/pump_time12"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:background="#FFFFFF"
-                                    android:padding="5dp"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/circle_blue" />
-                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/text_motor"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.2"
+                                android:gravity="center"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.2"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.2"
+                                android:orientation="vertical"
+                                android:weightSum="2">
+
+                                <Button
+                                    android:id="@+id/btn_pumpTime"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:gravity="center"
+                                    android:text="AM"
+                                    android:textColor="#FFFFFF"
+                                    android:theme="@style/BioCubeButton" />
+
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
