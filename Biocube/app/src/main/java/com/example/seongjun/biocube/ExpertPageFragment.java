@@ -242,6 +242,10 @@ public class ExpertPageFragment extends Fragment {
         }
     }
 
+    public void settingPage(String nickname) {
+        text_expert_nickname.setText(nickname);
+        new getCommentNum().execute(nickname);
+    }
 
     /* 기본 정보 설정 */
     public void setCommentNum() {
