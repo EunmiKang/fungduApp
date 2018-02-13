@@ -38,10 +38,10 @@ public class UserMainActivity extends AppCompatActivity {
         mUserPagerAdapter = new PagerAdapter(
                 getSupportFragmentManager()
         );
-        mUserPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
-        mUserPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
-        mUserPagerAdapter.addFragment(R.drawable.menu_note, new WriteDiaryFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_note, new WriteDiaryFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_my, new UserPageFragment());
 
 
@@ -69,11 +69,11 @@ public class UserMainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if(position == 2 || position == 3){
                     if(position==2){
-                        if(((CubeFragment)mUserPagerAdapter.getItem(3)).mWorkerThread != null){
-                            ((CubeFragment)mUserPagerAdapter.getItem(3)).mWorkerThread.interrupt();
-                            ((CubeFragment)mUserPagerAdapter.getItem(3)).text_humi_air.setText("");
-                            ((CubeFragment)mUserPagerAdapter.getItem(3)).text_temper.setText("");
-                            ((CubeFragment)mUserPagerAdapter.getItem(3)).text_humi_soil.setText("");
+                        if(((CubeFragment)mUserPagerAdapter.getItem(0)).mWorkerThread != null){
+                            ((CubeFragment)mUserPagerAdapter.getItem(0)).mWorkerThread.interrupt();
+                            ((CubeFragment)mUserPagerAdapter.getItem(0)).text_humi_air.setText("");
+                            ((CubeFragment)mUserPagerAdapter.getItem(0)).text_temper.setText("");
+                            ((CubeFragment)mUserPagerAdapter.getItem(0)).text_humi_soil.setText("");
 
                         }
 //                        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_user);

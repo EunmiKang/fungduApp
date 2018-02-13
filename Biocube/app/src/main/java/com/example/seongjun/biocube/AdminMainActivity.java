@@ -38,9 +38,9 @@ public class AdminMainActivity extends AppCompatActivity {
                 getSupportFragmentManager()
         );
 
-        mAdminPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
-        mAdminPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
         mAdminPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
+        mAdminPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
+        mAdminPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
         mAdminPagerAdapter.addFragment(R.drawable.menu_my, new AdminPageFragment());
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_admin);

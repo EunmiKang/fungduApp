@@ -65,8 +65,8 @@ public class ManualManageActivity extends AppCompatActivity {
 
     public void showManuals() {
         List<ManualItem> manualList = new ArrayList<ManualItem>();
-        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.plantNameArray;
-        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter.manualInitImgArray;
+        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.plantNameArray;
+        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.manualInitImgArray;
         for(int i=0; i<plantNameArray.length; i++) {
             manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
         }
@@ -306,7 +306,7 @@ public class ManualManageActivity extends AppCompatActivity {
         if(result) {
             /* 매뉴얼 관리 페이지 업데이트 */
             try {
-                new SettingManuals().execute(((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pager, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).adapter, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).indicator).get();
+                new SettingManuals().execute(((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).pager, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter, ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).indicator).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

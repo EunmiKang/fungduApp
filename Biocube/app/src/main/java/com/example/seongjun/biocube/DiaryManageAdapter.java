@@ -207,10 +207,10 @@ public class DiaryManageAdapter extends BaseAdapter{
                             ((NewspeedFragment)(((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                         }
                         else if(authority == 1){//user
-                            ((NewspeedFragment)(((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                            ((NewspeedFragment)(((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                         }
                         else{//expert
-                            ((NewspeedFragment)(((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                            ((NewspeedFragment)(((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(0))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                         }
                     }
                     else{
@@ -291,11 +291,11 @@ public class DiaryManageAdapter extends BaseAdapter{
                     if (authority == 0) {//admin
                         ((NewspeedFragment) (((AdminMainActivity) AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                     } else if (authority == 1) {//user
-                        ((NewspeedFragment) (((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                        ((NewspeedFragment) (((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(2))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                         ((DiaryAsCubeName)DiaryAsCubeName.mContext).getData("http://fungdu0624.phps.kr/biocube/getdiarycubename.php");
                         ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
                     } else {//expert
-                        ((NewspeedFragment) (((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                        ((NewspeedFragment) (((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(0))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                     }
                 }catch (Exception e){
                     e.printStackTrace();

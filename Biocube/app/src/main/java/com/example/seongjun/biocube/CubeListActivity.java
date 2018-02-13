@@ -110,8 +110,8 @@ public class CubeListActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             list_cube.setAdapter(adapter);
-                            ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).setSpinner();
-//                            ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2)).setSpinner();
+                            ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).setSpinner();
+//                            ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(1)).setSpinner();
 //                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingCubeNum();
 //                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
                         }
@@ -149,7 +149,7 @@ public class CubeListActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             list_cube.setAdapter(adapter);
-                            ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).setSpinner();
+                            ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).setSpinner();
 //                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).new SettingAdminPage().execute();
                         }
                     });

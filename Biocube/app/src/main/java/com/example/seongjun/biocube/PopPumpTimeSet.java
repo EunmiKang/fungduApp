@@ -105,22 +105,22 @@ public class PopPumpTimeSet extends Activity {
             int time_int = Integer.parseInt(time_string);
 
             if(id.equals("admin")){
-                if(((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).pumpState[time_int] == 0){
-                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).pumpState[time_int] = 1;
+                if(((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pumpState[time_int] == 0){
+                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pumpState[time_int] = 1;
                     ((Button)v).setBackgroundResource(R.color.navy);
                 }
                 else{
-                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).pumpState[time_int] = 0;
+                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pumpState[time_int] = 0;
                     ((Button)v).setBackgroundResource(R.color.lightYellow);
                 }
             }
             else{
-                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).pumpState[time_int] == 0){
-                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).pumpState[time_int] = 1;
+                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).pumpState[time_int] == 0){
+                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).pumpState[time_int] = 1;
                     ((Button)v).setBackgroundResource(R.color.navy);
                 }
                 else{
-                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).pumpState[time_int] = 0;
+                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).pumpState[time_int] = 0;
                     ((Button)v).setBackgroundResource(R.color.lightYellow);
                 }
             }
@@ -141,14 +141,14 @@ public class PopPumpTimeSet extends Activity {
     public void setColor(){
         if(id.equals("admin")){
             for(int i = 0; i < 24; i++){
-                if( ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).pumpState[i] == 1){
+                if( ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).pumpState[i] == 1){
                     timeButtonArray[i].setBackgroundResource(R.color.navy);
                 }
             }
         }
         else{
             for(int i = 0; i < 24; i++){
-                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).pumpState[i] == 1){
+                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).pumpState[i] == 1){
                     timeButtonArray[i].setBackgroundResource(R.color.navy);
                 }
             }
