@@ -1,11 +1,14 @@
 package com.example.seongjun.biocube;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,9 +40,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import me.relex.circleindicator.CircleIndicator;
+
 public class ManualManageActivity extends AppCompatActivity {
 
     public static Context mContext;
+
+    String[] plantNameArray;
+    Bitmap[] manualInitImgArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +73,15 @@ public class ManualManageActivity extends AppCompatActivity {
 
     public void showManuals() {
         List<ManualItem> manualList = new ArrayList<ManualItem>();
-        String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.plantNameArray;
-        Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.manualInitImgArray;
+        try {
+            new getManuals().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        //String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.plantNameArray;
+        //Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.manualInitImgArray;
         for(int i=0; i<plantNameArray.length; i++) {
             manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
         }
@@ -216,6 +231,82 @@ public class ManualManageActivity extends AppCompatActivity {
         intent.putExtra("plantName", plant_name);
         intent.putExtra("manual", manualNameList);
         startActivity(intent);
+    }
+
+
+    /**
+     * 쓰레드: 매뉴얼 세팅용
+     */
+    public class getManuals extends AsyncTask<Object, Object, Integer> {
+        ProgressDialog asyncDialog = new ProgressDialog(ManualManageActivity.this);
+        // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
+        @Override
+        public Integer doInBackground(Object... params) {
+            try {
+             /* URL 설정하고 접속 */
+                URL url = new URL("http://fungdu0624.phps.kr/biocube/returnManualList.php");
+                HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+            /* 전송모드 설정 */
+                http.setDefaultUseCaches(false);
+                http.setDoInput(true);  //서버에서 읽기 모드로 지정
+                http.setDoOutput(true);    //서버에서 쓰기 모드로 지정
+                http.setRequestMethod("POST");
+                http.setRequestProperty("content-type", "application/x-www-form-urlencoded");   //서버에게 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 걸 알려준다
+
+            /* 서버에서 전송 받기 */
+                InputStream inStream = http.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+                StringBuilder sb = new StringBuilder();
+
+                String json;
+                while((json = reader.readLine())!= null){
+                    sb.append(json+"\n");
+                }
+
+                inStream.close();
+                http.disconnect();
+
+                try {
+                    JSONObject jsonObj = new JSONObject(sb.toString().trim());
+                    JSONArray manualArray = jsonObj.getJSONArray("manual_array");
+
+                /* 매뉴얼 수대로 setting */
+                    plantNameArray = new String[manualArray.length()];
+                    manualInitImgArray = new Bitmap[manualArray.length()];
+
+                /* 매뉴얼별로 정리 */
+                    for (int i=0; i < manualArray.length(); i++) {
+                        JSONObject manualObject = manualArray.getJSONObject(i);
+
+                        String plant_name = manualObject.getString("plantName");
+                        plantNameArray[i] = plant_name;
+
+                    /* 매뉴얼 대표 이미지 setting */
+                        String readURL = "http://fungdu0624.phps.kr/biocube/manual/" + URLEncoder.encode(plant_name, "euc-kr") + ".jpg";
+                        url = new URL(readURL);
+                        http = (HttpURLConnection) url.openConnection();
+                        http.connect();
+                        inStream = http.getInputStream();   //스트림생성
+                        //스트림에서 받은 데이터를 비트맵 변환
+                        //인터넷에서 이미지 가져올 때는 Bitmap 사용해야 함
+                        Bitmap readImg = BitmapFactory.decodeStream(inStream);
+                        manualInitImgArray[i] = readImg;
+                    }
+                    inStream.close();
+                    http.disconnect();
+
+                    return 0;
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } catch(MalformedURLException e) {
+                e.printStackTrace();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return -1;
+        }
     }
 
     public class getManualNameList extends AsyncTask<String, Object, ArrayList<String>> {
