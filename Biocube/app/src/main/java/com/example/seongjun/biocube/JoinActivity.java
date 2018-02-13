@@ -96,14 +96,21 @@ public class JoinActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             if(rb_user.isChecked()){
-                authority = "1";
+                if(!id.equals("") && !pw.equals("") && !nickname.equals("")) {
+                    authority = "1";
+                    new JoinActivity.joinTask().execute(id,pw,nickname,authority,phone,job);
+                } else {
+                    Toast.makeText(JoinActivity.this,"모두 입력해주세요.",Toast.LENGTH_SHORT).show();
+                }
             }
             else{
-                authority = "2";
+                if(!id.equals("") && !pw.equals("") && !nickname.equals("") && !job.equals("") && !phone.equals("")) {
+                    authority = "2";
+                } else {
+                    Toast.makeText(JoinActivity.this,"모두 입력해주세요.",Toast.LENGTH_SHORT).show();
+                }
+
             }
-//            Toast.makeText(getApplicationContext(),id+","+pw+" "+nickname+" "+phone+" "+job+" "+authority,Toast.LENGTH_SHORT).show();
-            new JoinActivity.joinTask().execute(id,pw,nickname,authority,phone,job);
-            //thread 실행
         }
     };
 
@@ -180,10 +187,10 @@ public class JoinActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case -2 : //id 중복
-                    Toast.makeText(getApplicationContext(), "id가 중복되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "이미 가입되어있는 아이디입니다.", Toast.LENGTH_LONG).show();
                     break;
                 case -3 : //nickname 중복
-                    Toast.makeText(getApplicationContext(), "nickname이 중복되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "이미 등록되어있는 닉네임입니다.", Toast.LENGTH_LONG).show();
                     break;
                 case -1 : //가입 실패
                     Toast.makeText(getApplicationContext(), "가입에 실패하였습니다.", Toast.LENGTH_LONG).show();

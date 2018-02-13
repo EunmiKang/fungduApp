@@ -199,7 +199,6 @@ public class UserPageFragment extends Fragment {
         @Override
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
             text_diaryNum.setText(result.toString());
         }
     }
