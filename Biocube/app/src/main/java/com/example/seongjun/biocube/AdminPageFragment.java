@@ -201,7 +201,6 @@ public class AdminPageFragment extends Fragment {
         @Override
         public void onPostExecute(String[] result) {
             super.onPostExecute(result);
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
             if(countCubeView != null && countExpertView != null && countUserView != null) {
                 countCubeView.setText(result[0]);
                 countExpertView.setText(result[2]);

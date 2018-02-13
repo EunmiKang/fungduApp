@@ -114,9 +114,9 @@ public class CubeListActivity extends AppCompatActivity {
                             }
                             list_cube.setAdapter(adapter);
                             ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).setSpinner();
-//                            ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(1)).setSpinner();
-//                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingCubeNum();
-//                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
+                            ((WriteDiaryFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(1)).setSpinner();
+                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingCubeNum();
+                            ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
