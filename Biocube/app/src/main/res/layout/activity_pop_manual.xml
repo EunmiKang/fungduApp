@@ -32,6 +32,6 @@
         app:ci_width="8dp"
         app:ci_height="8dp"
         app:ci_margin="5dp"
-        app:ci_drawable="@drawable/flower">
+        app:ci_drawable="@drawable/dot">
     </me.relex.circleindicator.CircleIndicator>
 </LinearLayout>

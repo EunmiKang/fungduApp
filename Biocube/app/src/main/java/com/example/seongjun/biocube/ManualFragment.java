@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import java.util.concurrent.ExecutionException;
 
@@ -28,6 +31,8 @@ public class ManualFragment extends Fragment  {
     public ManualsAdapter adapter;
     public CircleIndicator indicator;
 
+    WebView mWebView;
+    WebSettings mWebSettings;
     private OnFragmentInteractionListener mListener;
 
     public ManualFragment() {
@@ -66,34 +71,40 @@ public class ManualFragment extends Fragment  {
         actionBar.setDisplayShowCustomEnabled(true);
         //actionBar.setDisplayShowTitleEnabled(false);
 
-        pager = (ViewPager) view.findViewById(R.id.pager_manual);
-        adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
-        indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mWebView = (WebView)view.findViewById(R.id.mWebView);
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebSettings = mWebView.getSettings();
+        mWebSettings.setJavaScriptEnabled(true);
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                adapter.setCurrentPosition(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        try {
-            new SettingManuals().execute(pager, adapter, indicator).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        mWebView.loadUrl("http://fungdu.strikingly.com/");
+//        pager = (ViewPager) view.findViewById(R.id.pager_manual);
+//        adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
+//        indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);
+//        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                adapter.setCurrentPosition(position);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+//
+//        try {
+//            new SettingManuals().execute(pager, adapter, indicator).get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 
         return view;
     }
