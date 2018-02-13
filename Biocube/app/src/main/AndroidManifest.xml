@@ -14,8 +14,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/biocube_logo_white_450x240"
-        android:label="@string/app_name"
+        android:icon="@drawable/biocube"
+        android:label="BioCube"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
