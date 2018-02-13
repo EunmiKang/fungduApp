@@ -70,9 +70,11 @@ public class ChangeInfoActivity extends Activity {
         spinner_filter = (Spinner) findViewById(R.id.spinner_filter);
         findViewById(R.id.btn_deleteFilter).setOnClickListener(deleteFilterClickListener);
 
-
         try {
             filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getMyfilter.php", id).get();
+            if(filterItems.size() == 0) {
+                filterItems.add("등록한 필터 없음");
+            }
             dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, filterItems);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner_filter.setAdapter(dataAdapter);
@@ -84,7 +86,6 @@ public class ChangeInfoActivity extends Activity {
         }
 
         try {
-
             String[] userInfo = new GetUserInfo().execute(helper).get();
             nickname = userInfo[0];
             if (userInfo[1].equals("1")) {
@@ -112,12 +113,19 @@ public class ChangeInfoActivity extends Activity {
         @Override
         public void onClick(View v) {
             String addFilterName = addFilter.getText().toString();
-            try {
-                addFilterName = URLEncoder.encode(addFilterName,"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            if(addFilterName.equals("")) {
+                Toast.makeText(ChangeInfoActivity.this, "추가할 필터 문구를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            } else if(addFilterName.equals("등록한 필터 없음")){
+                Toast.makeText(ChangeInfoActivity.this, "'등록한 필터 없음'은 추가할 수 없는 필터 문구입니다.", Toast.LENGTH_LONG).show();
+                addFilter.setText("");
+            } else {
+                try {
+                    addFilterName = URLEncoder.encode(addFilterName, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                new ModifyFilterTask().execute("ADD", addFilterName);
             }
-            new ModifyFilterTask().execute("ADD",addFilterName);
         }
     };
 
@@ -126,12 +134,16 @@ public class ChangeInfoActivity extends Activity {
         @Override
         public void onClick(View v) {
             String deleteFilterName = spinner_filter.getSelectedItem().toString();
-            try {
-                deleteFilterName = URLEncoder.encode(deleteFilterName,"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            if(deleteFilterName.equals("등록한 필터 없음")) {
+                Toast.makeText(ChangeInfoActivity.this, "삭제할 필터가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    deleteFilterName = URLEncoder.encode(deleteFilterName, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                new ModifyFilterTask().execute("DELETE", deleteFilterName);
             }
-            new ModifyFilterTask().execute("DELETE",deleteFilterName);
         }
     };
 
@@ -321,6 +333,9 @@ public class ChangeInfoActivity extends Activity {
             }
             try {
                 filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getMyfilter.php", id).get();
+                if(filterItems.size() == 0) {
+                    filterItems.add("등록한 필터 없음");
+                }
                 dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, filterItems);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_filter.setAdapter(dataAdapter);
