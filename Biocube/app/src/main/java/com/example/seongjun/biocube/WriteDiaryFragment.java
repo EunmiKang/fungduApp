@@ -166,7 +166,7 @@ public class WriteDiaryFragment extends Fragment {
         try {
             String[] getList = new ReturnFilterList().execute(id).get();
             filterList = new String[getList.length];
-            filterList[0] = "필터 없음";
+            filterList[0] = "필터 선택 안함";
             for(int i=1; i<getList.length; i++) {
                 filterList[i] = getList[i];
             }
@@ -190,34 +190,41 @@ public class WriteDiaryFragment extends Fragment {
         btn_sensor.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String selectedCube = cubeSpinner.getSelectedItem().toString();
+            String selectedCube = cubeSpinner.getSelectedItem().toString();
+            if(!selectedCube.equals("등록한 큐브 없음")) {
                 String deviceNum = "";
-                try{
-                    selectedCube = URLEncoder.encode(selectedCube,"UTF-8");
+                try {
+                    selectedCube = URLEncoder.encode(selectedCube, "UTF-8");
                     deviceNum = new GetDevice().execute(selectedCube).get();
                     ((UserMainActivity) getActivity()).mBluetooth.mSocket.close();
-                } catch(Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                switch (((UserMainActivity)getActivity()).mBluetooth.checkBluetooth(getContext())){
-                    case 0: Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
+                    case 0:
+                        Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
                         break;
-                    case 1: Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                    case 1:
+                        Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(enableBtIntent, ((UserMainActivity)getActivity()).mBluetooth.REQUEST_ENABLE_BT);
+                        startActivityForResult(enableBtIntent, ((UserMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
                         break;
-                    case 2: mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
+                    case 2:
+                        mDevices = mBluetoothAdapter.getBondedDevices();//기기를 지원하고 활성상태일때
                         mPariedDeviceCount = mDevices.size();
                 }
-                if(mDevices != null) {
+                if (mDevices != null) {
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
                     if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
                         beginListenForData();
                         ((UserMainActivity) getActivity()).mBluetooth.sendData("read_data");
                     } else {
-                        Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "선택하신 큐브의 블루투스가 켜져있지 않습니다.", Toast.LENGTH_LONG).show();
                     }
                 }
+            } else {
+                Toast.makeText(getContext(), "큐브를 등록하셔야 센서값을 읽어올 수 있습니다.", Toast.LENGTH_LONG).show();
+            }
             }
         });
 
@@ -263,6 +270,10 @@ public class WriteDiaryFragment extends Fragment {
             cubeList = new String[getList.length-1];
             for(int i=0; i<getList.length-1; i++) {
                 cubeList[i] = getList[i+1];
+            }
+            if(cubeList.length == 0) {
+                cubeList = new String[1];
+                cubeList[0] = "등록한 큐브 없음";
             }
             ArrayAdapter<String> cubeAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, cubeList);
             cubeSpinner.setAdapter(cubeAdapter);
@@ -552,75 +563,79 @@ public class WriteDiaryFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(cubeSpinner.getAdapter().getCount() > 0) {
-                if (!((croppedFile == null) && contentText.getText().toString().equals(""))) {
+                String cube_name = cubeSpinner.getSelectedItem().toString();
+                if(!cube_name.equals("등록한 큐브 없음")) {
+                    if (!((croppedFile == null) && contentText.getText().toString().equals(""))) {
 
-            /* 서버에 이미지 올리기 */
-                    if (croppedFile != null) {
-                        String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
-                        String attachmentName = "uploadfile_for_diary";
-                        String attachmentFileName = croppedFile.getName();
-                        String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
+                        /* 서버에 이미지 올리기 */
+                        if (croppedFile != null) {
+                            String url = "http://fungdu0624.phps.kr/biocube/uploadImageForDiary.php";
+                            String attachmentName = "uploadfile_for_diary";
+                            String attachmentFileName = croppedFile.getName();
+                            String uploadImgPath = "users/" + ((UserMainActivity) getActivity()).userID + "/";
 
-                        // 용량 줄이기
-                    /*
-                    BitmapFactory.Options option = new BitmapFactory.Options();
-                    option.inSampleSize = 2;    // 1/2만큼 줄임
-                    Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
-                    try {
-                        FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
-                        src.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                        out.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    */
-
-                        // 서버에 이미지 업로드
+                            // 용량 줄이기
+                        /*
+                        BitmapFactory.Options option = new BitmapFactory.Options();
+                        option.inSampleSize = 2;    // 1/2만큼 줄임
+                        Bitmap src = BitmapFactory.decodeFile(mCurrentPhotoPath, option);
                         try {
-                            if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
-                                //Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
+                            FileOutputStream out = new FileOutputStream(mCurrentPhotoPath);
+                            src.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                            out.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        */
+
+                            // 서버에 이미지 업로드
+                            try {
+                                if (new ImageUploadToServer().execute(url, attachmentName, attachmentFileName, uploadImgPath, mCurrentPhotoPath).get()) {
+                                    //Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getContext(), "서버에 사진 업로드 실패", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
                             }
+                        }
+
+                /* 다이어리 작성 내용 디비에 저장하기 */
+                        String image_path = "NULL";
+                        if (croppedFile != null) {
+                            image_path = croppedFile.getName();
+                        }
+                        String date = dateBtn.getText().toString();
+                        String filter = filterSpinner.getSelectedItem().toString();
+                        String content = contentText.getText().toString();
+                        try {
+                            cube_name = URLEncoder.encode(cube_name, "UTF-8");
+                            date = URLEncoder.encode(date, "UTF-8");
+                            filter = URLEncoder.encode(filter, "UTF-8");
+                            content = URLEncoder.encode(content, "UTF-8");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        // 디비에 업로드
+                        try {
+                            new UploadDiary().execute(cube_name, image_path, date, filter, content).get();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
-                    }
-
-            /* 다이어리 작성 내용 디비에 저장하기 */
-                    String cube_name = cubeSpinner.getSelectedItem().toString();
-                    String image_path = "NULL";
-                    if (croppedFile != null) {
-                        image_path = croppedFile.getName();
-                    }
-                    String date = dateBtn.getText().toString();
-                    String filter = filterSpinner.getSelectedItem().toString();
-                    String content = contentText.getText().toString();
-                    try {
-                        cube_name = URLEncoder.encode(cube_name, "UTF-8");
-                        date = URLEncoder.encode(date, "UTF-8");
-                        filter = URLEncoder.encode(filter, "UTF-8");
-                        content = URLEncoder.encode(content, "UTF-8");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    // 디비에 업로드
-                    try {
-                        new UploadDiary().execute(cube_name, image_path, date, filter, content).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
+                    } else {
+                        Toast.makeText(getContext(), "이미지를 선택해주시거나 내용을 작성해주세요.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "이미지를 선택해주시거나 내용을 작성해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "큐브를 등록하고 일지를 작성해주세요.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getContext(), "큐브를 등록 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "큐브를 등록하고 일지를 작성해주세요.", Toast.LENGTH_SHORT).show();
             }
         }
     };

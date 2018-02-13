@@ -82,23 +82,29 @@ public class PopCubeRegist extends Activity {
 
     public void mOnClose(View v){
         cubeName = edit_cubeName.getText().toString();
-        plantName = spinner_plantName.getSelectedItem().toString();
-        try{
-            cubeName = URLEncoder.encode(cubeName,"UTF-8");
-            plantName = URLEncoder.encode(plantName,"UTF-8");
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            cubeName = new String(cubeName.getBytes("UTF-8"));
-            plantName = new String(plantName.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        if(!cubeName.equals("")) {
+            if(!cubeName.equals("등록한 큐브 없음")) {
+                plantName = spinner_plantName.getSelectedItem().toString();
+                try {
+                    cubeName = URLEncoder.encode(cubeName, "UTF-8");
+                    plantName = URLEncoder.encode(plantName, "UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    cubeName = new String(cubeName.getBytes("UTF-8"));
+                    plantName = new String(plantName.getBytes("UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 
-        }if(!cubeName.equals("")) {
-            new PopCubeRegist.cubeUpTask().execute(cubeName, MAC_ADDRESS, plantName);
-            finish();//액티비티(팝업) 닫기
-        }
-        else{
+                new PopCubeRegist.cubeUpTask().execute(cubeName, MAC_ADDRESS, plantName);
+                finish();//액티비티(팝업) 닫기
+            } else {
+                Toast.makeText(this, "'등록한 큐브 없음'은 큐브 이름으로 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        } else{
             Toast.makeText(this, "큐브이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
         }
     }

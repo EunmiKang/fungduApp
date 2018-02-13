@@ -70,6 +70,9 @@ public class CubeListActivity extends AppCompatActivity {
             for(int i=0; i<getList.length-1; i++) {
                 cubeList[i] = getList[i+1];
             }
+            if(cubeList.length == 0) {
+                findViewById(R.id.text_nohavecube).setVisibility(View.VISIBLE);
+            }
             adapter = new ArrayAdapter(CubeListActivity.this, android.R.layout.simple_list_item_1, cubeList) ;
             list_cube.setAdapter(adapter);
         } catch (InterruptedException e) {
@@ -150,7 +153,7 @@ public class CubeListActivity extends AppCompatActivity {
                             }
                             list_cube.setAdapter(adapter);
                             ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).setSpinner();
-//                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).new SettingAdminPage().execute();
+                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).new SettingAdminPage().execute();
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -218,15 +221,18 @@ public class CubeListActivity extends AppCompatActivity {
         public void onPostExecute(String result) {
             super.onPostExecute(result);
             if(result.equals("false")){
-                Toast.makeText(CubeListActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CubeListActivity.this, "삭제를 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(CubeListActivity.this, "삭제 성공", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CubeListActivity.this, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 try {
                     String[] getList = new ReturnCubeList().execute(user_id).get();
                     cubeList = new String[getList.length-1];
                     for(int i=0; i<getList.length-1; i++) {
                         cubeList[i] = getList[i+1];
+                    }
+                    if(cubeList.length == 0) {
+                        findViewById(R.id.text_nohavecube).setVisibility(View.VISIBLE);
                     }
                     adapter = new ArrayAdapter(CubeListActivity.this, android.R.layout.simple_list_item_1, cubeList) ;
                     list_cube.setAdapter(adapter);
@@ -236,8 +242,6 @@ public class CubeListActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
         }
     }
 }
