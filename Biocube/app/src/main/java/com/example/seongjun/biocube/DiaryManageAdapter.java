@@ -92,6 +92,7 @@ public class DiaryManageAdapter extends BaseAdapter{
     public View getView(int position, View view, ViewGroup viewGroup) {
         ViewHolder holder;
         this.views=view;
+        final String diaryOwner;
         if (view == null) {
             view = layoutInflater.inflate(R.layout.custom_newspeed, null);
 
@@ -121,6 +122,7 @@ public class DiaryManageAdapter extends BaseAdapter{
             cmt_edit.setVisibility(View.GONE);
         }
         DiaryItem diaryItem = this.list.get(position);
+        diaryOwner = diaryItem.getNickname();
         holder.nicknameView.setText(diaryItem.getNickname());
         holder.hiddenDiaryNo.setText(String.valueOf(diaryItem.getDiaryNo()));
         holder.cmtNicknameView.setText(diaryItem.getLastCmtNick());
@@ -154,7 +156,7 @@ public class DiaryManageAdapter extends BaseAdapter{
                 String content = textContent.getText().toString();
                 String diaryNo = textDiaryNo.getText().toString();
                 Intent intent = new Intent(context,CommentAsDiaryActivity.class);
-                intent.putExtra("id", id);
+                intent.putExtra("id", diaryOwner);
                 intent.putExtra("diaryNo", diaryNo);
                 intent.putExtra("content",content);
                 context.startActivity(intent);

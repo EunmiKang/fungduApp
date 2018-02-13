@@ -213,7 +213,6 @@ public class CommentAsDiaryActivity extends AppCompatActivity {
         @Override
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
             list_comment.setAdapter(listAdapter);
         }
 

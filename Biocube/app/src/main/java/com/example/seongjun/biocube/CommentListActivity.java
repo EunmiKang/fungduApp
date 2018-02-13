@@ -214,7 +214,9 @@ public class CommentListActivity extends AppCompatActivity {
         @Override
         public void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            // Todo: doInBackground() 메소드 작업 끝난 후 처리해야할 작업..
+            if(listAdapter.getCount() == 0) {
+                findViewById(R.id.text_nohavecomment).setVisibility(View.VISIBLE);
+            }
             comment_listView.setAdapter(listAdapter);
         }
     }
