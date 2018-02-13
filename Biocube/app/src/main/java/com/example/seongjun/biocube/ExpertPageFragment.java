@@ -88,8 +88,8 @@ public class ExpertPageFragment extends Fragment {
             e.printStackTrace();
         }
         nickname = userInfo[0];
-        settingPage(nickname);
-
+        //settingPage(nickname);
+        setCommentNum();
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_expert_page);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -244,7 +244,7 @@ public class ExpertPageFragment extends Fragment {
 
 
     /* 기본 정보 설정 */
-    public void settingPage(String nickname) {
+    public void setCommentNum() {
         text_expert_nickname.setText(nickname);
         new getCommentNum().execute(nickname);
     }

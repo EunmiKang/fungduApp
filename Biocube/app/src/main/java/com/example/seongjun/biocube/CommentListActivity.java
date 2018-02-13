@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -97,6 +96,11 @@ public class CommentListActivity extends AppCompatActivity {
         if(result) {
             /* My Comment 페이지 업데이트 */
             showComments();
+
+            /* 전문가일 경우 마이페이지 코멘트 수 업데이트 */
+            if(!id.equals("admin")) {
+                ((ExpertPageFragment)((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(2)).setCommentNum();
+            }
 
             Toast.makeText(CommentListActivity.this, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
         } else {
