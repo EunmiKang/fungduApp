@@ -41,8 +41,9 @@ public class UserMainActivity extends AppCompatActivity {
         mUserPagerAdapter.addFragment(R.drawable.menu_control, new CubeFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_note, new WriteDiaryFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_newsfeed, new NewspeedFragment());
-        mUserPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
         mUserPagerAdapter.addFragment(R.drawable.menu_my, new UserPageFragment());
+        mUserPagerAdapter.addFragment(R.drawable.menu_home,new ManualFragment());
+
 
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_user);
