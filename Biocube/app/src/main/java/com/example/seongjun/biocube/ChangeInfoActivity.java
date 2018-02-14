@@ -253,7 +253,7 @@ public class ChangeInfoActivity extends Activity {
                         }
                         ((ExpertPageFragment) ((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(2)).settingPage(changenickname);
                     } else if(authority == 1) {
-                        ((UserPageFragment) ((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingNickname();
+                        ((UserPageFragment) ((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(3)).settingNickname();
                     }
                 }
                 finish();

@@ -295,7 +295,7 @@ public class DiaryManageAdapter extends BaseAdapter{
                     } else if (authority == 1) {//user
                         ((NewspeedFragment) (((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(2))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                         ((DiaryAsCubeName)DiaryAsCubeName.mContext).getData("http://fungdu0624.phps.kr/biocube/getdiarycubename.php");
-                        ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(4)).settingDiaryNum();
+                        ((UserPageFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(3)).settingDiaryNum();
                     } else {//expert
                         ((NewspeedFragment) (((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(0))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
                     }

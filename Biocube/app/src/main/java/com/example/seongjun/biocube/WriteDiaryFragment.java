@@ -244,7 +244,7 @@ public class WriteDiaryFragment extends Fragment {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(pickDate);
                     Dialog dialog = null;
-                    dialog = new DatePickerDialog(getContext(), dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+                    dialog = new DatePickerDialog(getContext(), R.style.MyDatePickerStyle, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
                     dialog.show();
                 }
                 catch (Exception e){

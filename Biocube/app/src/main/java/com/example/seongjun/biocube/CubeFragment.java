@@ -490,7 +490,8 @@ public class CubeFragment extends Fragment {
                                                 text_humi_air.setText(datas[2]);
                                                 text_humi_air.setTextColor(Color.parseColor("#66cc99"));
                                                 text_humi_soil.setText(datas[3]);
-                                                text_humi_soil.setTextColor(Color.parseColor("66ccff"));
+                                                String color = "#66ccff";
+                                                text_humi_soil.setTextColor(Color.parseColor(color));
                                             }
                                             else if(datas[0].equals("ONTIME")){
                                                 if(datas[1].length() > 1){//led
