@@ -173,13 +173,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_admin_manualManage"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_manual" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_admin_manualManage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_manual" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_admin_manualManage"
@@ -203,13 +208,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_admin_mycomment"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_comment" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_admin_mycomment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_comment" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_admin_mycomment"
@@ -233,13 +243,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_admin_mycube"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_mycube" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_admin_mycube"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_mycube" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_admin_mycube"
@@ -263,13 +278,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_admin_logout"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_logout" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_admin_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_logout" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_admin_logout"

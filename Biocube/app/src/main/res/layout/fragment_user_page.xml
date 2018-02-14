@@ -148,13 +148,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_user_myCube"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_mycube" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_user_myCube"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_mycube" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_user_myCube"
@@ -178,13 +183,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_user_changeInfo"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_info" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_user_changeInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_info" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_user_changeInfo"
@@ -208,13 +218,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_user_question"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_question" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_user_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_question" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_user_question"
@@ -225,7 +240,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="문의"
+                    android:text="페어-프로젝트 신청"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -238,13 +253,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/img_user_logout"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/mypage_logout" />
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/img_user_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/mypage_logout" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_user_logout"
