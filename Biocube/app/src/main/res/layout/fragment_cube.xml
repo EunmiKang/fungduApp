@@ -21,15 +21,16 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:src="@drawable/Title_Control_380x94"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:src="@drawable/title_control_380x94" />
+
         <ImageButton
             android:id="@+id/btn_cube_regist"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right"
-            android:background="@drawable/add_77x77"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:background="@drawable/add_77x77" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
