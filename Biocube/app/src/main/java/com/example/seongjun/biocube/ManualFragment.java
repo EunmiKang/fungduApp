@@ -13,9 +13,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import java.util.concurrent.ExecutionException;
-
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -76,7 +73,7 @@ public class ManualFragment extends Fragment  {
         mWebSettings = mWebView.getSettings();
         mWebSettings.setJavaScriptEnabled(true);
 
-        mWebView.loadUrl("http://biocube.strikingly.com/");
+        mWebView.loadUrl("http://m.fungdu.org");
 //        pager = (ViewPager) view.findViewById(R.id.pager_manual);
 //        adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
 //        indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);

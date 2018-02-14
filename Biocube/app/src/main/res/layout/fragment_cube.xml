@@ -16,23 +16,20 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="큐브 제어"
-            android:textColor="#ffffff"
-            android:textSize="30sp" />
-
+            android:src="@drawable/Title_Control_380x94"
+            android:padding="10dp"/>
         <ImageButton
             android:id="@+id/btn_cube_regist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="right"
-            android:background="#52B94B"
-            android:src="@drawable/add_77x77"
-            android:padding=""/>
+            android:background="@drawable/add_77x77"
+            android:layout_marginRight="10dp"/>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout

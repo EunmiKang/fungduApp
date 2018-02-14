@@ -168,7 +168,7 @@ public class CubeFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        Button registCube = (Button) view.findViewById(R.id.btn_cube_regist);
+        ImageButton registCube = (ImageButton) view.findViewById(R.id.btn_cube_regist);
         registCube.setOnClickListener(new View.OnClickListener() {//등록 버튼 누를시
             @Override
             public void onClick(View v) {
