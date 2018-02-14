@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.Image;
 import android.net.Uri;
@@ -485,8 +486,11 @@ public class CubeFragment extends Fragment {
                                             }
                                             else if(datas[0].equals("TEMPER")){
                                                 text_temper.setText(datas[1]);
+                                                text_temper.setTextColor(Color.parseColor("#fc8962"));
                                                 text_humi_air.setText(datas[2]);
+                                                text_humi_air.setTextColor(Color.parseColor("#66cc99"));
                                                 text_humi_soil.setText(datas[3]);
+                                                text_humi_soil.setTextColor(Color.parseColor("66ccff"));
                                             }
                                             else if(datas[0].equals("ONTIME")){
                                                 if(datas[1].length() > 1){//led

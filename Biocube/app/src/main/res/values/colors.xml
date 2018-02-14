@@ -13,4 +13,5 @@
     <color name="lightYellow">#ffff99</color>
     <color name="darkYellow">#ffff4d</color>
     <color name="navy">#00004d</color>
+    <color name="lightDark">#a9a9a9</color>
 </resources>

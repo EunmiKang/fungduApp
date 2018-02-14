@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.seongjun.biocube.CubeFragment">
+    tools:context="com.example.seongjun.biocube.CubeFragment"
+    android:background="@color/white">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_cube"
@@ -24,16 +25,14 @@
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_cube_regist"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="#52B94B"
-            android:text="등록"
-            android:textColor="#ffffff"
-            android:textSize="17sp" />
+            android:src="@drawable/add_77x77"
+            android:padding=""/>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -46,10 +45,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:background="#FFFFFF"
+            android:background="@drawable/border"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
 
             <Spinner
                 android:id="@+id/spinner_cube_cubeselect"
@@ -73,7 +74,7 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="0.8"
-            android:background="#f2f2f2"
+            android:background="@color/white"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -83,18 +84,21 @@
                 android:layout_weight="0.5"
                 android:orientation="vertical"
                 android:padding="5dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:background="@color/white"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
 
                 <TextView
-                    android:layout_width="60dp"
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.15"
-                    android:background="#804000"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:padding="5dp"
                     android:text="측정값"
-                    android:textColor="#ffffff"
-                    android:textSize="13sp" />
+                    android:textSize="15sp"
+                    android:background="@drawable/border"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -113,19 +117,21 @@
                         android:orientation="vertical"
                         android:weightSum="1">
 
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/cont_temp_138x138" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
                             android:gravity="center"
                             android:text="대기 온도"
-                            android:textSize="17sp" />
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/measure_temp" />
+                            android:textSize="13sp"
+                            android:textColor="@color/lightDark"/>
 
                         <TextView
                             android:id="@+id/text_temp"
@@ -145,20 +151,21 @@
                         android:orientation="vertical"
                         android:weightSum="1">
 
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/cont_airhue_138x138" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
                             android:gravity="center"
                             android:text="대기 습도"
-                            android:textSize="17sp" />
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/measure_humi_air" />
-
+                            android:textSize="13sp"
+                            android:textColor="@color/lightDark"/>
                         <TextView
                             android:id="@+id/text_humi_air"
                             android:layout_width="match_parent"
@@ -177,6 +184,12 @@
                         android:orientation="vertical"
                         android:weightSum="1">
 
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/cont_soilhue_138x138" />
+
                         <TextView
                             android:id="@+id/textView"
                             android:layout_width="match_parent"
@@ -184,13 +197,8 @@
                             android:layout_weight="0.2"
                             android:gravity="center"
                             android:text="토양 습도"
-                            android:textSize="17sp" />
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/measure_humi_soil" />
+                            android:textSize="13sp"
+                            android:textColor="@color/lightDark"/>
 
                         <TextView
                             android:id="@+id/text_humi_soil"
@@ -207,21 +215,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="5dp"
-                android:weightSum="0.95">
+                android:weightSum="0.95"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="60dp"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.15"
-                    android:background="#804000"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:padding="5dp"
                     android:text="장치 설정"
-                    android:textColor="#ffffff"
-                    android:textSize="13sp" />
+                    android:textSize="15sp"
+                    android:background="@drawable/border"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -316,17 +326,18 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:background="@drawable/control_motor"
-                                android:clickable="true"/>
+                                android:clickable="true" />
 
                         </LinearLayout>
+
                         <TextView
                             android:id="@+id/text_motor"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.15"
                             android:gravity="center"
-                            android:textSize="12sp"
-                            android:text="OFF"/>
+                            android:text="OFF"
+                            android:textSize="12sp" />
 
 
                         <Button

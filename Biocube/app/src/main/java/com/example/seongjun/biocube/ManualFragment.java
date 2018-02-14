@@ -76,7 +76,7 @@ public class ManualFragment extends Fragment  {
         mWebSettings = mWebView.getSettings();
         mWebSettings.setJavaScriptEnabled(true);
 
-        mWebView.loadUrl("http://fungdu.strikingly.com/");
+        mWebView.loadUrl("http://biocube.strikingly.com/");
 //        pager = (ViewPager) view.findViewById(R.id.pager_manual);
 //        adapter = new ManualsAdapter(inflater, getContext()); // 처음에 매뉴얼들 띄우기 위해 필요한 어댑터 설정
 //        indicator = (CircleIndicator) view.findViewById(R.id.indicator_manualFragment);
