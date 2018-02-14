@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.seongjun.biocube.WriteDiaryFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ffffff">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_diary"
@@ -20,35 +20,20 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="0.2"
-            android:gravity="center_horizontal"
-            android:padding="10dp"
-            android:src="@drawable/logo_title_small_200x77" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.2"
+                android:gravity="center_horizontal"
+                android:src="@drawable/logo_title_small_200x77" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.6"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:src="@drawable/title_note_380x94" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.12"/>
-
-        <ImageButton
-            android:id="@+id/btn_diary_register"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_weight="0.08"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/note_up_131x131" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.6"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/title_note_380x94" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -56,7 +41,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1.22">
+        android:layout_margin="10dp"
+        android:background="#ffffff"
+        android:weightSum="1.3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,12 +51,13 @@
             android:layout_weight="0.1"
             android:orientation="horizontal"
             android:gravity="center"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:background="@drawable/border">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="큐브"
+                android:text="큐브 선택"
                 android:textSize="15sp"
                 android:layout_weight="0.2"
                 android:gravity="center"
@@ -82,47 +70,13 @@
                 android:layout_weight="0.8"/>
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_addImage"
-            android:layout_width="230dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:layout_gravity="center"
-            android:scaleType="fitXY" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.12"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:weightSum="1">
-
-            <Button
-                android:id="@+id/btn_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:background="#ffffff"
-                android:layout_margin="5dp"
-                android:textSize="15sp"/>
-
-            <Button
-                android:id="@+id/btn_sensor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="센서 값 읽기"
-                android:background="#ffffff"
-                android:layout_margin="5dp"/>
-        </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:background="@drawable/border">
 
             <TextView
                 android:layout_width="0dp"
@@ -139,13 +93,115 @@
                 android:layout_weight="0.8"/>
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/text_diary_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/border">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:text="작성일"
+                android:textSize="15sp"
+                android:gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_date"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:background="#ffffff"
+                android:layout_margin="5dp"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/border">
+
+            <Button
+                android:id="@+id/btn_sensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="선택한 큐브의 센서 값 읽어오기"
+                android:background="#ffffff"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"
-            android:inputType="textMultiLine"
-            android:imeOptions="flagNoExtractUi"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="1"
+            android:background="@drawable/border">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:text="사진 선택"
+                android:textSize="15sp"
+                android:gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:padding="1dp">
+
+                <ImageButton
+                    android:id="@+id/btn_addImage"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/add_note"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="1"
+            android:background="@drawable/border">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:text="내용 입력"
+                android:textSize="15sp"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/text_diary_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:inputType="textMultiLine"
+                android:imeOptions="flagNoExtractUi"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_diary_register"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/note_up_131x131"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 </LinearLayout>

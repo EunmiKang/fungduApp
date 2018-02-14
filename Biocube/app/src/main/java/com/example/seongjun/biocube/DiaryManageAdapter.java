@@ -170,8 +170,8 @@ public class DiaryManageAdapter extends BaseAdapter{
                 View v_grandParent = (View) v.getParent().getParent();
                 TextView hiddenDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
                 final String hiddenNo = hiddenDiaryNo.getText().toString();
-                builder.setTitle("Cube 삭제 확인");
-                builder.setMessage("해당 큐브를 삭제 하시겠습니까?");
+                builder.setTitle("다이어리 삭제");
+                builder.setMessage("해당 다이어리를 삭제 하시겠습니까?");
                 builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
