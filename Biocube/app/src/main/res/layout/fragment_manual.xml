@@ -10,14 +10,14 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_manual"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:src="@drawable/biocube_logo_white_450x240"
             android:layout_gravity="center"/>
     </android.support.v7.widget.Toolbar>

@@ -257,7 +257,7 @@ public class WriteDiaryFragment extends Fragment {
         contentText = view.findViewById(R.id.text_diary_content);
 
         /* 작성 완료 버튼 리스너 설정 */
-        Button registerBtn = (Button) view.findViewById(R.id.btn_diary_register);
+        ImageButton registerBtn = (ImageButton) view.findViewById(R.id.btn_diary_register);
         registerBtn.setOnClickListener(diaryRegisterListener);
 
         return view;

@@ -9,31 +9,47 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_diary"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
-        <TextView
-            android:id="@+id/text_user_toolbar"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="일지 작성"
-            android:textSize="30sp"
-            android:textColor="#ffffff"/>
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <Button
-            android:id="@+id/btn_diary_register"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="0.2"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:src="@drawable/logo_title_small_200x77" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.6"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:src="@drawable/title_note_380x94" />
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="완료"
-            android:background="#52B94B"
-            android:layout_gravity="right"
-            android:textColor="#ffffff"
-            android:textSize="17sp"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_weight="0.12"/>
+
+        <ImageButton
+            android:id="@+id/btn_diary_register"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="0.08"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/note_up_131x131" />
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout

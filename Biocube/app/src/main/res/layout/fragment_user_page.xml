@@ -9,19 +9,33 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_user_page"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="마이페이지"
-            android:textSize="30sp"
-            android:textColor="#ffffff"/>
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="0.2"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:src="@drawable/logo_title_small_200x77" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.6"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/title_mypage_380x94" />
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout

@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_cubeFragment"
     android:layout_width="match_parent"
@@ -11,26 +10,47 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_cube"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:background="#52B94B"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="10dp"
-            android:src="@drawable/title_control_380x94" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <ImageButton
-            android:id="@+id/btn_cube_regist"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/add_77x77" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="0.2"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:src="@drawable/logo_title_small_200x77" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.6"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/title_control_380x94" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.12"/>
+
+            <ImageButton
+                android:id="@+id/btn_cube_regist"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="0.08"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/add_77x77" />
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -120,6 +140,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.5"
+                            android:layout_marginTop="10dp"
                             android:src="@drawable/cont_temp_138x138" />
 
                         <TextView
@@ -154,6 +175,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.5"
+                            android:layout_marginTop="10dp"
                             android:src="@drawable/cont_airhue_138x138" />
 
                         <TextView
@@ -186,6 +208,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.5"
+                            android:layout_marginTop="10dp"
                             android:src="@drawable/cont_soilhue_138x138" />
 
                         <TextView
