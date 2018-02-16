@@ -60,7 +60,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.2"
                 android:gravity="center"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,54 +79,60 @@
                     android:src="@drawable/boy" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:weightSum="1">
+                    android:layout_weight="0.7">
 
-                    <TextView
-                        android:id="@+id/text_countCube"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="나의 큐브 수"
-                        android:textSize="15sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                    <TextView
-                        android:id="@+id/text_cubeNum"
+                        <TextView
+                            android:id="@+id/text_countCube"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="나의 큐브 수"
+                            android:textSize="15sp"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:id="@+id/text_cubeNum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textAlignment="center"
-                        android:textSize="15sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/text_countDiary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="나의 일지 수"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/text_diaryNum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:id="@+id/text_countDiary"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="나의 일지 수"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/text_diaryNum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textAlignment="center"
-                        android:textSize="15sp" />
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -170,7 +177,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="My Cube"
+                    android:text="나의 큐브"
                     android:textSize="15sp" />
             </LinearLayout>
 

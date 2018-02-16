@@ -102,6 +102,8 @@
             android:name=".PopPumpTimeSet"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"/>
+        <activity android:name=".CampActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
