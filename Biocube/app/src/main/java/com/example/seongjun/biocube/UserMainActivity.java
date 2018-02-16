@@ -68,8 +68,8 @@ public class UserMainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 2 || position == 3){
-                    if(position==2){
+                if(position == 0 || position == 1){
+                    if(position==1){
                         if(((CubeFragment)mUserPagerAdapter.getItem(0)).mWorkerThread != null){
                             ((CubeFragment)mUserPagerAdapter.getItem(0)).mWorkerThread.interrupt();
                             ((CubeFragment)mUserPagerAdapter.getItem(0)).text_humi_air.setText("");
