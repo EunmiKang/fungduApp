@@ -56,6 +56,7 @@ public class AdminMainActivity extends AppCompatActivity {
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             ((ImageView)tab.findViewById(R.id.img_tab)).setBackgroundResource(mAdminPagerAdapter.getFragmentInfo(i).getIconResId());
+            tab.setPadding(30,40,30,40);
             mTab.getTabAt(i).setCustomView(tab);
             //mTab.getTabAt(i).setIcon(mAdminPagerAdapter.getFragmentInfo(i).getIconResId());
         }

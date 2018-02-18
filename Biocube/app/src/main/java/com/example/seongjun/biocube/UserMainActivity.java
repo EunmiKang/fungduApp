@@ -61,6 +61,7 @@ public class UserMainActivity extends AppCompatActivity {
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
             ((ImageView)tab.findViewById(R.id.img_tab)).setBackgroundResource(mUserPagerAdapter.getFragmentInfo(i).getIconResId());
+            tab.setPadding(20,40,20,40);
             mTab.getTabAt(i).setCustomView(tab);
             //mTab.getTabAt(i).setIcon(mUserPagerAdapter.getFragmentInfo(i).getIconResId());
         }
