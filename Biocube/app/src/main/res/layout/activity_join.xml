@@ -41,8 +41,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:checked="true"
                 android:text="일반사용자"
-                android:checked="true"/>
+                android:buttonTint="#52b94b"/>
 
             <RadioButton
                 android:id="@+id/radio_expert"
@@ -50,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:text="전문가"
-                />
+                android:buttonTint="#52b94b" />
         </RadioGroup>
 
         <EditText
@@ -59,11 +60,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:digits="@string/myAlphaNumeric"
             android:ems="10"
             android:hint="아이디 (영문자, 숫자로만 이루어질 수 있습니다.)"
             android:inputType=""
-            android:digits="@string/myAlphaNumeric"
-            android:privateImeOptions="defaultInputmode=english" />
+            android:privateImeOptions="defaultInputmode=english"
+            android:theme="@style/EditTextStyle"
+            android:textSize="15sp"/>
 
         <EditText
             android:id="@+id/pwText"
@@ -71,10 +74,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:textSize="15sp"
             android:hint="비밀번호"
             android:inputType=""
             android:digits="@string/myAlphaNumeric"
-            android:privateImeOptions="defaultInputmode=english"/>
+            android:privateImeOptions="defaultInputmode=english"
+            android:theme="@style/EditTextStyle"/>
 
         <EditText
             android:id="@+id/nicknameText"
@@ -82,8 +87,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:textSize="15sp"
             android:hint="닉네임"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:theme="@style/EditTextStyle"/>
 
         <EditText
             android:id="@+id/editJob"
@@ -91,20 +98,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:textSize="15sp"
             android:hint="직업"
             android:inputType="textPersonName"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:theme="@style/EditTextStyle"/>
 
 
         <EditText
             android:id="@+id/editPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="15sp"
             android:layout_gravity="center"
+            android:ems="10"
             android:hint="전화번호"
             android:inputType="phone"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:theme="@style/EditTextStyle"/>
 
         <Button
             android:id="@+id/btn_join"

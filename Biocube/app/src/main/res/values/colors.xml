@@ -16,4 +16,5 @@
     <color name="lightDark">#a9a9a9</color>
     <color name="humisoil">#66ccff</color>
     <color name="statusbar">#74c66c</color>
+    <color name="transparent">#1A000000</color>
 </resources>

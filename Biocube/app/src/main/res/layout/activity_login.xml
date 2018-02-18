@@ -36,7 +36,9 @@
             android:digits="@string/myAlphaNumeric"
             android:layout_gravity="center"
             android:privateImeOptions="defaultInputmode=english"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:theme="@style/EditTextStyle"
+            />
 
         <EditText
             android:id="@+id/pwText"
@@ -45,7 +47,9 @@
             android:hint="PW"
             android:inputType="textPassword"
             android:layout_gravity="center"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:theme="@style/EditTextStyle"
+            />
 
         <ImageButton
             android:id="@+id/loginBtn"
