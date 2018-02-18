@@ -135,7 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:src="@drawable/mypage_comment" />
+                        android:src="@drawable/my_reply_135x135" />
                 </LinearLayout>
 
                 <Button
