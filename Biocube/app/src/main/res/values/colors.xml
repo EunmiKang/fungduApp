@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="dark">#000000</color>
-    <color name="biocube">#529b4b</color>
+    <color name="biocube">#52b94b</color>
     <color name="highlight">#006622</color>
     <color name="white">#FFFFFF</color>
     <color name="fleshy">#ffffe6</color>
@@ -15,4 +15,5 @@
     <color name="navy">#00004d</color>
     <color name="lightDark">#a9a9a9</color>
     <color name="humisoil">#66ccff</color>
+    <color name="statusbar">#74c66c</color>
 </resources>
