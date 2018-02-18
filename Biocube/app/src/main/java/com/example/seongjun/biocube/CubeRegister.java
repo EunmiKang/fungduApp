@@ -142,7 +142,7 @@ public class CubeRegister extends AppCompatActivity {
         listDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {//검색된 블루투스 목록에서 등록하기 위해 선택했을 때,
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                mBluetoothAdapter.cancelDiscovery();
                 new ConnectTask().execute(position);
             }
         });
@@ -195,7 +195,6 @@ public class CubeRegister extends AppCompatActivity {
     }
 
     void checkBluetooth(Context context) {
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null ) {  // 블루투스 미지원
             Toast.makeText(context, "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();

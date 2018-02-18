@@ -60,10 +60,6 @@
             android:theme="@style/Transparent"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PopQuestion"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".PopCheckCube"
             android:theme="@style/Transparent"
             android:screenOrientation="portrait" />
