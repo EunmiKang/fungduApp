@@ -231,6 +231,7 @@ public class UserPageFragment extends Fragment {
 //            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse( "http://biocube.strikingly.com/"  ));
             Intent intent = new Intent(getActivity(), CampActivity.class);
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom,R.anim.anim_slide_out_top);
         }
     };
 
