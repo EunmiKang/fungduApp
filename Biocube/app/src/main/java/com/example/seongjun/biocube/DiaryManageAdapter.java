@@ -196,36 +196,41 @@ public class DiaryManageAdapter extends BaseAdapter{
                 EditText edit_comment = (EditText) v_parent.findViewWithTag(hiddenNo);
 //                Toast.makeText(context, test.getText().toString() ,Toast.LENGTH_SHORT).show();
                 String comment = edit_comment.getText().toString();
-                View v_grandParent = (View) v.getParent().getParent();
-                TextView textDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
-                String diaryNo = textDiaryNo.getText().toString();
-                try {
-                    comment = URLEncoder.encode(comment,"UTF-8");
-                    String result = new RegistComment().execute(comment,diaryNo, id).get();//댓글 성공여부를 string으로 리턴.
-                    if(result.equals("comment_success")) {
-                        Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                        edit_comment.setText("");
-                        if(authority == 0){//admin
-                            ((NewspeedFragment)(((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                if(comment.equals("")) {
+                    Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    View v_grandParent = (View) v.getParent().getParent();
+                    TextView textDiaryNo = (TextView) v_grandParent.findViewById(R.id.hidden_diaryNo);
+                    String diaryNo = textDiaryNo.getText().toString();
+                    try {
+                        comment = URLEncoder.encode(comment,"UTF-8");
+                        String result = new RegistComment().execute(comment,diaryNo, id).get();//댓글 성공여부를 string으로 리턴.
+                        if(result.equals("comment_success")) {
+                            Toast.makeText(context, "등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                            edit_comment.setText("");
+                            if(authority == 0){//admin
+                                ((NewspeedFragment)(((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(1))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                            }
+                            else if(authority == 1){//user
+                                ((NewspeedFragment)(((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                            }
+                            else{//expert
+                                ((NewspeedFragment)(((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(0))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                            }
                         }
-                        else if(authority == 1){//user
-                            ((NewspeedFragment)(((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(2))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
+                        else{
+                            Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            edit_comment.setText("");
                         }
-                        else{//expert
-                            ((NewspeedFragment)(((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(0))).new GetDataJSON().execute("http://fungdu0624.phps.kr/biocube/getnewspeed.php").get();
-                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
                     }
-                    else{
-                        Toast.makeText(context, "등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                        edit_comment.setText("");
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
                 }
+
             }
         });
         return view;

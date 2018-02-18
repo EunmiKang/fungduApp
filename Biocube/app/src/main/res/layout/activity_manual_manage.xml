@@ -31,7 +31,8 @@
             android:textSize="17sp"
             android:background="#52B94B"
             android:layout_gravity="right"
-            style="?android:attr/borderlessButtonStyle"/>
+            style="?android:attr/borderlessButtonStyle"
+            android:visibility="gone"/>
     </android.support.v7.widget.Toolbar>
 
 
