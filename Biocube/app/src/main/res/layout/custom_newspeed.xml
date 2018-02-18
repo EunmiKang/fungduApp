@@ -74,7 +74,8 @@
             android:ems="10"
             android:hint="댓글입력"
             android:inputType="textPersonName"
-            android:layout_weight="0.9" />
+            android:layout_weight="0.9"
+            android:theme="@style/EditTextStyle"/>
 
         <Button
             android:id="@+id/btn_registComment"

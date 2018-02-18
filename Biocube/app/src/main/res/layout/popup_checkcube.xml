@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eeeeee"
     android:orientation="vertical"
-    android:layout_width="300dp"
+    android:layout_width="250dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
@@ -32,8 +32,8 @@
         android:background="#ffffff"
         android:gravity="center"
         android:padding="10dp"
-        android:text="선택하신 디바이스가 원하시는 디바이스가 맞습니까?"
-        android:textSize="20sp" />
+        android:text="불이 들어온 큐브를 등록하러면 \n확인을 눌러 진행 하십시오."
+        android:textSize="16sp" />
 
     <!-- 닫기 버튼 -->
 
@@ -41,7 +41,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:weightSum="1">
 
         <Button
@@ -52,10 +52,10 @@
             android:background="@android:color/darker_gray"
             android:gravity="center"
             android:onClick="mCheckNo"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="취소"
             android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/btn_checkYes"
@@ -65,10 +65,10 @@
             android:background="@android:color/holo_green_light"
             android:gravity="center"
             android:onClick="mCheckYes"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="확인"
             android:textColor="#FFFFFF"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
     </LinearLayout>
     <!--// 닫기 버튼 -->
 </LinearLayout>
