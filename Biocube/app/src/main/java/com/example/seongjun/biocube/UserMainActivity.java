@@ -110,6 +110,15 @@ public class UserMainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onDestroy() {//앱 종료시,
+        try{
+            if(mBluetooth.mSocket != null) {
+                mBluetooth.mSocket.close();
+            }
+        }catch(Exception e){}
+        super.onDestroy();
+    }
+    @Override
     public void onBackPressed() {
 //        super.onBackPressed();
         backPressCloseHandler.onBackPressed();

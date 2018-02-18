@@ -40,7 +40,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#efefef"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:backgroundTint="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +50,7 @@
             android:orientation="horizontal"
             android:padding="10dp"
             android:layout_margin="10dp"
-            android:background="#ffffff"
+            android:background="@drawable/border"
             android:weightSum="1">
 
             <ImageView
@@ -173,9 +174,9 @@
                 android:layout_height="0dp"
                 android:layout_margin="3dp"
                 android:layout_weight="0.25"
-                android:background="#ffffff"
                 android:orientation="horizontal"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:background="@drawable/border">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -208,7 +209,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="3dp"
                 android:layout_weight="0.25"
-                android:background="#ffffff"
+                android:background="@drawable/border"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
@@ -243,7 +244,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="3dp"
                 android:layout_weight="0.25"
-                android:background="#ffffff"
+                android:background="@drawable/border"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
@@ -278,7 +279,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="3dp"
                 android:layout_weight="0.25"
-                android:background="#ffffff"
+                android:background="@drawable/border"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
