@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -70,6 +71,10 @@ public class ChangeInfoActivity extends Activity {
         spinner_filter = (Spinner) findViewById(R.id.spinner_filter);
         findViewById(R.id.btn_deleteFilter).setOnClickListener(deleteFilterClickListener);
 
+        StringFilter stringFilter = new StringFilter(this);
+        InputFilter[] allowAlphanumeric = new InputFilter[1];
+        allowAlphanumeric[0] = stringFilter.allowAlphanumeric;
+        changePhone.setFilters(allowAlphanumeric);
         try {
             filterItems = new GetFilter().execute("http://fungdu0624.phps.kr/biocube/getMyfilter.php", id).get();
             if(filterItems.size() == 0) {

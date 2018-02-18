@@ -205,28 +205,28 @@ public class CubeFragment extends Fragment {
         public void onClick(View v) {
             String time_string = String.valueOf(v.getTag());
             setTime("set_time"+time_string);
-            if(time_string.charAt(0) == 'l'){//led 버튼 일때,
-                if(ledTimeState[Integer.parseInt(time_string.substring(3))/2] == 0){
-                    ledTimeState[Integer.parseInt(time_string.substring(3))/2] = 1;
-                    ledTimeButtonArray[Integer.parseInt(time_string.substring(3))/2].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
-                }
-                else{
-                    ledTimeState[Integer.parseInt(time_string.substring(3))/2] = 0;
-                    ledTimeButtonArray[Integer.parseInt(time_string.substring(3))/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+            if(checkSocket()) {
+                if (time_string.charAt(0) == 'l') {//led 버튼 일때,
+                    if (ledTimeState[Integer.parseInt(time_string.substring(3)) / 2] == 0) {
+                        ledTimeState[Integer.parseInt(time_string.substring(3)) / 2] = 1;
+                        ledTimeButtonArray[Integer.parseInt(time_string.substring(3)) / 2].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
+                    } else {
+                        ledTimeState[Integer.parseInt(time_string.substring(3)) / 2] = 0;
+                        ledTimeButtonArray[Integer.parseInt(time_string.substring(3)) / 2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                    }
+                } else {//펌프 버튼 일때,
+                    if (pumpTimeState[Integer.parseInt(time_string.substring(4)) / 2] == 0) {
+                        pumpTimeState[Integer.parseInt(time_string.substring(4)) / 2] = 1;
+                        pumpTimeButtonArray[Integer.parseInt(time_string.substring(4)) / 2].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
+                    } else {
+                        pumpTimeState[Integer.parseInt(time_string.substring(4)) / 2] = 0;
+                        pumpTimeButtonArray[Integer.parseInt(time_string.substring(4)) / 2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                    }
                 }
             }
-            else{//펌프 버튼 일때,
-                if(pumpTimeState[Integer.parseInt(time_string.substring(4))/2] == 0){
-                    pumpTimeState[Integer.parseInt(time_string.substring(4))/2] = 1;
-                    pumpTimeButtonArray[Integer.parseInt(time_string.substring(4))/2].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
-                }
-                else{
-                    pumpTimeState[Integer.parseInt(time_string.substring(4))/2] = 0;
-                    pumpTimeButtonArray[Integer.parseInt(time_string.substring(4))/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
-                }
+            else{
+                Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
             }
-//            int buttonId = ((ImageButton)v).getId();
-//            Toast.makeText(mContext, String.valueOf(buttonId), Toast.LENGTH_SHORT).show();
         }
     };
 
