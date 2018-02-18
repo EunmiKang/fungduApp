@@ -5,6 +5,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.concurrent.ExecutionException;
 
@@ -53,7 +56,10 @@ public class ExpertMainActivity extends AppCompatActivity {
         mTab.setupWithViewPager(mViewPager);
 
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
-            mTab.getTabAt(i).setIcon(mExpertPagerAdapter.getFragmentInfo(i).getIconResId());
+            LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+            ((ImageView)tab.findViewById(R.id.img_tab)).setBackgroundResource(mExpertPagerAdapter.getFragmentInfo(i).getIconResId());
+            mTab.getTabAt(i).setCustomView(tab);
+            //mTab.getTabAt(i).setIcon(mExpertPagerAdapter.getFragmentInfo(i).getIconResId());
         }
     }
 
