@@ -50,55 +50,57 @@
             android:layout_margin="10dp"
             android:layout_weight="0.35"
             android:background="#ffffff"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="10dp"
             android:weightSum="1">
 
-            <TextView
-                android:id="@+id/text_expert_nickname"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:gravity="center"
-                android:textSize="20sp" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="0.3"
+                android:src="@drawable/tutor" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="0.9">
 
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="20dp"
+                <TextView
+                    android:id="@+id/text_expert_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="0.4"
-                    android:src="@drawable/tutor" />
+                    android:gravity="bottom"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="0.5"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_countComment"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:gravity="center_vertical"
                         android:text="나의 코멘트 수"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:layout_marginLeft="10dp"/>
 
                     <TextView
                         android:id="@+id/text_commentNum"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
                         android:gravity="center"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -145,7 +147,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="My Comment"
+                    android:text="나의 코멘트"
                     android:textSize="15sp" />
             </LinearLayout>
 
