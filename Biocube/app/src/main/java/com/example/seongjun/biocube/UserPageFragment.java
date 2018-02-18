@@ -146,12 +146,6 @@ public class UserPageFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void mOnPopupClick(){
-        //데이터 담아서 팝업(액티비티) 호출
-        Intent intent = new Intent(getActivity(), PopQuestion.class);
-        startActivity(intent);
-    }
-
     public class getDiaryNum extends AsyncTask<Object,Object,Integer> {
         // 실제 params 부분에는 execute 함수에서 넣은 인자 값이 들어 있다.
         @Override
