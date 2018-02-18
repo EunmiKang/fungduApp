@@ -155,10 +155,6 @@ public class CubeRegister extends AppCompatActivity {
         });
     }
 
-    public void test(){
-        dialog = ProgressDialog.show(CubeRegister.this,"연결중","기다려주세요...");
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {//어떤 요청인지 구분지어 사용.
         switch(requestCode) {
