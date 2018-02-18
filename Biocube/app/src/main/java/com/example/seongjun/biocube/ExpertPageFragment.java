@@ -165,9 +165,9 @@ public class ExpertPageFragment extends Fragment {
         @Override
         public void onClick(View v) {
             //데이터 담아서 팝업(액티비티) 호출
-            Intent intent = new Intent(getActivity(), PopQuestion.class);
-            intent.putExtra("data", "Test Popup");
-            startActivityForResult(intent, 1);
+            Intent intent = new Intent(getActivity(), CampActivity.class);
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom,R.anim.anim_slide_out_top);
         }
     };
 

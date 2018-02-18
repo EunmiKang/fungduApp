@@ -27,4 +27,10 @@ public class CampActivity extends Activity {
 
         mWebView.loadUrl("http://biocube.strikingly.com/");
     }
+    @Override
+    public void onBackPressed()
+    {
+         super.onBackPressed();
+        overridePendingTransition(R.anim.anim_slide_in_top,R.anim.anim_slide_out_bottom);
+    }
 }

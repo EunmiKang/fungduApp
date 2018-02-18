@@ -218,7 +218,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="문의"
+                    android:text="페어-프로젝트 신청"
                     android:textSize="15sp" />
             </LinearLayout>
 
