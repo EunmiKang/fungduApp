@@ -60,7 +60,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
                 android:layout_weight="0.3"
-                android:src="@drawable/tutor" />
+                android:src="@drawable/tutor_circle" />
 
             <LinearLayout
                 android:layout_width="0dp"

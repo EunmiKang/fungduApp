@@ -72,6 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textSize="15sp"
             android:hint="댓글입력"
             android:inputType="textPersonName"
             android:layout_weight="0.9"
@@ -80,7 +81,7 @@
         <Button
             android:id="@+id/btn_registComment"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_weight="0.1"
             android:background="@android:color/background_light"
             android:text="등록"
