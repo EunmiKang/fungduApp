@@ -205,6 +205,26 @@ public class CubeFragment extends Fragment {
         public void onClick(View v) {
             String time_string = String.valueOf(v.getTag());
             setTime("set_time"+time_string);
+            if(time_string.charAt(0) == 'l'){//led 버튼 일때,
+                if(ledTimeState[Integer.parseInt(time_string.substring(3))/2] == 0){
+                    ledTimeState[Integer.parseInt(time_string.substring(3))/2] = 1;
+                    ledTimeButtonArray[Integer.parseInt(time_string.substring(3))/2].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
+                }
+                else{
+                    ledTimeState[Integer.parseInt(time_string.substring(3))/2] = 0;
+                    ledTimeButtonArray[Integer.parseInt(time_string.substring(3))/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                }
+            }
+            else{//펌프 버튼 일때,
+                if(pumpTimeState[Integer.parseInt(time_string.substring(4))/2] == 0){
+                    pumpTimeState[Integer.parseInt(time_string.substring(4))/2] = 1;
+                    pumpTimeButtonArray[Integer.parseInt(time_string.substring(4))/2].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
+                }
+                else{
+                    pumpTimeState[Integer.parseInt(time_string.substring(4))/2] = 0;
+                    pumpTimeButtonArray[Integer.parseInt(time_string.substring(4))/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                }
+            }
 //            int buttonId = ((ImageButton)v).getId();
 //            Toast.makeText(mContext, String.valueOf(buttonId), Toast.LENGTH_SHORT).show();
         }
@@ -549,11 +569,13 @@ public class CubeFragment extends Fragment {
                                                 if(ledTime.length > 1 ){//led 시간 설정 되어 있을 때,
                                                     for(int i = 1; i < ledTime.length; i++) {
                                                         ledTimeState[Integer.parseInt(ledTime[i])/2] = 1;
-                                                        if(ledTimeState[Integer.parseInt(ledTime[i])/2] == 0){
-                                                           ledTimeButtonArray[Integer.parseInt(ledTime[i])/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                                                    }
+                                                    for(int i = 0; i <ledTimeButtonArray.length;i++){
+                                                        if(ledTimeState[i] == 0){
+                                                            ledTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_off_65x65);
                                                         }
                                                         else{
-                                                            ledTimeButtonArray[Integer.parseInt(ledTime[i])/2].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
+                                                            ledTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
                                                         }
                                                     }
                                                 }
@@ -574,11 +596,13 @@ public class CubeFragment extends Fragment {
                                                 if(pumpTime.length > 1){//pump 시간설정 되어 있을 때
                                                     for(int i = 1; i < pumpTime.length; i++){
                                                         pumpTimeState[Integer.parseInt(pumpTime[i])/2] = 1;
-                                                        if(pumpTimeState[Integer.parseInt(pumpTime[i])/2] == 0){
-                                                            pumpTimeButtonArray[Integer.parseInt(pumpTime[i])/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                                                    }
+                                                    for(int i = 0; i < pumpTimeButtonArray.length;i++){
+                                                        if(pumpTimeState[i] == 0){
+                                                            pumpTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_off_65x65);
                                                         }
                                                         else{
-                                                            pumpTimeButtonArray[Integer.parseInt(pumpTime[i])/2].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
+                                                            pumpTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
                                                         }
                                                     }
                                                 }
@@ -587,18 +611,6 @@ public class CubeFragment extends Fragment {
                                                         pumpTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_off_65x65);
                                                     }
                                                 }
-//                                                if(datas[1].length() > 1){//led
-//                                                    String[] ledTime = datas[1].split(" ");
-//                                                    for(int i = 1; i < ledTime.length; i++){
-//                                                        ledState[Integer.parseInt(ledTime[i])] = 1;
-//                                                    }
-//                                                }
-//                                                if(datas[2].length() > 1){//pump
-//                                                    String[] pumpTime = datas[2].split(" ");
-//                                                    for(int i = 1; i < pumpTime.length; i++){
-//                                                        pumpState[Integer.parseInt(pumpTime[i])] = 1;
-//                                                    }
-//                                                }
                                             }
                                         }
 
