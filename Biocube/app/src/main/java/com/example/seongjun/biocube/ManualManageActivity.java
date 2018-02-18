@@ -80,8 +80,8 @@ public class ManualManageActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        //String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.plantNameArray;
-        //Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).adapter.manualInitImgArray;
+        //String[] plantNameArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).adapter.plantNameArray;
+        //Bitmap[] manualInitImgArray = ((ManualFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).adapter.manualInitImgArray;
         for(int i=0; i<plantNameArray.length; i++) {
             manualList.add(new ManualItem(manualInitImgArray[i], plantNameArray[i]));
         }

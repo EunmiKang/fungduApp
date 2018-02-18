@@ -251,7 +251,7 @@ public class ChangeInfoActivity extends Activity {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        ((ExpertPageFragment) ((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(2)).settingPage(changenickname);
+                        ((ExpertPageFragment) ((ExpertMainActivity) ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1)).settingPage(changenickname);
                     } else if(authority == 1) {
                         ((UserPageFragment) ((UserMainActivity) UserMainActivity.context).mUserPagerAdapter.getItem(3)).settingNickname();
                     }

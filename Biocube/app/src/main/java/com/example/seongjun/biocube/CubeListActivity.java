@@ -153,7 +153,7 @@ public class CubeListActivity extends AppCompatActivity {
                             }
                             list_cube.setAdapter(adapter);
                             ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).setSpinner();
-                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(3)).new SettingAdminPage().execute();
+                            ((AdminPageFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(2)).new SettingAdminPage().execute();
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {

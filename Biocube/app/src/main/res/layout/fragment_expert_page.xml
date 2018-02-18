@@ -168,7 +168,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:src="@drawable/mypage_info" />
+                        android:src="@drawable/my_myinfo_135x135" />
                 </LinearLayout>
 
                 <Button
@@ -203,7 +203,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:src="@drawable/mypage_question" />
+                        android:src="@drawable/my_camp_135x135" />
                 </LinearLayout>
 
                 <Button
@@ -238,7 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:src="@drawable/mypage_logout" />
+                        android:src="@drawable/my_logout_135x135" />
                 </LinearLayout>
 
                 <Button

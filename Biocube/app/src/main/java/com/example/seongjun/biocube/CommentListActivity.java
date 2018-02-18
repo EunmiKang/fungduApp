@@ -99,7 +99,7 @@ public class CommentListActivity extends AppCompatActivity {
 
             /* 전문가일 경우 마이페이지 코멘트 수 업데이트 */
             if(!id.equals("admin")) {
-                ((ExpertPageFragment)((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(2)).setCommentNum();
+                ((ExpertPageFragment)((ExpertMainActivity)ExpertMainActivity.mContext).mExpertPagerAdapter.getItem(1)).setCommentNum();
             }
 
             Toast.makeText(CommentListActivity.this, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
