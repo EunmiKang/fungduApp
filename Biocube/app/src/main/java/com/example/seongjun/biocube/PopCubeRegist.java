@@ -80,7 +80,7 @@ public class PopCubeRegist extends Activity {
 
     }
 
-    public void mOnClose(View v){
+    public void mOnRegist(View v){
         cubeName = edit_cubeName.getText().toString();
         if(!cubeName.equals("")) {
             if(!cubeName.equals("등록한 큐브 없음")) {
@@ -108,6 +108,8 @@ public class PopCubeRegist extends Activity {
             Toast.makeText(this, "큐브이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     public class settingSpinner extends AsyncTask<Object,Object,Integer> {
 
@@ -256,12 +258,5 @@ public class PopCubeRegist extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-
-        // super.onBackPressed(); // Comment this super call to avoid calling finish() or fragmentmanager's backstack pop operation.
     }
 }

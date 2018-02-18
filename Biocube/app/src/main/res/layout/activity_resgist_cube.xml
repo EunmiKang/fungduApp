@@ -20,7 +20,8 @@
             android:layout_gravity="center"
             android:text="블루투스 기기검색"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="28sp"
+            android:fontFamily=""/>
 
     </android.support.v7.widget.Toolbar>
 
@@ -37,7 +38,8 @@
         android:layout_weight="0.1"
         android:onClick="mOnBluetoothSearch"
         android:text="검색"
-        android:textSize="28dp"
-        android:theme="@style/BioCubeButton" />
+        android:textSize="20dp"
+        android:theme="@style/BioCubeButton"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
