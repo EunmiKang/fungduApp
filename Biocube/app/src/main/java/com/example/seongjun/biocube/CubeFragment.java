@@ -478,9 +478,6 @@ public class CubeFragment extends Fragment {
             }
             return device;
         }
-//        @Override
-//        public void onPostExecute(String result) {
-//        }
     }
 
     //데이터 수신
