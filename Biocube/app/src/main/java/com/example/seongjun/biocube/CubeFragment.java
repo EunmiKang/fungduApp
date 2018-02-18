@@ -69,11 +69,11 @@ public class CubeFragment extends Fragment {
     TextView text_temper;
     TextView text_humi_air;
     TextView text_humi_soil;
-    TextView text_motor;
-    TextView text_led;
     Spinner spinner_cubeName;
-    Button btn_ledTime;
-    Button btn_pumpTime;
+    ImageButton[] ledTimeButtonArray = new ImageButton[12];
+    ImageButton[] pumpTimeButtonArray = new ImageButton[12];
+    ImageButton btn_led;
+    ImageButton btn_pump;
 
     private int readBufferPosition;
     byte[] readBuffer;
@@ -81,8 +81,10 @@ public class CubeFragment extends Fragment {
     InputStream mInputStream = null;
     char mCharDelimiter =  '\n';
     Context mContext;
-    int[] ledState = new int[24];
-    int[] pumpState = new int[24];
+    int[] ledTimeState = new int[12];
+    int[] pumpTimeState = new int[12];
+    int ledState = 0;
+    int pumpState = 0;
 
     public CubeFragment() {
         // Required empty public constructor
@@ -122,7 +124,38 @@ public class CubeFragment extends Fragment {
         text_temper = (TextView) view.findViewById(R.id.text_temp);
         text_humi_air = (TextView) view.findViewById(R.id.text_humi_air);
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
+        btn_led = (ImageButton)view.findViewById(R.id.btn_led);
+        btn_pump = (ImageButton)view.findViewById(R.id.btn_pump);
 
+        ledTimeButtonArray[0] =(ImageButton) view.findViewById(R.id.led_am_00);
+        ledTimeButtonArray[1] =(ImageButton) view.findViewById(R.id.led_am_02);
+        ledTimeButtonArray[2] =(ImageButton) view.findViewById(R.id.led_am_04);
+        ledTimeButtonArray[3] =(ImageButton) view.findViewById(R.id.led_am_06);
+        ledTimeButtonArray[4] =(ImageButton) view.findViewById(R.id.led_am_08);
+        ledTimeButtonArray[5] =(ImageButton) view.findViewById(R.id.led_am_10);
+        ledTimeButtonArray[6] =(ImageButton) view.findViewById(R.id.led_pm_12);
+        ledTimeButtonArray[7] =(ImageButton) view.findViewById(R.id.led_pm_14);
+        ledTimeButtonArray[8] =(ImageButton) view.findViewById(R.id.led_pm_16);
+        ledTimeButtonArray[9] =(ImageButton) view.findViewById(R.id.led_pm_18);
+        ledTimeButtonArray[10] =(ImageButton) view.findViewById(R.id.led_pm_20);
+        ledTimeButtonArray[11] =(ImageButton) view.findViewById(R.id.led_pm_22);
+        pumpTimeButtonArray[0] =(ImageButton) view.findViewById(R.id.pump_am_00);
+        pumpTimeButtonArray[1] =(ImageButton) view.findViewById(R.id.pump_am_02);
+        pumpTimeButtonArray[2] =(ImageButton) view.findViewById(R.id.pump_am_04);
+        pumpTimeButtonArray[3] =(ImageButton) view.findViewById(R.id.pump_am_06);
+        pumpTimeButtonArray[4] =(ImageButton) view.findViewById(R.id.pump_am_08);
+        pumpTimeButtonArray[5] =(ImageButton) view.findViewById(R.id.pump_am_10);
+        pumpTimeButtonArray[6] =(ImageButton) view.findViewById(R.id.pump_pm_12);
+        pumpTimeButtonArray[7] =(ImageButton) view.findViewById(R.id.pump_pm_14);
+        pumpTimeButtonArray[8] =(ImageButton) view.findViewById(R.id.pump_pm_16);
+        pumpTimeButtonArray[9] =(ImageButton) view.findViewById(R.id.pump_pm_18);
+        pumpTimeButtonArray[10] =(ImageButton) view.findViewById(R.id.pump_pm_20);
+        pumpTimeButtonArray[11] =(ImageButton) view.findViewById(R.id.pump_pm_22);
+
+        for(int i = 0; i < ledTimeButtonArray.length; i++){
+            ledTimeButtonArray[i].setOnClickListener(timeClickListener);
+            pumpTimeButtonArray[i].setOnClickListener(timeClickListener);
+        }
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
         try {//로그인된 아이디 불러옴
@@ -167,6 +200,28 @@ public class CubeFragment extends Fragment {
         return view;
     }
 
+    ImageButton.OnClickListener timeClickListener = new ImageButton.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String time_string = String.valueOf(v.getTag());
+            setTime("set_time"+time_string);
+//            int buttonId = ((ImageButton)v).getId();
+//            Toast.makeText(mContext, String.valueOf(buttonId), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    public void setTime(String msg){
+        if(id.equals("admin")){//admin일때,
+            if(((AdminMainActivity)getActivity()).mBluetooth.mSocket != null){
+                ((AdminMainActivity)getActivity()).mBluetooth.sendData(msg);
+            }
+        }
+        else{//user가 아닐때
+            if(((UserMainActivity)getActivity()).mBluetooth.mSocket != null){
+                ((UserMainActivity)getActivity()).mBluetooth.sendData(msg);
+            }
+        }
+    }
     public void setSpinner(){//큐브 목록을 spinner에 설정하는 메소드
         String[] cubeList;
 
@@ -198,6 +253,14 @@ public class CubeFragment extends Fragment {
                 } else {
                     ((AdminMainActivity) getActivity()).mBluetooth.sendData("led");
                 }//권한에 맞는 블루투스 객체를 가져와서 'led'라는 신호를 device에 보냄.
+                if(ledState == 1){
+                    ledState = 0;
+                    btn_led.setBackgroundResource(R.drawable.cont_time_light_off_145x135);
+                }
+                else{
+                    ledState = 1;
+                    btn_led.setBackgroundResource(R.drawable.cont_time_light_on_145x135);
+                }
             }else {
                 Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
             }
@@ -214,6 +277,14 @@ public class CubeFragment extends Fragment {
                 } else {
                     ((AdminMainActivity) getActivity()).mBluetooth.sendData("pump");
                 }//권한에 맞는 블루투스 객체를 가져와서 'pump'라는 신호를 보냄.
+                if(pumpState == 1){
+                    pumpState = 0;
+                    btn_pump.setBackgroundResource(R.drawable.cont_time_pump_off_139x129);
+                }
+                else{
+                    pumpState = 1;
+                    btn_pump.setBackgroundResource(R.drawable.cont_time_pump_on_139x129);
+                }
             }else {
                 Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
             }
@@ -466,18 +537,68 @@ public class CubeFragment extends Fragment {
                                                 text_humi_soil.setTextColor(Color.parseColor(color));
                                             }
                                             else if(datas[0].equals("ONTIME")){
-                                                if(datas[1].length() > 1){//led
-                                                    String[] ledTime = datas[1].split(" ");
-                                                    for(int i = 1; i < ledTime.length; i++){
-                                                        ledState[Integer.parseInt(ledTime[i])] = 1;
+                                                String[] ledTime = datas[1].split(" ");
+                                                if(ledTime[0].equals("ON")){
+                                                    btn_led.setBackgroundResource(R.drawable.cont_time_light_on_145x135);
+                                                    ledState = 1;
+                                                }
+                                                else{
+                                                    btn_led.setBackgroundResource(R.drawable.cont_time_light_off_145x135);
+                                                    ledState = 0;
+                                                }
+                                                if(ledTime.length > 1 ){//led 시간 설정 되어 있을 때,
+                                                    for(int i = 1; i < ledTime.length; i++) {
+                                                        ledTimeState[Integer.parseInt(ledTime[i])/2] = 1;
+                                                        if(ledTimeState[Integer.parseInt(ledTime[i])/2] == 0){
+                                                           ledTimeButtonArray[Integer.parseInt(ledTime[i])/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                                                        }
+                                                        else{
+                                                            ledTimeButtonArray[Integer.parseInt(ledTime[i])/2].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
+                                                        }
                                                     }
                                                 }
-                                                if(datas[2].length() > 1){//pump
-                                                    String[] pumpTime = datas[2].split(" ");
+                                                else{//설정이 아무것도 안되어 있을 때,
+                                                    for(int i = 0; i<ledTimeButtonArray.length;i++){
+                                                        ledTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                                                    }
+                                                }
+                                                String[] pumpTime = datas[2].split(" ");
+                                                if(pumpTime[0].equals("ON")){
+                                                    btn_pump.setBackgroundResource(R.drawable.cont_time_pump_on_139x129);
+                                                    pumpState = 1;
+                                                }
+                                                else{
+                                                    btn_pump.setBackgroundResource(R.drawable.cont_time_pump_off_139x129);
+                                                    pumpState = 0;
+                                                }
+                                                if(pumpTime.length > 1){//pump 시간설정 되어 있을 때
                                                     for(int i = 1; i < pumpTime.length; i++){
-                                                        pumpState[Integer.parseInt(pumpTime[i])] = 1;
+                                                        pumpTimeState[Integer.parseInt(pumpTime[i])/2] = 1;
+                                                        if(pumpTimeState[Integer.parseInt(pumpTime[i])/2] == 0){
+                                                            pumpTimeButtonArray[Integer.parseInt(pumpTime[i])/2].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                                                        }
+                                                        else{
+                                                            pumpTimeButtonArray[Integer.parseInt(pumpTime[i])/2].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
+                                                        }
                                                     }
                                                 }
+                                                else{//시간 설정 안되어 있을 때,
+                                                    for(int i = 0; i<pumpTimeButtonArray.length;i++){
+                                                        pumpTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_off_65x65);
+                                                    }
+                                                }
+//                                                if(datas[1].length() > 1){//led
+//                                                    String[] ledTime = datas[1].split(" ");
+//                                                    for(int i = 1; i < ledTime.length; i++){
+//                                                        ledState[Integer.parseInt(ledTime[i])] = 1;
+//                                                    }
+//                                                }
+//                                                if(datas[2].length() > 1){//pump
+//                                                    String[] pumpTime = datas[2].split(" ");
+//                                                    for(int i = 1; i < pumpTime.length; i++){
+//                                                        pumpState[Integer.parseInt(pumpTime[i])] = 1;
+//                                                    }
+//                                                }
                                             }
                                         }
 

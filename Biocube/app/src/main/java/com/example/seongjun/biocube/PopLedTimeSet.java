@@ -95,7 +95,7 @@ public class PopLedTimeSet extends Activity{
         for(int i = 0; i < timeButtonArray.length; i++){
             timeButtonArray[i].setOnClickListener(timeClickListener);
         }
-        setColor();
+//        setColor();
     }
 
     View.OnClickListener timeClickListener = new View.OnClickListener(){
@@ -105,26 +105,26 @@ public class PopLedTimeSet extends Activity{
             setTime("set_timeled"+time_string);
             int time_int = Integer.parseInt(time_string);
 
-            if(id.equals("admin")){
-                if(((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[time_int] == 0){
-                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[time_int] = 1;
-                    ((Button)v).setBackgroundResource(R.color.navy);
-                }
-                else{
-                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[time_int] = 0;
-                    ((Button)v).setBackgroundResource(R.color.lightYellow);
-                }
-            }
-            else{
-                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[time_int] == 0){
-                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[time_int] = 1;
-                    ((Button)v).setBackgroundResource(R.color.navy);
-                }
-                else{
-                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[time_int] = 0;
-                    ((Button)v).setBackgroundResource(R.color.lightYellow);
-                }
-            }
+//            if(id.equals("admin")){
+//                if(((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[time_int] == 0){
+//                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[time_int] = 1;
+//                    ((Button)v).setBackgroundResource(R.color.navy);
+//                }
+//                else{
+//                    ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[time_int] = 0;
+//                    ((Button)v).setBackgroundResource(R.color.lightYellow);
+//                }
+//            }
+//            else{
+//                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[time_int] == 0){
+//                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[time_int] = 1;
+//                    ((Button)v).setBackgroundResource(R.color.navy);
+//                }
+//                else{
+//                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[time_int] = 0;
+//                    ((Button)v).setBackgroundResource(R.color.lightYellow);
+//                }
+//            }
         }
     };
     public void setTime(String msg){
@@ -139,22 +139,22 @@ public class PopLedTimeSet extends Activity{
             }
         }
     }
-    public void setColor(){
-        if(id.equals("admin")){
-            for(int i = 0; i < 24; i++){
-                if( ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[i] == 1){
-                    timeButtonArray[i].setBackgroundResource(R.color.navy);
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < 24; i++){
-                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[i] == 1){
-                    timeButtonArray[i].setBackgroundResource(R.color.navy);
-                }
-            }
-        }
-    }
+//    public void setColor(){
+//        if(id.equals("admin")){
+//            for(int i = 0; i < 24; i++){
+//                if( ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).ledState[i] == 1){
+//                    timeButtonArray[i].setBackgroundResource(R.color.navy);
+//                }
+//            }
+//        }
+//        else{
+//            for(int i = 0; i < 24; i++){
+//                if(((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).ledState[i] == 1){
+//                    timeButtonArray[i].setBackgroundResource(R.color.navy);
+//                }
+//            }
+//        }
+//    }
 }
 
 
