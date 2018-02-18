@@ -80,6 +80,19 @@ public class PopCubeRegist extends Activity {
 
     }
 
+    public void mOnCancel(View v){
+        try {
+            ((CubeRegister)CubeRegister.mcontext).mBluetooth.sendData("ok");
+            ((CubeRegister)CubeRegister.mcontext).mBluetooth.mSocket.close();//소켓 종료
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
+
+        //액티비티(팝업) 닫기
+        finish();
+    }
     public void mOnRegist(View v){
         cubeName = edit_cubeName.getText().toString();
         if(!cubeName.equals("")) {
@@ -258,5 +271,11 @@ public class PopCubeRegist extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        // super.onBackPressed(); // Comment this super call to avoid calling finish() or fragmentmanager's backstack pop operation.
     }
 }
