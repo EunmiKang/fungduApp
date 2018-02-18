@@ -263,6 +263,11 @@ public class CubeRegister extends AppCompatActivity {
         unregisterReceiver(mBluetooth.mBluetoothStateReceiver);
         try{
             mBluetooth.mSocket.close();
+            if(id.equals("admin")) {
+                ((CubeFragment)((AdminMainActivity)AdminMainActivity.context).mAdminPagerAdapter.getItem(0)).bluetoothFlag = false;
+            } else {
+                ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).bluetoothFlag = false;
+            }
         }catch(Exception e){}
         super.onDestroy();
     }

@@ -61,7 +61,6 @@ public class CubeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     String id;//로그인된 id를 받을 것.
-//    Bluetooth mBluetooth = new Bluetooth();
     Set<BluetoothDevice> mDevices;
     BluetoothAdapter mBluetoothAdapter;
     int mPariedDeviceCount = 0;
@@ -85,6 +84,8 @@ public class CubeFragment extends Fragment {
     int[] pumpTimeState = new int[12];
     int ledState = 0;
     int pumpState = 0;
+
+    boolean bluetoothFlag = false;
 
     public CubeFragment() {
         // Required empty public constructor
@@ -330,81 +331,90 @@ public class CubeFragment extends Fragment {
     Button.OnClickListener connectClickListener= new Button.OnClickListener(){//연결 버튼 눌렀을 때,
         @Override
         public void onClick(View v) {
-            if(spinner_cubeName.getAdapter().getCount() > 0) {
-                String selectedCube = spinner_cubeName.getSelectedItem().toString();//spinner에 선택된 큐브를 가져옴.
-                if(!selectedCube.equals("등록한 큐브 없음")) {
-                    try {
-                        selectedCube = URLEncoder.encode(selectedCube, "UTF-8");//한글 에러 막기 위해 인코딩
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        long now = System.currentTimeMillis();
-                        Date date = new Date(now);
-                        SimpleDateFormat sdfNow = new SimpleDateFormat("yy/MM/dd/HH/mm/ss");
-                        String formatDate = sdfNow.format(date);
-
-                        String deviceNum = new GetDevice().execute(selectedCube).get();//선택한 큐브에 대한 device를 얻어와서 블루투스 연결.
-                        if (!id.equals("admin")) {//권한이 user일 때,
-                            switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
-                                case 0:
-                                    Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-                                    break;
-                                case 1:
-                                    Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
-                                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                                    startActivityForResult(enableBtIntent, ((UserMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
-                                    break;
-                                case 2:
-                                    mDevices = mBluetoothAdapter.getBondedDevices();
-                                    mPariedDeviceCount = mDevices.size();
-                            }
-
-                            if (mDevices != null) {
-                                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                                if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
-                                    beginListenForData_1();
-                                    ((UserMainActivity) getActivity()).mBluetooth.sendData("connect" + formatDate);
-                                } else {
-                                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        } else {//권한이 일반 admin일 때,
-                            switch (((AdminMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
-                                case 0:
-                                    Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
-                                    break;
-                                case 1:
-                                    Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
-                                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                                    startActivityForResult(enableBtIntent, ((AdminMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
-                                    break;
-                                case 2:
-                                    mDevices = mBluetoothAdapter.getBondedDevices();
-                                    mPariedDeviceCount = mDevices.size();
-                            }
-                            if (mDevices != null) {
-                                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
-                                if (((AdminMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
-                                    beginListenForData_1();
-                                    ((AdminMainActivity) getActivity()).mBluetooth.sendData("connect" + formatDate);
-                                } else {
-                                    Toast.makeText(getContext(), "블루투스 연결 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show();
-                                }
-                            }
+            if(bluetoothFlag) { // 연결중
+                Toast.makeText(getContext(), "블루투스 연결중입니다.", Toast.LENGTH_LONG).show();
+            } else {
+                bluetoothFlag = true;
+                if(spinner_cubeName.getAdapter().getCount() > 0) {
+                    String selectedCube = spinner_cubeName.getSelectedItem().toString();//spinner에 선택된 큐브를 가져옴.
+                    if(!selectedCube.equals("등록한 큐브 없음")) {
+                        try {
+                            selectedCube = URLEncoder.encode(selectedCube, "UTF-8");//한글 에러 막기 위해 인코딩
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                        try {
+                            long now = System.currentTimeMillis();
+                            Date date = new Date(now);
+                            SimpleDateFormat sdfNow = new SimpleDateFormat("yy/MM/dd/HH/mm/ss");
+                            String formatDate = sdfNow.format(date);
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
+                            String deviceNum = new GetDevice().execute(selectedCube).get();//선택한 큐브에 대한 device를 얻어와서 블루투스 연결.
+                            if (!id.equals("admin")) {//권한이 user일 때,
+                                switch (((UserMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
+                                    case 0:
+                                        Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                                        bluetoothFlag = false;
+                                        break;
+                                    case 1:
+                                        Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                                        bluetoothFlag = false;
+                                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                                        startActivityForResult(enableBtIntent, ((UserMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
+                                        break;
+                                    case 2:
+                                        mDevices = mBluetoothAdapter.getBondedDevices();
+                                        mPariedDeviceCount = mDevices.size();
+                                }
+
+                                if (mDevices != null) {
+                                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                                    if (((UserMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                                        beginListenForData_1();
+                                        ((UserMainActivity) getActivity()).mBluetooth.sendData("connect" + formatDate);
+                                    } else {
+                                        Toast.makeText(getContext(), "선택한 큐브의 블루투스가 켜져있지 않습니다.", Toast.LENGTH_SHORT).show();
+                                        bluetoothFlag = false;
+                                    }
+                                }
+                            } else {//권한이 일반 admin일 때,
+                                switch (((AdminMainActivity) getActivity()).mBluetooth.checkBluetooth(getContext())) {
+                                    case 0:
+                                        Toast.makeText(getContext(), "기기가 블루투스를 지원하지 않습니다.", Toast.LENGTH_LONG).show();
+                                        break;
+                                    case 1:
+                                        Toast.makeText(getContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
+                                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                                        startActivityForResult(enableBtIntent, ((AdminMainActivity) getActivity()).mBluetooth.REQUEST_ENABLE_BT);
+                                        break;
+                                    case 2:
+                                        mDevices = mBluetoothAdapter.getBondedDevices();
+                                        mPariedDeviceCount = mDevices.size();
+                                }
+                                if (mDevices != null) {
+                                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceNum);
+                                    if (((AdminMainActivity) getActivity()).mBluetooth.connectToSelectedDevice(deviceNum, mDevices, device)) {
+                                        beginListenForData_1();
+                                        ((AdminMainActivity) getActivity()).mBluetooth.sendData("connect" + formatDate);
+                                    } else {
+                                        Toast.makeText(getContext(), "선택한 큐브의 블루투스가 켜져있지 않습니다.", Toast.LENGTH_LONG).show();
+                                        bluetoothFlag = false;
+                                    }
+                                }
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(mContext, "등록된 큐브가 없습니다.\n큐브를 등록하고 연결해주세요.", Toast.LENGTH_LONG).show();
                     }
-                } else {
+                }
+                else{
                     Toast.makeText(mContext, "등록된 큐브가 없습니다.\n큐브를 등록하고 연결해주세요.", Toast.LENGTH_LONG).show();
                 }
-            }
-            else{
-                Toast.makeText(mContext, "등록된 큐브가 없습니다.\n큐브를 등록하고 연결해주세요.", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -669,6 +679,7 @@ public class CubeFragment extends Fragment {
             mInputStream.close();
             ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();//소켓 종료
             ((AdminMainActivity)getActivity()).mBluetooth.mSocket.close();
+            bluetoothFlag = false;
         }catch(Exception e){}
         super.onDestroy();
     }

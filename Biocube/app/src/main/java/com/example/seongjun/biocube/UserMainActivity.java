@@ -20,7 +20,9 @@ public class UserMainActivity extends AppCompatActivity {
     Bluetooth mBluetooth = new Bluetooth();
     private static final String TAG = "CUBEFRAGEMENT";
     PagerAdapter mUserPagerAdapter;
+
     public static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +94,7 @@ public class UserMainActivity extends AppCompatActivity {
                     if(mBluetooth.mSocket != null) {
                         try {
                             mBluetooth.mSocket.close();
+                            ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).bluetoothFlag = false;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
