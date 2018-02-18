@@ -20,6 +20,7 @@ public class AdminMainActivity extends AppCompatActivity {
     PagerAdapter mAdminPagerAdapter;
 
     public static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

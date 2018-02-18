@@ -200,6 +200,7 @@ public class WriteDiaryFragment extends Fragment {
                     selectedCube = URLEncoder.encode(selectedCube, "UTF-8");
                     deviceNum = new GetDevice().execute(selectedCube).get();
                     ((UserMainActivity) getActivity()).mBluetooth.mSocket.close();
+                    ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).bluetoothFlag = false;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -849,6 +850,7 @@ public class WriteDiaryFragment extends Fragment {
                                             contentText.setText("대기온도 : "+ datas[1]+", 대기습도 : "+datas[2] +"\n" +"토양습도 : "+datas[3] + "\n" +contentText.getText().toString());
                                             try{
                                                 ((UserMainActivity)getActivity()).mBluetooth.mSocket.close();
+                                                ((CubeFragment)((UserMainActivity)UserMainActivity.context).mUserPagerAdapter.getItem(0)).bluetoothFlag = false;
                                             }catch (Exception e){
                                                 e.printStackTrace();
                                             }
