@@ -24,47 +24,84 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="0.6">
+        android:layout_weight="0.6"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/idText"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:hint="ID"
-            android:inputType="text"
-            android:digits="@string/myAlphaNumeric"
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:privateImeOptions="defaultInputmode=english"
-            android:padding="10dp"
-            android:theme="@style/EditTextStyle"
-            />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <EditText
-            android:id="@+id/pwText"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:hint="PW"
-            android:inputType="textPassword"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="아이디"
+                android:textSize="18dp"
+                android:layout_weight="0.3"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/idText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:inputType="text"
+                android:padding="10dp"
+                android:privateImeOptions="defaultInputmode=english"
+                android:theme="@style/LoginEditTextStyle"
+                android:layout_weight="0.7"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="10dp"
-            android:theme="@style/EditTextStyle"
-            />
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="비밀번호"
+                android:textSize="18dp"
+                android:layout_weight="0.3"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/pwText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:theme="@style/LoginEditTextStyle"
+                android:layout_weight="0.7"/>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/loginBtn"
             android:layout_width="190dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:background="@drawable/login"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login" />
 
         <ImageButton
             android:id="@+id/joinBtn"
             android:layout_width="190dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:background="@drawable/regist"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/regist" />
     </LinearLayout>
 </LinearLayout>

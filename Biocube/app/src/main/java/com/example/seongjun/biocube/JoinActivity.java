@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,11 @@ public class JoinActivity extends AppCompatActivity {
         findViewById(R.id.radio_expert).setOnClickListener(radioExpertClickListener);
         findViewById(R.id.radio_user).setOnClickListener(radioUserClickListener);
 
+        StringFilter stringFilter = new StringFilter(this);
+        InputFilter[] allowAlphanumeric = new InputFilter[1];
+        allowAlphanumeric[0] = stringFilter.allowAlphanumeric;
+        editId.setFilters(allowAlphanumeric);
+        editPw.setFilters(allowAlphanumeric);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_join);
         setSupportActionBar(toolbar);
 

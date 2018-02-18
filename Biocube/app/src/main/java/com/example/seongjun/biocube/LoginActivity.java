@@ -11,6 +11,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +27,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 /**
  * Created by Seongjun on 2017. 11. 1..
@@ -83,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
 
     /**
      * 쓰레드: 내부 DB check용
@@ -159,6 +163,12 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent;
             if(status < 0) {
                 setContentView(R.layout.activity_login);
+                idText = (EditText) findViewById(R.id.idText);
+                pwText = (EditText) findViewById(R.id.pwText);
+                StringFilter stringFilter = new StringFilter(LoginActivity.this);
+                InputFilter[] allowAlphanumeric = new InputFilter[1];
+                allowAlphanumeric[0] = stringFilter.allowAlphanumeric;
+                idText.setFilters(allowAlphanumeric);
                 findViewById(R.id.loginBtn).setOnClickListener(loginClickListener);
                 findViewById(R.id.joinBtn).setOnClickListener(joinClickListener);
                 if(status == -2) {

@@ -106,8 +106,6 @@ public class UserMainActivity extends AppCompatActivity {
         });
     }
 
-
-
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
