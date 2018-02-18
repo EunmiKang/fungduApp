@@ -48,16 +48,12 @@
         <item name="android:dayOfWeekBackground">@color/biocube</item>
         <item name="android:selectedDateVerticalBar">@color/biocube</item>
         <item name="android:selectableItemBackgroundBorderless">@color/biocube</item>
-        <!--dayOfWeekBackground-->
-        <!--dayOfWeekTextAppearance-->
-        <!--headerMonthTextAppearance-->
-        <!--headerDayOfMonthTextAppearance-->
-        <!--headerYearTextAppearance-->
-        <!--headerSelectedTextColor-->
-        <!--yearListItemTextAppearance-->
-        <!--yearListSelectorColor-->
-        <!--calendarTextColor-->
-        <!--calendarSelectedTextColor-->
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/biocube</item>
+        <item name="colorControlActivated">@color/biocube</item>
+        <item name="android:textCursorDrawable">@color/biocube</item>
     </style>
 
 

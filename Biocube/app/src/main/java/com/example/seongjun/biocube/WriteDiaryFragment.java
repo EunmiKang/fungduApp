@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -29,6 +30,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,6 +38,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -259,10 +262,25 @@ public class WriteDiaryFragment extends Fragment {
         /* 작성 완료 버튼 리스너 설정 */
         ImageButton registerBtn = (ImageButton) view.findViewById(R.id.btn_diary_register);
         registerBtn.setOnClickListener(diaryRegisterListener);
+        registerBtn.setOnTouchListener(diaryRegisterTouchListener);
 
         return view;
     }
 
+    ImageButton.OnTouchListener diaryRegisterTouchListener = new ImageButton.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            ImageButton image = (ImageButton)v;
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
+                ((LinearLayout)v.getParent()).setPadding(10,10,10,10);
+                image.setColorFilter(0xaa111111, PorterDuff.Mode.SRC_OVER);
+            }else if(event.getAction() == MotionEvent.ACTION_UP){
+                ((LinearLayout)v.getParent()).setPadding(0,0,0,0);
+                image.setColorFilter(0x00000000, PorterDuff.Mode.SRC_OVER);
+            }
+            return false;
+        }
+    };
     public void setSpinner(){
         String[] cubeList;
         try {

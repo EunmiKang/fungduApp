@@ -117,15 +117,11 @@ public class CubeFragment extends Fragment {
         view.findViewById(R.id.btn_connect).setOnClickListener(connectClickListener);
         view.findViewById(R.id.btn_led).setOnClickListener(setLedClickListener);
         view.findViewById(R.id.btn_pump).setOnClickListener(setPumpClickListener);
-        view.findViewById(R.id.btn_led).setOnTouchListener(setTouchListener);
-        view.findViewById(R.id.btn_pump).setOnTouchListener(setTouchListener);
+//        view.findViewById(R.id.btn_led).setOnTouchListener(setTouchListener);
+//        view.findViewById(R.id.btn_pump).setOnTouchListener(setTouchListener);
         text_temper = (TextView) view.findViewById(R.id.text_temp);
         text_humi_air = (TextView) view.findViewById(R.id.text_humi_air);
         text_humi_soil = (TextView) view.findViewById(R.id.text_humi_soil);
-        text_motor = (TextView) view.findViewById(R.id.text_motor);
-        text_led = (TextView) view.findViewById(R.id.text_led);
-        btn_ledTime = (Button) view.findViewById(R.id.btn_ledTime);
-        btn_pumpTime =(Button) view.findViewById(R.id.btn_pumpTime);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//블루투스 목록을 불러옴
 
@@ -136,30 +132,6 @@ public class CubeFragment extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        btn_ledTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(checkSocket()){
-                    Intent intent = new Intent(getContext(), PopLedTimeSet.class);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        btn_pumpTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(checkSocket()){
-                    Intent intent = new Intent(getContext(), PopPumpTimeSet.class);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(getContext(), "큐브를 선택해서 연결해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         /* Toolbar 설정 */
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_cube);
@@ -473,16 +445,16 @@ public class CubeFragment extends Fragment {
 //                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
                                             String[] datas = data.split(",");//보낸 신호에 응답한 신호에 따라 각각에 맞게 설정
                                             if(datas[0].equals("LEDON")) {
-                                                text_led.setText("ON");
+//                                                text_led.setText("ON");
                                             }
                                             else if(datas[0].equals("LEDOFF")) {
-                                                text_led.setText("OFF");
+//                                                text_led.setText("OFF");
                                             }
                                             else if(datas[0].equals("PUMPON")){
-                                                text_motor.setText("ON");
+//                                                text_motor.setText("ON");
                                             }
                                             else if(datas[0].equals("PUMPOFF")){
-                                                text_motor.setText("OFF");
+//                                                text_motor.setText("OFF");
                                             }
                                             else if(datas[0].equals("TEMPER")){
                                                 text_temper.setText(datas[1]);

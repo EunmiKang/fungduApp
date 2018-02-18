@@ -228,7 +228,9 @@ public class UserPageFragment extends Fragment {
         @Override
         public void onClick(View v) {
             //데이터 담아서 팝업(액티비티) 호출
-            mOnPopupClick();
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse( "http://biocube.strikingly.com/"  ));
+            Intent intent = new Intent(getActivity(), CampActivity.class);
+            startActivity(intent);
         }
     };
 

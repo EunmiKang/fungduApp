@@ -44,7 +44,6 @@ public class CubeRegister extends AppCompatActivity {
     //UI
     Button btnSearch;
     ListView listDevice;
-    TextView text_motor;
 
     //Adapter
     SimpleAdapter adapterDevice;
@@ -136,8 +135,6 @@ public class CubeRegister extends AppCompatActivity {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fragment_cube, null);
-
-        text_motor = (TextView) view.findViewById(R.id.text_motor);
 
         //블루투스 지원 유무 확인
         checkBluetooth(this);
