@@ -57,20 +57,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_margin="10dp"
         android:weightSum="0.9">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="0.08"
             android:background="@drawable/border"
             android:orientation="horizontal"
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -110,8 +110,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_weight="0.5"
                 android:background="@color/white"
                 android:orientation="vertical"
@@ -250,8 +248,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_weight="0.5"
                 android:background="@color/white"
                 android:orientation="vertical"
@@ -271,7 +267,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="5dp"
                     android:layout_weight="0.8"
                     android:background="#ffffff"
                     android:orientation="vertical"
@@ -311,7 +306,7 @@
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/cont_time_bg">
+                            android:background="@drawable/cont_timeline_bg_700x260">
 
 
                             <ImageButton
@@ -555,7 +550,7 @@
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/cont_time_bg">
+                            android:background="@drawable/cont_timeline_bg_700x260">
 
 
                             <ImageButton
