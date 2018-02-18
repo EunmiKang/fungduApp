@@ -46,111 +46,115 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.35"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="10dp"
             android:layout_margin="10dp"
             android:background="#ffffff"
             android:weightSum="1">
 
-            <TextView
-                android:id="@+id/text_admin_nickname"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:gravity="center"
-                android:text="관리자"
-                android:textSize="20sp" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:layout_margin="20dp"
+                android:src="@drawable/logo_fungdu" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="4">
+                android:orientation="vertical"
+                android:weightSum="1">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/logo_fungdu" />
+                <TextView
+                    android:id="@+id/text_admin_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="0.2"
+                    android:gravity="top"
+                    android:text="관리자"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:orientation="horizontal"
                     android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_admin_countCube"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="총\n큐브 수"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:gravity="center_vertical"
+                        android:text="총 큐브 수"
                         android:textSize="15sp"
-                        android:gravity="center" />
+                        android:layout_marginLeft="10dp"/>
 
                     <TextView
                         android:id="@+id/text_admin_cubeNum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textSize="15sp"
-                        android:gravity="center" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:orientation="horizontal"
                     android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_countExpert"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="총\n전문가 수"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:gravity="center_vertical"
+                        android:text="총 전문가 수"
                         android:textSize="15sp"
-                        android:gravity="center" />
+                        android:layout_marginLeft="10dp"/>
 
                     <TextView
                         android:id="@+id/text_admin_expertNum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textSize="15sp"
-                        android:gravity="center" />
-
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:orientation="horizontal"
                     android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_countUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="총\n일반 사용자 수"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:gravity="center_vertical"
+                        android:text="총 일반 사용자 수"
                         android:textSize="15sp"
-                        android:gravity="center" />
+                        android:layout_marginLeft="10dp"/>
 
                     <TextView
                         android:id="@+id/text_admin_userNum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:textSize="15sp"
-                        android:gravity="center" />
-
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -195,7 +199,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="Manual"
+                    android:text="매뉴얼 관리"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -229,7 +233,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="My Comment"
+                    android:text="나의 코멘트"
                     android:textSize="15sp"
                     style="?android:attr/borderlessButtonStyle"/>
             </LinearLayout>
@@ -264,7 +268,7 @@
                     android:layout_weight="0.7"
                     android:background="#ffffff"
                     android:gravity="left|center"
-                    android:text="My Cube"
+                    android:text="나의 큐브"
                     android:textSize="15sp"
                     style="?android:attr/borderlessButtonStyle"/>
             </LinearLayout>

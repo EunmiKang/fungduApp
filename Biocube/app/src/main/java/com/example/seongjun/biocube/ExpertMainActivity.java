@@ -57,7 +57,7 @@ public class ExpertMainActivity extends AppCompatActivity {
 
         for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
             LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-            tab.setPadding(70,40,70,40);
+            tab.setPadding(80,40,80,40);
             ((ImageView)tab.findViewById(R.id.img_tab)).setBackgroundResource(mExpertPagerAdapter.getFragmentInfo(i).getIconResId());
             mTab.getTabAt(i).setCustomView(tab);
             //mTab.getTabAt(i).setIcon(mExpertPagerAdapter.getFragmentInfo(i).getIconResId());
