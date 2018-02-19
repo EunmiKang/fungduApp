@@ -717,8 +717,10 @@ public class WriteDiaryFragment extends Fragment {
                 Toast.makeText(getContext(), "일지 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 /* 뷰들 초기화 */
                 cubeSpinner.setSelection(0);
-                croppedFile.delete();
-                croppedFile = null;
+                if(croppedFile != null) {
+                    croppedFile.delete();
+                    croppedFile = null;
+                }
                 iv_UserPhoto.setImageDrawable(null);
                 dateBtn.setText(getTodayDate());
                 filterSpinner.setSelection(0);
