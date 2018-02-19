@@ -84,6 +84,14 @@ public class UserMainActivity extends AppCompatActivity {
                             ((CubeFragment)mUserPagerAdapter.getItem(0)).text_humi_air.setText("");
                             ((CubeFragment)mUserPagerAdapter.getItem(0)).text_temper.setText("");
                             ((CubeFragment)mUserPagerAdapter.getItem(0)).text_humi_soil.setText("");
+                            for(int i = 0; i<12; i++) {
+                                ((CubeFragment) mUserPagerAdapter.getItem(0)).ledTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_on_light_65x65);
+                                ((CubeFragment) mUserPagerAdapter.getItem(0)).pumpTimeButtonArray[i].setBackgroundResource(R.drawable.cont_time_on_pump_65x65);
+                                ((CubeFragment) mUserPagerAdapter.getItem(0)).ledTimeState[i] = 0;
+                                ((CubeFragment) mUserPagerAdapter.getItem(0)).pumpTimeState[i] = 0;
+                                ((CubeFragment) mUserPagerAdapter.getItem(0)).btn_led.setBackgroundResource(R.drawable.cont_time_light_on_145x135);
+                                ((CubeFragment) mUserPagerAdapter.getItem(0)).btn_pump.setBackgroundResource(R.drawable.cont_time_pump_on_139x129);
+                            }
 
                         }
 //                        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_user);

@@ -169,7 +169,7 @@
                     android:id="@+id/btn_addImage"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:background="@drawable/add_noteback_435x435"
+                    android:background="@drawable/add_noteback_left"
                     android:scaleType="fitXY" />
             </LinearLayout>
         </LinearLayout>
