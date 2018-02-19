@@ -54,6 +54,8 @@
         <item name="colorControlNormal">@color/biocube</item>
         <item name="colorControlActivated">@color/biocube</item>
         <item name="android:textCursorDrawable">@color/biocube</item>
+        <item name="android:colorControlHighlight">@color/biocube</item>
+        <item name="android:textSelectHandle">@color/biocube</item>
     </style>
 
     <style name="LoginEditTextStyle" parent="Widget.AppCompat.EditText">

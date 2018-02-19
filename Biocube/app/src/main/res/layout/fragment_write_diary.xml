@@ -196,10 +196,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
-                android:imeOptions="flagNoExtractUi"
                 android:inputType="textMultiLine"
                 android:textSize="14sp"
-                android:theme="@style/EditTextStyle" />
+                />
         </LinearLayout>
 
         <LinearLayout
