@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -75,6 +76,27 @@ public class CubeListActivity extends AppCompatActivity {
             }
             adapter = new ArrayAdapter(CubeListActivity.this, android.R.layout.simple_list_item_1, cubeList) ;
             list_cube.setAdapter(adapter);
+//            list_cube.setAdapter(new BaseAdapter() {
+//                @Override
+//                public int getCount() {
+//                    return cubeList.length;
+//                }
+//
+//                @Override
+//                public Object getItem(int position) {
+//                    return position;
+//                }
+//
+//                @Override
+//                public long getItemId(int position) {
+//                    return position;
+//                }
+//
+//                @Override
+//                public View getView(int position, View convertView, ViewGroup parent) {
+//                    return null;
+//                }
+//            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.87"
+            android:inputType="text"
             android:gravity="center"
             android:hint="큐브 이름"
             android:textColor="#000"
@@ -55,10 +56,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="식물 종류 : "
-            android:gravity="center"
             android:layout_weight="0.3"
-            android:textColor="#000000"/>
+            android:gravity="center"
+            android:text="생물 종 : "
+            android:textColor="#000000" />
 
         <Spinner
             android:id="@+id/spinner_plantName"

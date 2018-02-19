@@ -206,7 +206,7 @@ public class CubeFragment extends Fragment {
         public void onClick(View v) {
             String time_string = String.valueOf(v.getTag());
             setTime("set_time"+time_string);
-            if(checkSocket()) {
+            if(!checkSocket()) {
                 if (time_string.charAt(0) == 'l') {//led 버튼 일때,
                     if (ledTimeState[Integer.parseInt(time_string.substring(3)) / 2] == 0) {
                         ledTimeState[Integer.parseInt(time_string.substring(3)) / 2] = 1;
@@ -268,7 +268,7 @@ public class CubeFragment extends Fragment {
     ImageButton.OnClickListener setLedClickListener = new ImageButton.OnClickListener(){//LED 버튼 눌렀을 때
         @Override
         public void onClick(View v) {
-            if(checkSocket()) {
+            if(!checkSocket()) {
                 if (!id.equals("admin")) {
                     ((UserMainActivity) getActivity()).mBluetooth.sendData("led");
                 } else {
@@ -292,7 +292,7 @@ public class CubeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if(checkSocket()) {
+            if(!checkSocket()) {
                 if (!id.equals("admin")) {
                     ((UserMainActivity) getActivity()).mBluetooth.sendData("pump");
                 } else {
@@ -641,7 +641,7 @@ public class CubeFragment extends Fragment {
 
     public Boolean checkSocket(){//소켓이 연결되어 있는지 확인.
         if(!id.equals("admin")) {
-            if(((UserMainActivity) getActivity()).mBluetooth.mSocket == null){
+            if(((UserMainActivity) getActivity()).mBluetooth.mSocket.isConnected()){
                 return false;
             }
             else{
@@ -649,7 +649,7 @@ public class CubeFragment extends Fragment {
             }
         }
         else{
-            if(((AdminMainActivity) getActivity()).mBluetooth.mSocket == null){
+            if(((AdminMainActivity) getActivity()).mBluetooth.mSocket.isConnected()){
                 return false;
             }
             else{

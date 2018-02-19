@@ -50,11 +50,12 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
+                android:layout_weight="0.7"
                 android:inputType="text"
                 android:padding="10dp"
                 android:privateImeOptions="defaultInputmode=english"
-                android:theme="@style/LoginEditTextStyle"
-                android:layout_weight="0.7"/>
+                android:textColor="@color/fleshy"
+                android:theme="@style/LoginEditTextStyle" />
 
         </LinearLayout>
 
@@ -81,10 +82,11 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
+                android:layout_weight="0.7"
                 android:inputType="textPassword"
                 android:padding="10dp"
-                android:theme="@style/LoginEditTextStyle"
-                android:layout_weight="0.7"/>
+                android:textColor="@color/fleshy"
+                android:theme="@style/LoginEditTextStyle" />
 
         </LinearLayout>
 
