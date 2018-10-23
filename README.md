@@ -1,4 +1,4 @@
-##fungduApp
+## fungduApp
 ------------
 ### 참여자
 * 강은미
